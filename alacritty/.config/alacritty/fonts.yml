@@ -1,0 +1,69 @@
+#  Font configuration
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Regular
+
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: JetBrainsMono Nerd Font
+    style: Bold Italic
+
+  size:
+    14
+    # Offset is the extra space around each character. `offset.y` can be thought of
+  # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
+  offset:
+    x: 0
+    y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increasing `x` moves the glyph to the right,
+  # increasing `y` moves the glyph upwards.
+  glyph_offset:
+    x: 0
+    y: 0
+
+# When true, bold text is drawn using the bright variant of colors.
+draw_bold_text_with_bright_colors: true
+# font:
+# size: 14.0
+# 字体
+# normal:
+#family: "FiraCode Nerd Font"
+# family: 'Fira Code'
+#    style: Regular
+# style: Retina
+#  bold:
+#    family: "FiraCode Nerd Font"
+#    style: Bold
+#  italic:
+# family: 'FiraCode Nerd Font'
+#    family: "Hack"
+#    style: Italic
+#  bold_italic:
+# family: 'FiraCode Nerd Font'
+#    family: "Hack"
+#    style: Bold Italic
+
+# Offset is the extra space around each character. `offset.y` can be thought
+# of as modifying the line spacing, and `offset.x` as modifying the letter
+# spacing.
+#  offset:
+#    x: 0
+#    y: 1
+
+#  glyph_offset:
+#    x: 0
+# 保持 offset 的一半，确保字体在行中间
+#    y: 0
+
+# mac 专属 retina 字体(已废弃)
+# use_thin_strokes: true
