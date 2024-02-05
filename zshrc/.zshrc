@@ -1,82 +1,104 @@
-# 若没有下载zinit，那么就下载他
-[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
-    command mkdir -p ~/.zinit
-    command git clone https://github.com/zdharma-continuum/zinit ~/.zinit/bin
-}
-source "$HOME/.zinit/bin/zinit.zsh"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-# 用于优化下载的zinit插件
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
-# Load starship theme
-# line 1: `starship` binary as command, from github release
-# line 2: starship setup at clone(create init.zsh, completion)
-# line 3: pull behavior same as clone, source init.zsh
-zinit ice as"command" from"gh-r" \
-          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-          atpull"%atclone" src"init.zsh"
-zinit light starship/starship
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="robbyrussell"
 
-# 补全等待时显示一些点
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 COMPLETION_WAITING_DOTS="true"
-# 开启错误自动提示
-ENABLE_CORRECTION="true"
 
-# oh-my-zsh中常用的插件
-# key binding是通用的基础，不适合延迟加载
-zinit lucid for OMZ::lib/key-bindings.zsh
-zinit ice wait="0" lucid atload="zshz >/dev/null"
-zinit light agkozak/zsh-z
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# plugins
-zinit ice lucid wait='0' atload='_zsh_autosuggest_start'
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-syntax-highlighting
-# zinit light mrjohannchang/zsh-interactive-cd # need to install fzf
-zinit light "dominik-schwabe/zsh-fnm"
-zinit snippet OMZ::plugins/git/git.plugin.zsh
-zinit snippet OMZ::lib/directories.zsh
-# zinit snippet OMZ::plugins/safe-paste/safe-paste.plugin.zsh
-# zinit snippet OMZ::plugins/command-not-found/command-not-found.plugin.zsh
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
 
-autoload -Uz compinit
-compinit
-zinit cdreplay -q
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
-# zi for \
-#     atload"zicompinit; zicdreplay" \
-#     blockf \
-#     lucid \
-#     wait \
-#   zsh-users/zsh-completions
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(starship F-Sy-H zsh-autosuggestions git zoxide)
 
-#历史纪录条目数量
-export HISTSIZE=1000000
-#注销后保存的历史纪录条目数量
-export SAVEHIST=500000
-#以附加的方式写入历史纪录
-setopt INC_APPEND_HISTORY
-#如果连续输入的命令相同，历史纪录中只保留一个
-setopt HIST_IGNORE_DUPS
-#为历史纪录中的命令添加时间戳
-setopt EXTENDED_HISTORY
-#启用 cd 命令的历史纪录，cd -[TAB]进入历史路径
-setopt AUTO_PUSHD
-#相同的历史路径只保留一个
-setopt PUSHD_IGNORE_DUPS
-#在命令前添加空格，不将此命令添加到纪录文件中
-setopt HIST_IGNORE_SPACE
+# This speeds up pasting w/ autosuggest
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
 
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
 
-# export RUSTUP_DIST_SERVER="https://rsproxy.cn"
-# export RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup"
+eval "$(fnm env --use-on-cd)"
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
 
 alias v="nvim"
 alias cat="bat"
