@@ -27,23 +27,96 @@ packadd({
 --   config = require("editor.config.neoscroll"),
 -- })
 packadd({
-  "windwp/nvim-autopairs",
-  event = "InsertEnter",
-  config = function()
-    require("editor.config.autopairs")
-  end,
-})
-packadd({
-  "kylechui/nvim-surround",
-  version = "*", -- Use for stability; omit to use `main` branch for the latest features
+  "echasnovski/mini.pairs",
   event = "VeryLazy",
-  config = true,
+  opts = {},
+})
+-- Fast and feature-rich surround actions. For text that includes
+-- surrounding characters like brackets or quotes, this allows you
+-- to select the text inside, change or modify the surrounding characters,
+-- and more.
+packadd({
+  "echasnovski/mini.surround",
+  keys = function(_, keys)
+    -- Populate the keys based on the user's options
+    local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
+    local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+    local mappings = {
+      { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
+      { opts.mappings.delete, desc = "Delete surrounding" },
+      { opts.mappings.find, desc = "Find right surrounding" },
+      { opts.mappings.find_left, desc = "Find left surrounding" },
+      { opts.mappings.highlight, desc = "Highlight surrounding" },
+      { opts.mappings.replace, desc = "Replace surrounding" },
+      { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
+    }
+    mappings = vim.tbl_filter(function(m)
+      return m[1] and #m[1] > 0
+    end, mappings)
+    return vim.list_extend(mappings, keys)
+  end,
+  opts = {
+    mappings = {
+      add = "gsa", -- Add surrounding in Normal and Visual modes
+      delete = "gsd", -- Delete surrounding
+      find = "gsf", -- Find surrounding (to the right)
+      find_left = "gsF", -- Find surrounding (to the left)
+      highlight = "gsh", -- Highlight surrounding
+      replace = "gsr", -- Replace surrounding
+      update_n_lines = "gsn", -- Update `n_lines`
+    },
+  },
 })
 packadd({
-  "numToStr/Comment.nvim",
+  "folke/todo-comments.nvim",
+  cmd = { "TodoTrouble", "TodoTelescope" },
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  config = true,
+  keys = {
+    -- { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
+    -- { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
+    -- { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
+    -- { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+  },
+})
+packadd({
+  "JoosepAlviste/nvim-ts-context-commentstring",
   lazy = true,
-  event = { "CursorHold", "CursorHoldI" },
-  config = require("editor.config.comment"),
+  opts = {
+    enable_autocmd = false,
+  },
+})
+packadd({
+  "echasnovski/mini.comment",
+  event = "VeryLazy",
+  opts = {
+    options = {
+      ignore_blank_line = true,
+      custom_commentstring = function()
+        return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+      end,
+    },
+    -- Module mappings. Use `''` (empty string) to disable one.
+    mappings = {
+      -- Toggle comment (like `gcip` - comment inner paragraph) for both
+      -- Normal and Visual modes
+      comment = 'gc',
+
+      -- Toggle comment on current line
+      comment_line = '<A-/>',
+
+      -- Toggle comment on visual selection
+      comment_visual = '<A-/>',
+
+      -- Define 'comment' textobject (like `dgc` - delete whole comment block)
+      textobject = 'gc',
+    },
+  },
+})
+packadd({
+  "folke/trouble.nvim",
+  cmd = { "TroubleToggle", "Trouble" },
+  opts = { use_diagnostic_signs = true },
 })
 packadd({
   "folke/flash.nvim",
@@ -94,57 +167,52 @@ packadd({
   },
 })
 packadd({
-  "rareitems/printer.nvim",
-  event = "BufEnter",
-  ft = {
-    "lua",
-    "javascript",
-    "typescript",
-    "javascriptreact",
-    "typescriptreact",
-  },
-  config = function()
-    require("editor.config.printer")
-  end,
-})
-packadd({
   "kevinhwang91/nvim-ufo",
   dependencies = "kevinhwang91/promise-async",
-  config = function()
-    vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-    vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
-    vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
-  end,
 })
-packadd({
-  "smoka7/multicursors.nvim",
-  event = "VeryLazy",
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter',
-    'smoka7/hydra.nvim',
-  },
-  opts = {
-    hint_config = false
-  },
-  keys = {
-    {
-      '<LEADER>d',
-      '<CMD>MCstart<CR>',
-      desc = 'multicursor',
-    },
-    {
-      '<LEADER>d',
-      '<CMD>MCvisual<CR>',
-      mode = "v",
-      desc = 'multicursor',
-    },
-    {
-      '<leader><down>',
-      '<CMD>MCunderCursor<CR>',
-      desc = 'multicursor down',
-    },
-  },
-})
+-- packadd({
+--   "rareitems/printer.nvim",
+--   event = "BufEnter",
+--   ft = {
+--     "lua",
+--     "javascript",
+--     "typescript",
+--     "javascriptreact",
+--     "typescriptreact",
+--   },
+--   config = function()
+--     require("editor.config.printer")
+--   end,
+-- })
+-- packadd({
+--   "smoka7/multicursors.nvim",
+--   event = "VeryLazy",
+--   dependencies = {
+--     'nvim-treesitter/nvim-treesitter',
+--     'smoka7/hydra.nvim',
+--   },
+--   opts = {
+--     hint_config = false
+--   },
+--   keys = {
+--     {
+--       '<LEADER>d',
+--       '<CMD>MCstart<CR>',
+--       desc = 'multicursor',
+--     },
+--     {
+--       '<LEADER>d',
+--       '<CMD>MCvisual<CR>',
+--       mode = "v",
+--       desc = 'multicursor',
+--     },
+--     {
+--       '<leader><down>',
+--       '<CMD>MCunderCursor<CR>',
+--       desc = 'multicursor down',
+--     },
+--   },
+-- })
 packadd({
   "sindrets/diffview.nvim",
   lazy = true,
@@ -156,28 +224,16 @@ packadd({
 ----------------------------------------------------------------------
 packadd({
   "nvim-treesitter/nvim-treesitter",
-  build = function()
-    if #vim.api.nvim_list_uis() ~= 0 then
-      vim.api.nvim_command("TSUpdate")
-    end
-  end,
+  version = false,
+  build = ":TSUpdate",
+  cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
   event = "BufReadPre",
   config = require("editor.config.treesitter"),
   dependencies = {
-    { "nvim-treesitter/nvim-treesitter-textobjects" },
-    { "JoosepAlviste/nvim-ts-context-commentstring" },
     { "andymass/vim-matchup" },
     {
       "hiphish/rainbow-delimiters.nvim",
       config = require("editor.config.rainbow"),
-    },
-    -- {
-    -- 	"nvim-treesitter/nvim-treesitter-context",
-    -- 	config = require("editor.ts-context"),
-    -- },
-    {
-      "windwp/nvim-ts-autotag",
-      config = require("editor.config.autotag"),
     },
     {
       "NvChad/nvim-colorizer.lua",
@@ -185,3 +241,8 @@ packadd({
     },
   },
 })
+packadd({
+  "windwp/nvim-ts-autotag",
+  config = require("editor.config.autotag"),
+})
+

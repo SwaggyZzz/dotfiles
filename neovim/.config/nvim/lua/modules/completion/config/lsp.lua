@@ -68,9 +68,9 @@ return function()
   ---A handler to setup all servers defined under `config/servers/*.lua`
   ---@param lsp_name string
   local function mason_lsp_handler(lsp_name)
-    -- if lsp_name == 'tsserver' then
-    --   return
-    -- end
+    if lsp_name == 'tsserver' then
+      return
+    end
 
     local ok, custom_handler = pcall(require, "modules.completion.config.servers." .. lsp_name)
     if not ok then

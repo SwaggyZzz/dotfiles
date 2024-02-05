@@ -122,7 +122,6 @@ return function()
       -- width = function()
       --   return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
       -- end,
-      hide_root_folder = false,
       side = "left",
       number = false,
       relativenumber = false,

@@ -7,8 +7,8 @@ packadd({
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
     {
-      "jose-elias-alvarez/null-ls.nvim",
-      config = require("completion.config.null-ls")
+      "nvimtools/none-ls.nvim",
+      config = require("completion.config.none-ls")
     },
     { "jose-elias-alvarez/typescript.nvim" },
     {
@@ -29,18 +29,18 @@ packadd({
   config = true,
 })
 
--- packadd({
---   "pmizio/typescript-tools.nvim",
---   event = { "BufReadPre", "BufNewFile" },
---   ft = { "typescript", "typescriptreact" },
---   dependencies = {
---     "nvim-lua/plenary.nvim",
---     "neovim/nvim-lspconfig",
---   },
---   config = function()
---     require("completion.config.typescript-tools")
---   end,
--- })
+packadd({
+  "pmizio/typescript-tools.nvim",
+  event = { "BufReadPre", "BufNewFile" },
+  ft = { "typescript", "typescriptreact" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "neovim/nvim-lspconfig",
+  },
+  config = function()
+    require("completion.config.typescript-tools")
+  end,
+})
 
 packadd({
   "hrsh7th/nvim-cmp",

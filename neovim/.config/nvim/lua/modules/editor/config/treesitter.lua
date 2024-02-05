@@ -5,6 +5,7 @@ return function()
   -- vim.api.nvim_set_option_value("foldmethod", "expr", {})
   -- vim.api.nvim_set_option_value("foldexpr", "nvim_treesitter#foldexpr()", {})
 
+
   ts.setup({
     highlight = {
       enable = true,
@@ -29,6 +30,10 @@ return function()
       -- Instead of true it can also be a list of languages
       -- additional_vim_regex_highlighting = false,
     },
+    indent = {
+      enable = true,
+    },
+    matchup = { enable = true },
     ensure_installed = {
       "bash",
       "c",
@@ -91,13 +96,5 @@ return function()
         },
       },
     },
-    context_commentstring = { enable = true, enable_autocmd = false },
-    matchup = { enable = true },
-    indent = {
-      enable = true
-    },
   })
-
-  -- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-  -- parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx", "js", "ts" }
 end
