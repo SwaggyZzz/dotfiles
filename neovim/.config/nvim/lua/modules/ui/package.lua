@@ -1,15 +1,10 @@
--- packadd({
---   "sainnhe/everforest",
--- lazy = true,
---   name = "everforest"
--- })
--- packadd({
---   "Jint-lzxy/nvim",
---   lazy = true,
---   branch = "refactor/syntax-highlighting",
---   name = "catppuccin",
---   config = require("ui.config.catppuccin"),
--- })
+packadd({
+  "Jint-lzxy/nvim",
+  lazy = true,
+  branch = "refactor/syntax-highlighting-v2",
+  name = "catppuccin",
+  -- config = require("ui.config.catppuccin"),
+})
 packadd({
   "folke/tokyonight.nvim",
   -- lazy = true,
@@ -67,6 +62,7 @@ packadd({
         "alpha",
         "dashboard",
         "neo-tree",
+        "nvimtree",
         "Trouble",
         "trouble",
         "lazy",

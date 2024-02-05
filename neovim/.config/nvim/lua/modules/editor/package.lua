@@ -13,59 +13,9 @@ packadd({
   end
 })
 packadd({
-  "rainbowhxch/accelerated-jk.nvim",
-  lazy = true,
-  event = "VeryLazy",
-  config = function()
-    require("editor.config.accelerated-jk")
-  end
-})
--- packadd({
---   "karb94/neoscroll.nvim",
---   lazy = true,
---   event = { "CursorHold", "CursorHoldI" },
---   config = require("editor.config.neoscroll"),
--- })
-packadd({
   "echasnovski/mini.pairs",
   event = "VeryLazy",
   opts = {},
-})
--- Fast and feature-rich surround actions. For text that includes
--- surrounding characters like brackets or quotes, this allows you
--- to select the text inside, change or modify the surrounding characters,
--- and more.
-packadd({
-  "echasnovski/mini.surround",
-  keys = function(_, keys)
-    -- Populate the keys based on the user's options
-    local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
-    local opts = require("lazy.core.plugin").values(plugin, "opts", false)
-    local mappings = {
-      { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-      { opts.mappings.delete, desc = "Delete surrounding" },
-      { opts.mappings.find, desc = "Find right surrounding" },
-      { opts.mappings.find_left, desc = "Find left surrounding" },
-      { opts.mappings.highlight, desc = "Highlight surrounding" },
-      { opts.mappings.replace, desc = "Replace surrounding" },
-      { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-    }
-    mappings = vim.tbl_filter(function(m)
-      return m[1] and #m[1] > 0
-    end, mappings)
-    return vim.list_extend(mappings, keys)
-  end,
-  opts = {
-    mappings = {
-      add = "gsa", -- Add surrounding in Normal and Visual modes
-      delete = "gsd", -- Delete surrounding
-      find = "gsf", -- Find surrounding (to the right)
-      find_left = "gsF", -- Find surrounding (to the left)
-      highlight = "gsh", -- Highlight surrounding
-      replace = "gsr", -- Replace surrounding
-      update_n_lines = "gsn", -- Update `n_lines`
-    },
-  },
 })
 packadd({
   "folke/todo-comments.nvim",
@@ -77,13 +27,6 @@ packadd({
     -- { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
     -- { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
     -- { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
-  },
-})
-packadd({
-  "JoosepAlviste/nvim-ts-context-commentstring",
-  lazy = true,
-  opts = {
-    enable_autocmd = false,
   },
 })
 packadd({
@@ -170,49 +113,6 @@ packadd({
   "kevinhwang91/nvim-ufo",
   dependencies = "kevinhwang91/promise-async",
 })
--- packadd({
---   "rareitems/printer.nvim",
---   event = "BufEnter",
---   ft = {
---     "lua",
---     "javascript",
---     "typescript",
---     "javascriptreact",
---     "typescriptreact",
---   },
---   config = function()
---     require("editor.config.printer")
---   end,
--- })
--- packadd({
---   "smoka7/multicursors.nvim",
---   event = "VeryLazy",
---   dependencies = {
---     'nvim-treesitter/nvim-treesitter',
---     'smoka7/hydra.nvim',
---   },
---   opts = {
---     hint_config = false
---   },
---   keys = {
---     {
---       '<LEADER>d',
---       '<CMD>MCstart<CR>',
---       desc = 'multicursor',
---     },
---     {
---       '<LEADER>d',
---       '<CMD>MCvisual<CR>',
---       mode = "v",
---       desc = 'multicursor',
---     },
---     {
---       '<leader><down>',
---       '<CMD>MCunderCursor<CR>',
---       desc = 'multicursor down',
---     },
---   },
--- })
 packadd({
   "sindrets/diffview.nvim",
   lazy = true,
@@ -239,6 +139,13 @@ packadd({
       "NvChad/nvim-colorizer.lua",
       config = require("editor.config.colorizer"),
     },
+  },
+})
+packadd({
+  "JoosepAlviste/nvim-ts-context-commentstring",
+  lazy = true,
+  opts = {
+    enable_autocmd = false,
   },
 })
 packadd({

@@ -18,29 +18,18 @@ packadd({
   },
 })
 
-packadd({
-  "SmiteshP/nvim-navic",
-  config = require("completion.config.navic"),
-  dependencies = "neovim/nvim-lspconfig",
-})
-
-packadd({
-  "js-everts/cmp-tailwind-colors",
-  config = true,
-})
-
-packadd({
-  "pmizio/typescript-tools.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  ft = { "typescript", "typescriptreact" },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "neovim/nvim-lspconfig",
-  },
-  config = function()
-    require("completion.config.typescript-tools")
-  end,
-})
+-- packadd({
+--   "pmizio/typescript-tools.nvim",
+--   event = { "BufReadPre", "BufNewFile" },
+--   ft = { "typescript", "typescriptreact" },
+--   dependencies = {
+--     "nvim-lua/plenary.nvim",
+--     "neovim/nvim-lspconfig",
+--   },
+--   config = function()
+--     require("completion.config.typescript-tools")
+--   end,
+-- })
 
 packadd({
   "hrsh7th/nvim-cmp",
@@ -61,5 +50,9 @@ packadd({
     { "hrsh7th/cmp-cmdline" },
     { "hrsh7th/cmp-calc" },
     { "hrsh7th/cmp-buffer" },
+    {
+      "js-everts/cmp-tailwind-colors",
+      config = true,
+    }
   },
 })
