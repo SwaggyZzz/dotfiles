@@ -1,9 +1,13 @@
 packadd({
+  "lunarvim/lunar.nvim",
+  lazy = true,
+})
+packadd({
   "Jint-lzxy/nvim",
   lazy = true,
-  branch = "refactor/syntax-highlighting-v2",
+  branch = "refactor/syntax-highlighting",
   name = "catppuccin",
-  -- config = require("ui.config.catppuccin"),
+  config = require("ui.config.catppuccin"),
 })
 packadd({
   "folke/tokyonight.nvim",
@@ -24,13 +28,13 @@ packadd({
 packadd({
   "akinsho/bufferline.nvim",
   lazy = true,
-  event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  event = "VeryLazy",
   config = require("ui.config.bufferline"),
 })
 packadd({
   "nvim-lualine/lualine.nvim",
   lazy = true,
-  event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  event = "VimEnter",
   config = require("ui.config.lualine"),
 })
 
@@ -42,15 +46,17 @@ packadd({
 
 packadd({
   "lukas-reineke/indent-blankline.nvim",
-  event = { "CursorHold", "CursorHoldI" },
+  lazy = true,
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   config = require("ui.config.indent-blankline"),
   main = "ibl"
 })
 
 packadd({
   "echasnovski/mini.indentscope",
+  lazy = true,
   version = false, -- wait till new 0.7.0 release to put it back on semver
-  event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  event = {"BufReadPost", "BufNewFile", "BufWritePre"  },
   opts = {
     symbol = "│",
     options = { try_as_border = true },

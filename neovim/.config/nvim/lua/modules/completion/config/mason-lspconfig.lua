@@ -36,10 +36,10 @@ M.setup = function()
       border = "rounded",
     }),
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics,
-      { virtual_text = true, underline = true }
-    ),
+    -- ["textDocument/publishDiagnostics"] = vim.lsp.with(
+    --   vim.lsp.diagnostic.on_publish_diagnostics,
+    --   { virtual_text = true, underline = true }
+    -- ),
   }
 
   local opts = {

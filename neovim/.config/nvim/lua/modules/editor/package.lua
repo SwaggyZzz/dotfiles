@@ -4,6 +4,7 @@ packadd({
   event = { "CursorHold", "CursorHoldI" },
   config = require("editor.config.better-escape"),
 })
+
 packadd({
   "nvimdev/hlsearch.nvim",
   lazy = true,
@@ -12,23 +13,13 @@ packadd({
     require('hlsearch').setup()
   end
 })
+
 packadd({
   "echasnovski/mini.pairs",
   event = "VeryLazy",
   opts = {},
 })
-packadd({
-  "folke/todo-comments.nvim",
-  cmd = { "TodoTrouble", "TodoTelescope" },
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-  config = true,
-  keys = {
-    -- { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
-    -- { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-    -- { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-    -- { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
-  },
-})
+
 packadd({
   "echasnovski/mini.comment",
   event = "VeryLazy",
@@ -56,14 +47,29 @@ packadd({
     },
   },
 })
+
+packadd({
+  "folke/todo-comments.nvim",
+  cmd = { "TodoTrouble", "TodoTelescope" },
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  config = true,
+  keys = {
+    -- { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
+    -- { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
+    -- { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
+    -- { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+  },
+})
+
 packadd({
   "folke/trouble.nvim",
   cmd = { "TroubleToggle", "Trouble" },
   opts = { use_diagnostic_signs = true },
 })
+
 packadd({
   "folke/flash.nvim",
-  event = "VeryLazy",
+  event = { "CursorHold", "CursorHoldI" },
   ---@type Flash.Config
   opts = {},
   keys = {
@@ -109,15 +115,57 @@ packadd({
     },
   },
 })
+
 packadd({
   "kevinhwang91/nvim-ufo",
+  lazy = true,
   dependencies = "kevinhwang91/promise-async",
 })
+
 packadd({
   "sindrets/diffview.nvim",
   lazy = true,
+  event = "BufRead",
   cmd = { "DiffviewOpen", "DiffviewClose" },
 })
+
+packadd( {
+  "RRethy/vim-illuminate",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  opts = {
+    delay = 200,
+    large_file_cutoff = 2000,
+    large_file_overrides = {
+      providers = { "lsp" },
+    },
+  },
+  config = function(_, opts)
+    require("illuminate").configure(opts)
+
+    local function map(key, dir, buffer)
+      vim.keymap.set("n", key, function()
+        require("illuminate")["goto_" .. dir .. "_reference"](false)
+      end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+    end
+
+    map("]]", "next")
+    map("[[", "prev")
+
+    -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function()
+        local buffer = vim.api.nvim_get_current_buf()
+        map("]]", "next", buffer)
+        map("[[", "prev", buffer)
+      end,
+    })
+  end,
+  keys = {
+    { "]]", desc = "Next Reference" },
+    { "[[", desc = "Prev Reference" },
+  },
+})
+
 
 ----------------------------------------------------------------------
 --                  :treesitter related plugins                    --
@@ -126,15 +174,23 @@ packadd({
   "nvim-treesitter/nvim-treesitter",
   version = false,
   build = ":TSUpdate",
-  cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-  event = "BufReadPre",
+  cmd = {  
+    "TSInstall",
+    "TSUninstall",
+    "TSUpdate",
+    "TSUpdateSync",
+    "TSInstallInfo",
+    "TSInstallSync",
+    "TSInstallFromGrammar",
+  },
+  event = {"BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy"},
   config = require("editor.config.treesitter"),
   dependencies = {
     { "andymass/vim-matchup" },
-    {
-      "hiphish/rainbow-delimiters.nvim",
-      config = require("editor.config.rainbow"),
-    },
+    -- {
+    --   "hiphish/rainbow-delimiters.nvim",
+    --   config = require("editor.config.rainbow"),
+    -- },
     {
       "NvChad/nvim-colorizer.lua",
       config = require("editor.config.colorizer"),
@@ -144,12 +200,10 @@ packadd({
 packadd({
   "JoosepAlviste/nvim-ts-context-commentstring",
   lazy = true,
-  opts = {
-    enable_autocmd = false,
-  },
 })
 packadd({
   "windwp/nvim-ts-autotag",
-  config = require("editor.config.autotag"),
+  config = function ()
+    require('nvim-ts-autotag').setup()
+  end,
 })
-

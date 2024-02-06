@@ -27,9 +27,9 @@ return function()
     button.opts.hl = "AlphaButtons"
     button.opts.hl_shortcut = "AlphaShortcut"
   end
-  dashboard.section.header.opts.hl = "AlphaHeader"
+  dashboard.section.header.opts.hl = "Label"
   dashboard.section.buttons.opts.hl = "AlphaButtons"
-  dashboard.section.footer.opts.hl = "AlphaFooter"
+  dashboard.section.footer.opts.hl = "Number"
   dashboard.opts.layout[1].val = 8
   -- close Lazy and re-open when the dashboard is ready
   if vim.o.filetype == "lazy" then

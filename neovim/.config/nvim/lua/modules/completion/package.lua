@@ -1,21 +1,18 @@
 packadd({
   'neovim/nvim-lspconfig',
   lazy = true,
-  event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  event = {"BufReadPost", "BufNewFile", "BufWritePre" },
   config = require("completion.config.lsp"),
   dependencies = {
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
-    {
-      "nvimtools/none-ls.nvim",
-      config = require("completion.config.none-ls")
-    },
-    { "jose-elias-alvarez/typescript.nvim" },
-    {
-      "nvimdev/lspsaga.nvim",
-      config = require("completion.config.lspsaga"),
-    },
   },
+})
+
+packadd({
+  "jose-elias-alvarez/typescript.nvim",
+  lazy = true,
+  event = { "BufReadPost", "BufAdd", "BufNewFile" }
 })
 
 -- packadd({
@@ -32,13 +29,32 @@ packadd({
 -- })
 
 packadd({
+  "nvimtools/none-ls.nvim",
+  lazy = true,
+  event = {"BufReadPost", "BufNewFile", "BufWritePre" },
+  config = require("completion.config.none-ls"),
+  dependencies = { 
+    { "williamboman/mason.nvim" } 
+  },
+})
+
+packadd({
+  "nvimdev/lspsaga.nvim",
+  lazy = true,
+	event = "LspAttach",
+  config = require("completion.config.lspsaga"),
+  dependencies = { "nvim-tree/nvim-web-devicons" },
+})
+
+packadd({
   "hrsh7th/nvim-cmp",
   lazy = true,
-  event = "InsertEnter",
+  event = { "InsertEnter", "CmdlineEnter" },
   config = require("completion.config.cmp"),
   dependencies = {
     {
       "L3MON4D3/LuaSnip",
+      event = "InsertEnter",
       dependencies = { "rafamadriz/friendly-snippets" },
       config = require("completion.config.lua-snip"),
     },

@@ -113,13 +113,14 @@ local load_core = function()
   require('swaggyz.event')
   require('keymaps')
 
-  -- local colorscheme = 'catppuccin'
-  -- vim.api.nvim_command("colorscheme " .. colorscheme)
+  local colorscheme = 'tokyonight'
+  vim.api.nvim_command("colorscheme " .. colorscheme)
 
 
+  -- vim.cmd.colorscheme('everforest')
   -- vim.cmd.colorscheme('tokyonight')
   -- vim.cmd.colorscheme('catppuccin')
-  -- vim.cmd.colorscheme('everforest')
+  -- vim.cmd.colorscheme('lunar')
 end
 
 load_core()

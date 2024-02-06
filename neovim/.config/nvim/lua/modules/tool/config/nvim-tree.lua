@@ -1,10 +1,5 @@
 return function()
-  local icons = {
-    diagnostics = require("swaggyz.icons").get("diagnostics"),
-    documents = require("swaggyz.icons").get("documents"),
-    git = require("swaggyz.icons").get("git"),
-    ui = require("swaggyz.icons").get("ui"),
-  }
+  local icons =  require("swaggyz.new-icons")
 
   local HEIGHT_RATIO = 0.8 -- You can change this
   local WIDTH_RATIO = 0.5  -- You can change this too
@@ -76,20 +71,30 @@ return function()
   end
 
   require("nvim-tree").setup({
-    on_attach = on_attach,
+    auto_reload_on_write = false,
+    disable_netrw = false,
+    hijack_cursor = false,
+    hijack_netrw = true,
+    hijack_unnamed_buffer_when_opening = false,
+    sort_by = "name",
+    root_dirs = {},
+    prefer_startup_root = false,
     -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
-    sync_root_with_cwd = false,
+    sync_root_with_cwd = true,
+    reload_on_bufenter = false,
     --false by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree
     respect_buf_cwd = true,
+    select_prompts = false,
+    on_attach = on_attach,
     diagnostics = {
-      enable = false,
+      enable = true,
       show_on_dirs = true,
       debounce_delay = 50,
       icons = {
-        hint = icons.diagnostics.Hint_alt,
-        info = icons.diagnostics.Information_alt,
-        warning = icons.diagnostics.Warning_alt,
-        error = icons.diagnostics.Error_alt,
+        hint = icons.diagnostics.BoldHint,
+        info = icons.diagnostics.BoldInformation,
+        warning = icons.diagnostics.BoldWarning,
+        error = icons.diagnostics.BoldError,
       },
     },
     -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
@@ -105,7 +110,6 @@ return function()
     },
     git = {
       enable = true,
-      ignore = true,
     },
     filesystem_watchers = {
       enable = true,
@@ -114,18 +118,22 @@ return function()
     filters = {
       -- hide dot files
       dotfiles = false,
+      -- Ignore files based on `.gitignore`
+      git_ignored = false,
       -- hide node_modules folder
-      -- custom = { "node_modules" },
+      custom = { "node_modules", "\\.cache" },
     },
     view = {
-      width = 40,
+      width = 30,
       -- width = function()
       --   return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
       -- end,
       side = "left",
       number = false,
       relativenumber = false,
-      -- signcolumn = "yes",
+      signcolumn = "yes",
+      -- When entering nvim-tree, reposition the view so that the current node is initially centralized
+      centralize_selection = true,
       -- float = {
       --   enable = true,
       --   open_win_config = function()
@@ -171,9 +179,11 @@ return function()
       },
     },
     renderer = {
-      group_empty = true,
+      group_empty = false, -- 文件夹下只有一个文件夹的时候是否合并展示
       highlight_git = true,
-      root_folder_label = ":~",
+      -- root_folder_label = ":~",
+      root_folder_label = ":t",
+      indent_width = 2,
       indent_markers = {
         enable = true,
         icons = {
@@ -185,7 +195,8 @@ return function()
       },
       icons = {
         webdev_colors = true,
-        git_placement = "after",
+        git_placement = "after", -- before | after | signcolumn
+        diagnostics_placement = "signcolumn",
         show = {
           file = true,
           folder = true,
@@ -196,167 +207,32 @@ return function()
         padding = " ",
         symlink_arrow = " 󰁔 ",
         glyphs = {
-          default = icons.documents.Default, --
-          symlink = icons.documents.Symlink, --
-          bookmark = icons.ui.Bookmark,
+          default = icons.ui.Text, --
+          symlink = icons.ui.FileSymlink, --
+          bookmark = icons.ui.BookMark,
           git = {
-            unstaged = icons.git.Mod_alt,
-            staged = icons.git.Add,          --󰄬
-            unmerged = icons.git.Unmerged,
-            renamed = icons.git.Rename,      --󰁔
-            untracked = icons.git.Untracked, -- "󰞋"
-            deleted = icons.git.Remove,      --
-            ignored = icons.git.Ignore,      --◌
+            unstaged = icons.git.FileUnstaged,
+            staged = icons.git.FileStaged,
+            unmerged = icons.git.FileUnmerged,
+            renamed = icons.git.FileRenamed,
+            untracked = icons.git.FileUntracked,
+            deleted = icons.git.FileDeleted,
+            ignored = icons.git.FileIgnored,
           },
-          -- folder = {
-          --   -- arrow_open = "",
-          --   -- arrow_closed = "",
-          --   arrow_open = "",
-          --   arrow_closed = "",
-          --   default = icons.ui.Folder,
-          --   open = icons.ui.FolderOpen,
-          --   empty = icons.ui.EmptyFolder,
-          --   empty_open = icons.ui.EmptyFolderOpen,
-          --   symlink = icons.ui.SymlinkFolder,
-          --   symlink_open = icons.ui.FolderOpen,
-          -- },
+          folder = {
+            arrow_open = icons.ui.TriangleShortArrowDown,
+            arrow_closed = icons.ui.TriangleShortArrowRight,
+            default = icons.ui.Folder,
+            open = icons.ui.FolderOpen,
+            empty = icons.ui.EmptyFolder,
+            empty_open = icons.ui.EmptyFolderOpen,
+            symlink = icons.ui.FolderSymlink,
+            symlink_open = icons.ui.FolderOpen,
+          },
         },
       },
+      special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
+      symlink_destination = true,
     },
   })
-
-
-  -- require("nvim-tree").setup({
-  --   on_attach = on_attach,
-  --   hijack_cursor = true,
-  --   hijack_netrw = true,
-  --   hijack_unnamed_buffer_when_opening = false,
-  --   respect_buf_cwd = true,
-  --   sort_by = "name",
-  --   sync_root_with_cwd = true,
-  --   view = {
-  --     adaptive_size = false,
-  --     centralize_selection = false,
-  --     -- width = 30,
-  --     side = "left",
-  --     preserve_window_proportions = false,
-  --     number = false,
-  --     relativenumber = false,
-  --     signcolumn = "yes",
-  --     float = {
-  --       enable = true,
-  --       open_win_config = function()
-  --         local screen_w = vim.opt.columns:get()
-  --         local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-  --         local window_w = screen_w * WIDTH_RATIO
-  --         local window_h = screen_h * HEIGHT_RATIO
-  --         local window_w_int = math.floor(window_w)
-  --         local window_h_int = math.floor(window_h)
-  --         local center_x = (screen_w - window_w) / 2
-  --         local center_y = ((vim.opt.lines:get() - window_h) / 2)
-  --             - vim.opt.cmdheight:get()
-  --         return {
-  --           border = "rounded",
-  --           relative = "editor",
-  --           row = center_y,
-  --           col = center_x,
-  --           width = window_w_int,
-  --           height = window_h_int,
-  --         }
-  --       end,
-  --     },
-  --     width = function()
-  --       return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-  --     end,
-  --   },
-  --   renderer = {
-  --     add_trailing = false,
-  --     group_empty = true,
-  --     highlight_git = true,
-  --     full_name = false,
-  --     highlight_opened_files = "none",
-  --     special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md", "CMakeLists.txt" },
-  --     symlink_destination = true,
-  --     root_folder_label = ":.:s?.*?/..?",
-  --   },
-  --   hijack_directories = {
-  --     enable = true,
-  --     auto_open = true,
-  --   },
-  --   update_focused_file = {
-  --     enable = true,
-  --     update_root = true,
-  --     ignore_list = {},
-  --   },
-  --   filters = {
-  --     dotfiles = false,
-  --     custom = { ".DS_Store" },
-  --     exclude = {},
-  --   },
-  --   actions = {
-  --     use_system_clipboard = true,
-  --     change_dir = {
-  --       enable = true,
-  --       global = false,
-  --     },
-  --     open_file = {
-  --       quit_on_open = false,
-  --       resize_window = false,
-  --       window_picker = {
-  --         enable = true,
-  --         chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-  --         exclude = {
-  --           filetype = { "notify", "qf", "diff", "fugitive", "fugitiveblame" },
-  --           buftype = { "terminal", "help" },
-  --         },
-  --       },
-  --     },
-  --     remove_file = {
-  --       close_window = true,
-  --     },
-  --   },
-  --   diagnostics = {
-  --     enable = true,
-  --     show_on_dirs = true,
-  --     debounce_delay = 50,
-  --     icons = {
-  --       hint = icons.diagnostics.Hint_alt,
-  --       info = icons.diagnostics.Information_alt,
-  --       warning = icons.diagnostics.Warning_alt,
-  --       error = icons.diagnostics.Error_alt,
-  --     },
-  --   },
-  --   filesystem_watchers = {
-  --     enable = true,
-  --     debounce_delay = 50,
-  --   },
-  --   git = {
-  --     enable = true,
-  --     ignore = true,
-  --     show_on_dirs = true,
-  --     timeout = 400,
-  --   },
-  --   trash = {
-  --     cmd = "trash",
-  --     require_confirm = true,
-  --   },
-  --   live_filter = {
-  --     prefix = "[FILTER]: ",
-  --     always_show_folders = true,
-  --   },
-  --   log = {
-  --     enable = false,
-  --     truncate = false,
-  --     types = {
-  --       all = false,
-  --       config = false,
-  --       copy_paste = false,
-  --       dev = false,
-  --       diagnostics = false,
-  --       git = false,
-  --       profile = false,
-  --       watcher = false,
-  --     },
-  --   },
-  -- })
 end

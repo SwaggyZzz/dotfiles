@@ -232,7 +232,7 @@ return function()
         name = "nvim_lsp",
         priority = 10,
         -- Limits LSP results to specific types based on line context (FIelds, Methods, Variables)
-        entry_filter = limit_lsp_types,
+        -- entry_filter = limit_lsp_types,
       },
       { name = "npm",     priority = 9 },
       { name = "codeium", priority = 9 },
@@ -272,149 +272,18 @@ return function()
       documentation = cmp.config.window.bordered({
         winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
       }),
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
     },
     experimental = {
+      -- ghost_text = {
+      --   hl_group = "CmpGhostText",
+      -- },
       ghost_text = true,
+      native_menu = false,
     },
     performance = {
       max_view_entries = 100,
     }
   })
 end
--- return function()
---   local lspkind = require 'lspkind'
-
---   local t = function(str)
---     return vim.api.nvim_replace_termcodes(str, true, true, true)
---   end
-
---   local function formatForTailwindCSS(entry, vim_item)
---     if vim_item.kind == 'Color' and entry.completion_item.documentation then
---       local _, _, r, g, b = string.find(entry.completion_item.documentation, '^rgb%((%d+), (%d+), (%d+)')
---       if r then
---         local color = string.format('%02x', r) .. string.format('%02x', g) .. string.format('%02x', b)
---         local group = 'Tw_' .. color
---         if vim.fn.hlID(group) < 1 then
---           vim.api.nvim_set_hl(0, group, { fg = '#' .. color })
---         end
---         vim_item.kind = "●"
---         vim_item.kind_hl_group = group
---         return vim_item
---       end
---     end
---     vim_item.kind = lspkind.symbolic(vim_item.kind) and lspkind.symbolic(vim_item.kind) or vim_item.kind
---     return vim_item
---   end
-
---   -- local cmp_window = require("cmp.utils.window")
-
---   -- cmp_window.info_ = cmp_window.info
---   -- cmp_window.info = function(self)
---   --   local info = self:info_()
---   --   info.scrollable = false
---   --   return info
---   -- end
-
---   local compare = require("cmp.config.compare")
---   compare.lsp_scores = function(entry1, entry2)
---     local diff
---     if entry1.completion_item.score and entry2.completion_item.score then
---       diff = (entry2.completion_item.score * entry2.score) - (entry1.completion_item.score * entry1.score)
---     else
---       diff = entry2.score - entry1.score
---     end
---     return (diff < 0)
---   end
-
---   local cmp = require("cmp")
-
---   cmp.setup({
---     window = {
---       -- completion = {
---       --   border = border("Normal"),
---       --   max_width = 80,
---       --   max_height = 20,
---       -- },
---       -- documentation = {
---       --   border = border("CmpDocBorder"),
---       -- },
---       completion = cmp.config.window.bordered(),
---       documentation = cmp.config.window.bordered(),
---     },
---     sorting = {
---       priority_weight = 2,
---       comparators = {
---         compare.offset,
---         compare.exact,
---         compare.lsp_scores,
---         -- require("cmp-under-comparator").under,
---         compare.kind,
---         compare.sort_text,
---         compare.length,
---         compare.order,
---       },
---     },
---     formatting = {
---       -- fields = { "menu", "abbr", "kind" },
---       format = lspkind.cmp_format({
---         mode = "symbol_text",
---         maxwidth = 50,
---         before = function(entry, vim_item)
---           vim_item = formatForTailwindCSS(entry, vim_item)
---           return vim_item
---         end
---       })
---     },
---     -- You can set mappings if you want
---     mapping = cmp.mapping.preset.insert({
---       ["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
---       ["<C-p>"] = cmp.mapping.select_prev_item(),
---       ["<C-n>"] = cmp.mapping.select_next_item(),
---       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
---       ["<C-f>"] = cmp.mapping.scroll_docs(4),
---       ["<C-w>"] = cmp.mapping.close(),
---       ["<Tab>"] = cmp.mapping(function(fallback)
---         if cmp.visible() then
---           cmp.select_next_item()
---         elseif require("luasnip").expand_or_locally_jumpable() then
---           vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"))
---         else
---           fallback()
---         end
---       end, { "i", "s" }),
---       ["<S-Tab>"] = cmp.mapping(function(fallback)
---         if cmp.visible() then
---           cmp.select_prev_item()
---         elseif require("luasnip").jumpable(-1) then
---           vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
---         else
---           fallback()
---         end
---       end, { "i", "s" }),
---     }),
---     snippet = {
---       expand = function(args)
---         require("luasnip").lsp_expand(args.body)
---       end,
---     },
---     -- You should specify your *installed* sources.
---     sources = {
---       { name = "nvim_lsp" },
---       { name = "nvim_lua" },
---       { name = "luasnip" },
---       { name = "path" },
---       {
---         name = "treesitter",
---         entry_filter = function(entry)
---           local ignore_list = {
---             "Error",
---             "Comment",
---           }
---           local kind = require('cmp.types').lsp.CompletionItemKind[entry:get_kind()]
---           return not vim.tbl_contains(ignore_list, kind)
---         end,
---       },
---       { name = "buffer" },
---     },
---   })
--- end

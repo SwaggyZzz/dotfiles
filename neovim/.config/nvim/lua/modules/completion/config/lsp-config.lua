@@ -81,7 +81,10 @@ local codes = {
 
 vim.diagnostic.config({
   float = {
-    source = false,
+    focusable = true,
+    style = "minimal",
+    border = "rounded",
+    source = 'always',
     format = function(diagnostic)
       local code = diagnostic and diagnostic.user_data and diagnostic.user_data.lsp.code
 
@@ -112,18 +115,20 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
   update_in_insert = false,
-  virtual_text = {
-    prefix = "  ",
-  },
+  virtual_text = true,
+  -- virtual_text = {
+  --   prefix = "  ",
+  -- },
 })
 
 -- UI
 
+local icons = require("swaggyz.new-icons")
 local signs = {
-  Error = "",
-  Warn  = "",
-  Info  = "",
-  Hint  = ""
+  Error = icons.diagnostics.Error,
+  Warn  = icons.diagnostics.Warning,
+  Info  = icons.diagnostics.Information,
+  Hint  = icons.diagnostics.Hint
 }
 
 for type, icon in pairs(signs) do

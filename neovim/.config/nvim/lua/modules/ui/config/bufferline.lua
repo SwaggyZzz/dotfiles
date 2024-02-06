@@ -1,53 +1,50 @@
 return function()
-  -- local icons = { ui = require("swaggyz.icons").get("ui") }
-
-  -- local opts = {
-  --   options = {
-  --     number = nil,
-  --     numbers = "ordinal",
-  --     modified_icon = icons.ui.Modified,
-  --     buffer_close_icon = icons.ui.Close,
-  --     left_trunc_marker = icons.ui.Left,
-  --     right_trunc_marker = icons.ui.Right,
-  --     max_name_length = 14,
-  --     max_prefix_length = 13,
-  --     tab_size = 20,
-  --     color_icons = true,
-  --     show_buffer_icons = true,
-  --     show_buffer_close_icons = true,
-  --     show_close_icon = true,
-  --     show_tab_indicators = true,
-  --     enforce_regular_tabs = true,
-  --     persist_buffer_sort = true,
-  --     always_show_bufferline = true,
-  --     separator_style = "thin",
-  --     diagnostics = "nvim_lsp",
-  --     diagnostics_indicator = function(count)
-  --       return "(" .. count .. ")"
-  --     end,
-  --     offsets = {
-  --       {
-  --         filetype = "NvimTree",
-  --         text = "File Explorer",
-  --         text_align = "center",
-  --         padding = 1,
-  --       },
-  --       {
-  --         filetype = "lspsagaoutline",
-  --         text = "Lspsaga Outline",
-  --         text_align = "center",
-  --         padding = 1,
-  --       },
-  --     },
-  --   },
-  --   -- Change bufferline's highlights here! See `:h bufferline-highlights` for detailed explanation.
-  --   -- Note: If you use catppuccin then modify the colors below!
-  --   highlights = {},
-  -- }
-
-  -- require("bufferline").setup(opts)
-
   local bufferline = require("bufferline")
+
+  -- can't be set in settings.lua because default tabline would flash before bufferline is loaded
+  vim.opt.showtabline = 2
+
+
+  local function is_ft(b, ft)
+    return vim.bo[b].filetype == ft
+  end
+  
+  local function diagnostics_indicator(num, _, diagnostics, _)
+    local icons = require('swaggyz.new-icons')
+    local result = {}
+    local symbols = {
+      error = icons.diagnostics.Error,
+      warning = icons.diagnostics.Warning,
+      info = icons.diagnostics.Information,
+    }
+    -- if not use_icons then
+    --   return "(" .. num .. ")"
+    -- end
+    for name, count in pairs(diagnostics) do
+      if symbols[name] and count > 0 then
+        table.insert(result, symbols[name] .. " " .. count)
+      end
+    end
+    result = table.concat(result, " ")
+    return #result > 0 and result or ""
+  end
+
+  local function custom_filter(buf, buf_nums)
+    local logs = vim.tbl_filter(function(b)
+      return is_ft(b, "log")
+    end, buf_nums or {})
+    if vim.tbl_isempty(logs) then
+      return true
+    end
+    local tab_num = vim.fn.tabpagenr()
+    local last_tab = vim.fn.tabpagenr "$"
+    local is_log = is_ft(buf, "log")
+    if last_tab == 1 then
+      return true
+    end
+    -- only show log buffers in secondary tabs
+    return (tab_num == last_tab and is_log) or (tab_num ~= last_tab and not is_log)
+  end
 
   bufferline.setup({
     options = {
@@ -57,41 +54,54 @@ return function()
       right_mouse_command = function(n)
         require("mini.bufremove").delete(n, false)
       end,
+      diagnostics = "nvim_lsp",
+      diagnostics_update_in_insert = false,
+      diagnostics_indicator = diagnostics_indicator,
       show_buffer_close_icons = false,
-      separator_style = { "|", "|" },
-      always_show_bufferline = true,
-      style_preset = bufferline.style_preset.no_italic,
+      always_show_bufferline = false,
+      indicator = {
+        icon = "▎", -- this should be omitted if indicator style is not 'icon'
+        style = "icon", -- can also be 'underline'|'none',
+      },
+      -- can also be a table containing 2 custom separators
+      -- [focused and unfocused]. eg: { '|', '|' }
+      separator_style = "thin",
       numbers = function(opts)
         return string.format("%s", opts.ordinal)
       end,
-      custom_filter = function(buf_number)
-        -- filter out filetypes you don't want to see
-        if vim.bo[buf_number].filetype ~= "qf" then
-          return true
-        end
-      end,
-      -- offsets = {
-      --   {
-      --     filetype = "NvimTree",
-      --     text = "File Explorer",
-      --     -- highlight = "EcovimNvimTreeTitle",
-      --     text_align = "center",
-      --     separator = true,
-      --   },
-      -- },
+      custom_filter = custom_filter,
       offsets = {
+        -- {
+        --   filetype = "NvimTree",
+        --   text = "File Explorer",
+        --   text_align = "center",
+        --   highlight = "Directory",
+        -- },
         {
           filetype = "NvimTree",
-          text = "File Explorer",
-          text_align = "center",
+          text = "Explorer",
+          highlight = "PanelHeading",
           padding = 1,
+        },
+        {
+          filetype = "neo-tree",
+          text = "Neo-tree",
+          highlight = "Directory",
+          text_align = "left",
         },
         {
           filetype = "lspsagaoutline",
           text = "Lspsaga Outline",
           text_align = "center",
-          padding = 1,
         },
+      },
+    },
+    highlights = {
+      background = {
+        italic = true,
+      },
+      buffer_selected = {
+        bold = true,
       },
     },
   })

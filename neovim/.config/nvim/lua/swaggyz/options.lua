@@ -19,7 +19,7 @@ local function load_options()
     breakat = [[\ \	;:,!?]],
     breakindentopt = "shift:2,min:20",
     clipboard = "unnamedplus",
-    cmdheight = 0, -- 0, 1, 2
+    cmdheight = 1, -- 0, 1, 2
     cmdwinheight = 5,
     complete = ".,w,b,k",
     completeopt = "menuone,noselect",
