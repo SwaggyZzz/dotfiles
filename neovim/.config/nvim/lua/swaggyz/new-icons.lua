@@ -6,6 +6,7 @@ return {
     Color = "",
     Constant = "",
     Constructor = "",
+    Component = "",
     Enum = "",
     EnumMember = "",
     Event = "",

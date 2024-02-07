@@ -46,6 +46,7 @@ return function()
       "python",
       "rust",
       "toml",
+      "kdl",
       -- FE ---
       "tsx",
       "typescript",
