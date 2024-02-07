@@ -4,3 +4,5 @@ email = swaggyz623@gmail.com
 # i gitdir的大小写不敏感版本
 [includeIf "gitdir/i:~/Desktop/work/"]
 path = ~/Desktop/work/.gitconfig
+[core]
+	editor = nvim
