@@ -129,7 +129,7 @@ packadd({
   cmd = { "DiffviewOpen", "DiffviewClose" },
 })
 
-packadd( {
+packadd({
   "RRethy/vim-illuminate",
   event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   opts = {
@@ -166,6 +166,13 @@ packadd( {
   },
 })
 
+packadd({
+  "simrat39/symbols-outline.nvim",
+  keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+  cmd = "SymbolsOutline",
+  config = require("editor.config.symbols-outline"),
+})
+
 
 ----------------------------------------------------------------------
 --                  :treesitter related plugins                    --
@@ -174,7 +181,7 @@ packadd({
   "nvim-treesitter/nvim-treesitter",
   version = false,
   build = ":TSUpdate",
-  cmd = {  
+  cmd = {
     "TSInstall",
     "TSUninstall",
     "TSUpdate",
@@ -183,7 +190,7 @@ packadd({
     "TSInstallSync",
     "TSInstallFromGrammar",
   },
-  event = {"BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy"},
+  event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
   config = require("editor.config.treesitter"),
   dependencies = {
     { "andymass/vim-matchup" },
@@ -203,7 +210,7 @@ packadd({
 })
 packadd({
   "windwp/nvim-ts-autotag",
-  config = function ()
+  config = function()
     require('nvim-ts-autotag').setup()
   end,
 })
