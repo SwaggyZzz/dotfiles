@@ -1,9 +1,14 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
     unbind "Ctrl q"
+  
     shared {
         bind "Ctrl b" { SwitchToMode "tmux"; }
     }  
+    shared_except "session" {
+        // bind "Ctrl o" { SwitchToMode "Session"; }
+    }
+
     normal clear-defaults=true {
     }
     locked {
@@ -36,8 +41,17 @@ keybinds {
     renamepane clear-defaults=true {
         
     }
-    session clear-defaults=true {
-        
+    session {
+        bind "Ctrl o" { SwitchToMode "locked"; }
+        bind "Ctrl s" { SwitchToMode "Scroll"; }
+        bind "d" { Detach; }
+        bind "w" {
+            LaunchOrFocusPlugin "zellij:session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
     }
     tmux clear-defaults=true {
         // bind "Ctrl b" { Write 2; SwitchToMode "locked"; }

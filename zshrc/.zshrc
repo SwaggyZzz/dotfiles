@@ -85,7 +85,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:/usr/local/mysql/bin:$PATH
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
