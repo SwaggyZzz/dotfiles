@@ -15,6 +15,19 @@ return function()
   -- ╭──────────────────────────────────────────────────────────╮
   -- │ Utils                                                    │
   -- ╰──────────────────────────────────────────────────────────╯
+  local border = function(hl)
+    return {
+      { "┌", hl },
+      { "─", hl },
+      { "┐", hl },
+      { "│", hl },
+      { "┘", hl },
+      { "─", hl },
+      { "└", hl },
+      { "│", hl },
+    }
+  end
+
   local check_backspace = function()
     local col = vim.fn.col(".") - 1
     return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
@@ -266,12 +279,23 @@ return function()
       select = false,
     },
     window = {
-      completion = cmp.config.window.bordered({
-        winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-      }),
-      documentation = cmp.config.window.bordered({
-        winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-      }),
+      completion = {
+        border = border("PmenuBorder"),
+        winhighlight = "Normal:Pmenu,CursorLine:PmenuSel,Search:PmenuSel",
+        scrollbar = false,
+      },
+      documentation = {
+        border = border("CmpDocBorder"),
+        winhighlight = "Normal:CmpDoc",
+      },
+
+      -- completion = cmp.config.window.bordered({
+      --   winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      -- }),
+      -- documentation = cmp.config.window.bordered({
+      --   winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      -- }),
+
       -- completion = cmp.config.window.bordered(),
       -- documentation = cmp.config.window.bordered(),
     },
@@ -287,3 +311,4 @@ return function()
     }
   })
 end
+

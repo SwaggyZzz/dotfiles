@@ -24,6 +24,54 @@ return function()
 
   local icons = require('swaggyz.new-icons')
 
+  local has_catppuccin = vim.g.colors_name:find("catppuccin") ~= nil
+
+  local function custom_theme()
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = vim.api.nvim_create_augroup("LualineColorScheme", { clear = true }),
+      pattern = "*",
+      callback = function()
+        has_catppuccin = vim.g.colors_name:find("catppuccin") ~= nil
+        require("lualine").setup({ options = { theme = custom_theme() } })
+      end,
+    })
+
+    if has_catppuccin then
+      -- local universal_bg = "NONE"
+      local universal_bg = "#1C1C19"
+      return {
+        normal = {
+          a = { fg = "#7287FD", bg = "#302D41", gui = "bold" },
+          b = { fg = "#F2F2BF", bg = universal_bg },
+          c = { fg = "#F2F2BF", bg = universal_bg },
+        },
+        command = {
+          a = { fg = "#FF8700", bg = "#302D41", gui = "bold" },
+        },
+        insert = {
+          a = { fg = "#AFD700", bg = "#302D41", gui = "bold" },
+        },
+        visual = {
+          a = { fg = "#DD7878", bg = "#302D41", gui = "bold" },
+        },
+        terminal = {
+          a = { fg = "#B5E8E0", bg = "#302D41", gui = "bold" },
+        },
+        replace = {
+          a = { fg = "#E95678", bg = "#302D41", gui = "bold" },
+        },
+        inactive = {
+          a = { fg = "#A6ADC8", bg = universal_bg, gui = "bold" },
+          b = { fg = "#A6ADC8", bg = universal_bg },
+          c = { fg = "#A6ADC8", bg = universal_bg },
+        },
+      }
+    else
+      return "auto"
+    end
+  end
+
+
   local conditions = {
     has_enough_room = function()
       return vim.o.columns > 100
@@ -72,9 +120,9 @@ return function()
 
   local branch = icons.git.Branch
 
--- if lvim.colorscheme == "lunar" then
+  -- if lvim.colorscheme == "lunar" then
   branch = "%#SLGitIcon#" .. icons.git.Branch .. "%*" .. "%#SLBranchName#"
--- end
+  -- end
 
   local components = {
     separator = { -- use as section separators
@@ -224,39 +272,39 @@ return function()
         if #buf_clients == 0 then
           return "LSP Inactive"
         end
-  
+
         local buf_ft = vim.bo.filetype
         local buf_client_names = {}
         local copilot_active = false
-  
+
         -- add client
         for _, client in pairs(buf_clients) do
           if client.name ~= "null-ls" and client.name ~= "copilot" then
             table.insert(buf_client_names, client.name)
           end
-  
+
           if client.name == "copilot" then
             copilot_active = true
           end
         end
-  
+
         -- -- add formatter
         -- local formatters = require "lvim.lsp.null-ls.formatters"
         -- local supported_formatters = formatters.list_registered(buf_ft)
         -- vim.list_extend(buf_client_names, supported_formatters)
-  
+
         -- -- add linter
         -- local linters = require "lvim.lsp.null-ls.linters"
         -- local supported_linters = linters.list_registered(buf_ft)
         -- vim.list_extend(buf_client_names, supported_linters)
-  
+
         local unique_client_names = table.concat(buf_client_names, ", ")
         local language_servers = string.format("[%s]", unique_client_names)
-  
+
         if copilot_active then
           language_servers = language_servers .. "%#SLCopilot#" .. " " .. icons.git.Octoface .. "%*"
         end
-  
+
         return language_servers
       end,
       color = { gui = "bold" },
@@ -270,7 +318,7 @@ return function()
       end,
       color = {},
     },
-  
+
     spaces = {
       function()
         local shiftwidth = vim.api.nvim_buf_get_option(0, "shiftwidth")
@@ -414,17 +462,18 @@ return function()
 
   require("lualine").setup({
     options = {
+      -- theme = custom_theme(),
       theme = "auto",
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
-    -- component_separators = "",
-    -- section_separators = { left = "", right = "" },
+      -- component_separators = "",
+      -- section_separators = { left = "", right = "" },
       icons_enabled = true,
       globalstatus = true,
       disabled_filetypes = { "alpha" },
     },
     sections = {
-      lualine_a = { 
+      lualine_a = {
         components.mode,
       },
       lualine_b = {

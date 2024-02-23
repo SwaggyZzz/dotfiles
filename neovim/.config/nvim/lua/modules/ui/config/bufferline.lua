@@ -8,7 +8,7 @@ return function()
   local function is_ft(b, ft)
     return vim.bo[b].filetype == ft
   end
-  
+
   local function diagnostics_indicator(num, _, diagnostics, _)
     local icons = require('swaggyz.new-icons')
     local result = {}
@@ -58,11 +58,15 @@ return function()
       diagnostics_update_in_insert = false,
       diagnostics_indicator = diagnostics_indicator,
       show_buffer_close_icons = false,
-      always_show_bufferline = false,
-      indicator = {
-        icon = "▎", -- this should be omitted if indicator style is not 'icon'
-        style = "icon", -- can also be 'underline'|'none',
-      },
+      show_tab_indicators = true,
+      always_show_bufferline = true,
+      max_name_length = 20,
+      max_prefix_length = 13,
+      tab_size = 20,
+      -- indicator = {
+      --   icon = "▎", -- this should be omitted if indicator style is not 'icon'
+      --   style = "icon", -- can also be 'underline'|'none',
+      -- },
       -- can also be a table containing 2 custom separators
       -- [focused and unfocused]. eg: { '|', '|' }
       separator_style = "thin",

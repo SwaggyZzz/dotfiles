@@ -1,5 +1,5 @@
 return function()
-  local icons =  require("swaggyz.new-icons")
+  local icons = require("swaggyz.new-icons")
 
   local HEIGHT_RATIO = 0.8 -- You can change this
   local WIDTH_RATIO = 0.5  -- You can change this too
@@ -124,7 +124,7 @@ return function()
       custom = { "node_modules", "\\.cache" },
     },
     view = {
-      width = 30,
+      width = 40,
       -- width = function()
       --   return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
       -- end,
@@ -207,7 +207,7 @@ return function()
         padding = " ",
         symlink_arrow = " 󰁔 ",
         glyphs = {
-          default = icons.ui.Text, --
+          default = icons.ui.Text,        --
           symlink = icons.ui.FileSymlink, --
           bookmark = icons.ui.BookMark,
           git = {

@@ -38,6 +38,8 @@ return function()
       "fish",
       "go",
       "gomod",
+      "gowork",
+      "gosum",
       "lua",
       "luadoc",
       "make",

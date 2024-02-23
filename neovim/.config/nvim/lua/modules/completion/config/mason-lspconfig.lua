@@ -19,6 +19,7 @@ M.setup = function()
       "vuels",
       "yamlls",
       "svelte",
+      "gopls",
     },
     automatic_installation = true,
   })

@@ -52,6 +52,9 @@ return function()
 
     builtins.formatting.rustfmt,
 
+    builtins.formatting.goimports,
+    builtins.formatting.gofumpt,
+
     -- npm install -g eslint_d eslint
     -- builtins.diagnostics.eslint.with({
     --   diagnostics_format = '[eslint] #{m}\n(#{c})',
@@ -91,6 +94,9 @@ return function()
     --     )(params.bufname)
     --   end),
     -- }),
+    builtins.code_actions.gomodifytags,
+    builtins.code_actions.impl,
+
   }
   null_ls.setup({
     border = "rounded",
