@@ -78,7 +78,7 @@ return function()
     hijack_unnamed_buffer_when_opening = false,
     sort_by = "name",
     root_dirs = {},
-    prefer_startup_root = false,
+    prefer_startup_root = true,
     -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
     sync_root_with_cwd = true,
     reload_on_bufenter = false,
@@ -133,7 +133,7 @@ return function()
       relativenumber = false,
       signcolumn = "yes",
       -- When entering nvim-tree, reposition the view so that the current node is initially centralized
-      centralize_selection = true,
+      centralize_selection = false,
       -- float = {
       --   enable = true,
       --   open_win_config = function()

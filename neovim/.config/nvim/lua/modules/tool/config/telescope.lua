@@ -37,11 +37,12 @@ return function()
       path_display = { "smart" },
       file_ignore_patterns = { ".git/", ".cache", "%.class", "%.pdf", "%.mkv", "%.mp4", "%.zip" },
       set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-      -- layout_config = {
-      --   horizontal = {
-      --     preview_width = 0.5,
-      --   },
-      -- },
+      layout_config     = {
+        horizontal = {
+          preview_cutoff = 120,
+        },
+        -- prompt_position = "top",
+      },
       file_previewer = previewers.vim_buffer_cat.new,
       grep_previewer = previewers.vim_buffer_vimgrep.new,
       qflist_previewer = previewers.vim_buffer_qflist.new,
@@ -92,12 +93,12 @@ return function()
     },
   }
 
-  local theme = "dropdown"
-  local themeHandler = require("telescope.themes")["get_" .. (theme or "")]
+  -- local theme = "dropdown"
+  -- local themeHandler = require("telescope.themes")["get_" .. (theme or "")]
 
-  if theme then
-    opts.defaults = themeHandler(opts.defaults)
-  end
+  -- if theme then
+  --   opts.defaults = themeHandler(opts.defaults)
+  -- end
 
   require("telescope").setup(opts)
 

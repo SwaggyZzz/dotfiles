@@ -1,22 +1,30 @@
+-- packadd({
+--   "lunarvim/lunar.nvim",
+--   lazy = true,
+-- })
+-- packadd({
+--   "Jint-lzxy/nvim",
+--   lazy = true,
+--   branch = "refactor/syntax-highlighting",
+--   name = "catppuccin",
+--   config = require("ui.config.catppuccin"),
+-- })
+-- packadd({
+--   "folke/tokyonight.nvim",
+--   lazy = true,
+--   -- lazy = false,
+--   -- priority = 1000,
+--   config = function()
+--     require("ui.config.tokynoight")
+--   end,
+-- })
 packadd({
-  "lunarvim/lunar.nvim",
-  lazy = true,
-})
-packadd({
-  "Jint-lzxy/nvim",
-  lazy = true,
-  branch = "refactor/syntax-highlighting",
-  name = "catppuccin",
-  config = require("ui.config.catppuccin"),
-})
-packadd({
-  "folke/tokyonight.nvim",
-  lazy = true,
-  -- lazy = false,
-  -- priority = 1000,
-  config = function()
-    require("ui.config.tokynoight")
-  end,
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = require("ui.config.catppuccin"),
+  }
 })
 packadd({
   "j-hui/fidget.nvim",
@@ -91,11 +99,13 @@ packadd({
     require("ui.config.noice")
   end,
 })
+
 -- ui components
-packadd({
-  "MunifTanjim/nui.nvim",
-  lazy = true
-})
+-- packadd({
+--   "MunifTanjim/nui.nvim",
+--   lazy = true
+-- })
+
 -- icons
 packadd({
   "nvim-tree/nvim-web-devicons",
@@ -104,19 +114,20 @@ packadd({
 -- better vim.ui
 packadd({
   "stevearc/dressing.nvim",
-  lazy = true,
-  init = function()
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.ui.select = function(...)
-      require("lazy").load({ plugins = { "dressing.nvim" } })
-      return vim.ui.select(...)
-    end
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.ui.input = function(...)
-      require("lazy").load({ plugins = { "dressing.nvim" } })
-      return vim.ui.input(...)
-    end
-  end,
+  event = "VeryLazy",
+  dependencies = "MunifTanjim/nui.nvim",
+  -- init = function()
+  --   ---@diagnostic disable-next-line: duplicate-set-field
+  --   vim.ui.select = function(...)
+  --     require("lazy").load({ plugins = { "dressing.nvim" } })
+  --     return vim.ui.select(...)
+  --   end
+  --   ---@diagnostic disable-next-line: duplicate-set-field
+  --   vim.ui.input = function(...)
+  --     require("lazy").load({ plugins = { "dressing.nvim" } })
+  --     return vim.ui.input(...)
+  --   end
+  -- end,
 })
 packadd({
   "rcarriga/nvim-notify",
@@ -130,7 +141,7 @@ packadd({
     },
   },
   opts = {
-    timeout = 3000,
+    -- timeout = 3000,
     max_height = function()
       return math.floor(vim.o.lines * 0.75)
     end,
