@@ -121,7 +121,8 @@ return function()
       -- Ignore files based on `.gitignore`
       git_ignored = false,
       -- hide node_modules folder
-      custom = { "node_modules", "\\.cache" },
+      -- custom = { "node_modules", "\\.cache" },
+      custom = { "\\.cache" },
     },
     view = {
       width = 40,
