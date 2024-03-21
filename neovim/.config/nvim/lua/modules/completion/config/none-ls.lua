@@ -26,8 +26,10 @@ return function()
         "graphql",
       },
       condition = function(utils)
-        return not utils.root_matches("saas") and
-            not utils.root_matches("dealer") -- change file extension if you use something else
+        return (not utils.root_matches("saas"))
+            and (not utils.root_matches("dealer"))
+            and (not utils.root_matches('motor%-design'))
+        -- change file extension if you use something else
       end,
     }),
     -- builtins.formatting.eslint.with({
