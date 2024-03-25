@@ -47,11 +47,10 @@ return function()
         },
       },
       aerial = true,
-      alpha = false,
+      alpha = true,
       barbar = false,
       beacon = false,
       cmp = true,
-      coc_nvim = false,
       dap = true,
       dap_ui = true,
       dashboard = false,
@@ -87,7 +86,7 @@ return function()
       semantic_tokens = true,
       symbols_outline = false,
       telekasten = false,
-      telescope = { enabled = true, style = "nvchad" },
+      telescope = { enabled = true },
       treesitter_context = true,
       ts_rainbow = false,
       vim_sneak = false,
@@ -162,13 +161,6 @@ return function()
           GlanceListFilename = { fg = cp.blue },
           GlanceListMatch = { fg = cp.lavender, style = { "bold" } },
           GlanceFoldIcon = { fg = cp.green },
-
-          -- For nvim-treehopper
-          TSNodeKey = {
-            fg = cp.peach,
-            bg = transparent_background and cp.none or cp.base,
-            style = { "bold", "underline" },
-          },
 
           -- For treesitter
           ["@keyword.return"] = { fg = cp.pink, style = clear },

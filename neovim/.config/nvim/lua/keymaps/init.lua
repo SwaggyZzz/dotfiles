@@ -26,17 +26,17 @@ map.n({
   ['<A-w>'] = function() require("mini.bufremove").delete(0, false) end, -- false --> true (force delete buffer)
   -- ['<A-w>'] = cmd('bd'),
   -- ['<A-w>'] = cmd('bp | bd #'), -- 关闭buf,但不关闭分屏
-  ['<A-q>'] = cmd('q'),
+  -- ['<A-q>'] = cmd('q'),
   --window
   ['sv'] = cmd('vsp'), -- 分屏
   ['sh'] = cmd('sp'),
   ['sc'] = '<C-w>c',   -- 关闭当前
   ['so'] = '<C-w>o',   -- 关闭其他
   ['s='] = '<C-w>=',   -- 相等比例
-  ['<A-h>'] = '<C-w>h',
-  ['<A-l>'] = '<C-w>l',
-  ['<A-j>'] = '<C-w>j',
-  ['<A-k>'] = '<C-w>k',
+  -- ['<A-h>'] = '<C-w>h',
+  -- ['<A-l>'] = '<C-w>l',
+  -- ['<A-j>'] = '<C-w>j',
+  -- ['<A-k>'] = '<C-w>k',
   ['<S-Up>'] = cmd('resize -2'),
   ['<S-Down>'] = cmd('resize +2'),
   ['<S-Left>'] = cmd('vertical resize -2'),

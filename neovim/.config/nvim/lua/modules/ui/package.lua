@@ -2,13 +2,13 @@
 --   "lunarvim/lunar.nvim",
 --   lazy = true,
 -- })
--- packadd({
---   "Jint-lzxy/nvim",
---   lazy = true,
---   branch = "refactor/syntax-highlighting",
---   name = "catppuccin",
---   config = require("ui.config.catppuccin"),
--- })
+packadd({
+  "Jint-lzxy/nvim",
+  priority = 1000,
+  branch = "refactor/syntax-highlighting",
+  name = "catppuccin",
+  config = require("ui.config.catppuccin"),
+})
 -- packadd({
 --   "folke/tokyonight.nvim",
 --   lazy = true,
@@ -18,14 +18,14 @@
 --     require("ui.config.tokynoight")
 --   end,
 -- })
-packadd({
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = require("ui.config.catppuccin"),
-  }
-})
+-- packadd({
+--   {
+--     "catppuccin/nvim",
+--     name = "catppuccin",
+--     priority = 1000,
+--     config = require("ui.config.catppuccin"),
+--   }
+-- })
 packadd({
   "j-hui/fidget.nvim",
   lazy = true,

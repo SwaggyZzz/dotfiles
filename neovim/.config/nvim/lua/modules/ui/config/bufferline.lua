@@ -46,7 +46,7 @@ return function()
     return (tab_num == last_tab and is_log) or (tab_num ~= last_tab and not is_log)
   end
 
-  bufferline.setup({
+  local opts = {
     options = {
       close_command = function(n)
         require("mini.bufremove").delete(n, false)
@@ -98,6 +98,12 @@ return function()
           text = "Lspsaga Outline",
           text_align = "center",
         },
+        {
+          filetype = "aerial",
+          text = "Symbol Outline",
+          text_align = "center",
+          padding = 0,
+        },
       },
     },
     highlights = {
@@ -108,5 +114,30 @@ return function()
         bold = true,
       },
     },
-  })
+  }
+
+  if vim.g.colors_name:find("catppuccin") then
+    local cp = require("swaggyz.utils.modules").get_palette() -- Get the palette.
+
+    local catppuccin_hl_overwrite = {
+      highlights = require("catppuccin.groups.integrations.bufferline").get({
+        styles = { "italic", "bold" },
+        custom = {
+          all = {
+            -- Hint
+            hint = { fg = cp.rosewater },
+            hint_visible = { fg = cp.rosewater },
+            hint_selected = { fg = cp.rosewater },
+            hint_diagnostic = { fg = cp.rosewater },
+            hint_diagnostic_visible = { fg = cp.rosewater },
+            hint_diagnostic_selected = { fg = cp.rosewater },
+          },
+        },
+      }),
+    }
+
+    opts = vim.tbl_deep_extend("force", opts, catppuccin_hl_overwrite)
+  end
+
+  bufferline.setup(opts)
 end

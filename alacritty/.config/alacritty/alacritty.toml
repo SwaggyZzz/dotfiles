@@ -93,25 +93,25 @@ chars = "\u0002x"
 key = "W"
 mods = "Command"
 
-[[keyboard.bindings]]
-chars = "\u0002h"
-key = "H"
-mods = "Command|Shift"
+# [[keyboard.bindings]]
+# chars = "\u0002h"
+# key = "H"
+# mods = "Command|Shift"
 
-[[keyboard.bindings]]
-chars = "\u0002j"
-key = "J"
-mods = "Command|Shift"
+# [[keyboard.bindings]]
+# chars = "\u0002j"
+# key = "J"
+# mods = "Command|Shift"
 
-[[keyboard.bindings]]
-chars = "\u0002k"
-key = "K"
-mods = "Command|Shift"
+# [[keyboard.bindings]]
+# chars = "\u0002k"
+# key = "K"
+# mods = "Command|Shift"
 
-[[keyboard.bindings]]
-chars = "\u0002l"
-key = "L"
-mods = "Command|Shift"
+# [[keyboard.bindings]]
+# chars = "\u0002l"
+# key = "L"
+# mods = "Command|Shift"
 
 [[keyboard.bindings]]
 chars = "\u0002z"
