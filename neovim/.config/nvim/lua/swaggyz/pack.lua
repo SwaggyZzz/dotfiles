@@ -1,13 +1,14 @@
 local fn, api = vim.fn, vim.api
-local uv = require("luv")
 local global = require("swaggyz.global")
 
 local vim_path = global.vim_path
 local data_dir = global.data_dir
 
-local pack = {}
+local Lazy = {}
 
-function pack:load_modules_packages()
+function Lazy:load_modules_packages()
+  self.modules = {}
+
   local modules_dir = vim_path .. "/lua/modules"
 
   -- http://www.shouhuola.com/answer/36442/122788.html
@@ -33,8 +34,6 @@ function pack:load_modules_packages()
   package.path = package.path
       .. string.format(";%s", modules_dir .. "/?.lua")
 
-  self.repos = {}
-
   local list = vim.fs.find('package.lua', { path = modules_dir, type = 'file', limit = 10 })
   if #list == 0 then
     return
@@ -47,21 +46,21 @@ function pack:load_modules_packages()
   end
 end
 
-function pack:boot_strap()
-  local lazy_path = data_dir .. "lazy/lazy.nvim"
-
-  local state = uv.fs_stat(lazy_path)
-  if not state then
-    local cmd = '!git clone https://github.com/folke/lazy.nvim ' .. lazy_path
-    api.nvim_command(cmd)
+function Lazy:boot_strap()
+  local lazypath = data_dir .. "/lazy/lazy.nvim"
+  if not vim.loop.fs_stat(lazypath) then
+    -- bootstrap lazy.nvim
+    -- stylua: ignore
+    vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
+      lazypath })
   end
-  vim.opt.runtimepath:prepend(lazy_path) -- vim.opt.rpt
+  vim.opt.rtp:prepend(lazypath) -- vim.opt.runtimepath
 
   local lazy = require('lazy')
 
   self:load_modules_packages()
 
-  lazy.setup(self.repos, {
+  lazy.setup(self.modules, {
     ui = {
       -- a number <1 is a percentage., >1 is a fixed size
       size = { width = 0.88, height = 0.8 },
@@ -94,19 +93,13 @@ function pack:boot_strap()
       },
     },
   })
-
-  for k, v in pairs(self) do
-    if type(v) ~= 'function' then
-      self[k] = nil
-    end
-  end
 end
 
 _G.packadd = function(repo)
-  if not pack.repos then
-    pack.repos = {}
+  if not Lazy.modules then
+    Lazy.modules = {}
   end
-  table.insert(pack.repos, repo)
+  table.insert(Lazy.modules, repo)
 end
 
 _G.exec_filetype = function(group)
@@ -117,4 +110,4 @@ _G.exec_filetype = function(group)
   end
 end
 
-return pack
+return Lazy
