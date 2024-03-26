@@ -36,19 +36,20 @@ opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "glob
 opt.shiftround = true      -- Round indent
 opt.shiftwidth = 2         -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
-opt.showmode = false       -- Dont show mode since we have a statusline
-opt.sidescrolloff = 8      -- Columns of context
-opt.signcolumn = "yes"     -- Always show the signcolumn, otherwise it would shift the text each time
-opt.smartcase = true       -- Don't ignore case with capitals
-opt.smartindent = true     -- Insert indents automatically
+opt.showcmd = false
+opt.showmode = false     -- Dont show mode since we have a statusline
+opt.sidescrolloff = 8    -- Columns of context
+opt.signcolumn = "yes"   -- Always show the signcolumn, otherwise it would shift the text each time
+opt.smartcase = true     -- Don't ignore case with capitals
+opt.smartindent = true   -- Insert indents automatically
 opt.spelllang = { "en" }
-opt.splitbelow = true      -- Put new windows below current
+opt.splitbelow = true    -- Put new windows below current
 opt.splitkeep = "screen"
-opt.splitright = true      -- Put new windows right of current
-opt.tabstop = 2            -- Number of spaces tabs count for
-opt.termguicolors = true   -- True color support
+opt.splitright = true    -- Put new windows right of current
+opt.tabstop = 2          -- Number of spaces tabs count for
+opt.termguicolors = true -- True color support
 if not vim.g.vscode then
-  opt.timeoutlen = 300     -- Lower than default (1000) to quickly trigger which-key
+  opt.timeoutlen = 300   -- Lower than default (1000) to quickly trigger which-key
 end
 opt.undofile = true
 opt.undolevels = 10000
@@ -69,10 +70,6 @@ opt.fillchars = {
 if vim.fn.has("nvim-0.10") == 1 then
   opt.smoothscroll = true
 end
-
--- Folding
-opt.foldlevel = 99
-opt.foldmethod = "indent"
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
