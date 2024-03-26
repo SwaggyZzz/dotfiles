@@ -26,7 +26,7 @@ map.n({
   ['<A-w>'] = function() require("mini.bufremove").delete(0, false) end, -- false --> true (force delete buffer)
   -- ['<A-w>'] = cmd('bd'),
   -- ['<A-w>'] = cmd('bp | bd #'), -- 关闭buf,但不关闭分屏
-  -- ['<A-q>'] = cmd('q'),
+  ['<A-q>'] = cmd('q'),
   --window
   ['sv'] = cmd('vsp'), -- 分屏
   ['sh'] = cmd('sp'),
