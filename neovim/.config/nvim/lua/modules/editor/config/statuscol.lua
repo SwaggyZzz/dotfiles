@@ -35,12 +35,9 @@ return function()
       "nofile",
       "alpha"
     },
+
+    relculright = true,
     segments = {
-      -- {
-      --   text = { "%s" },
-      --   condition = { true },
-      --   click = "v:lua.ScSa",
-      -- },
       {
         text = { " " },
         condition = { true },
@@ -52,7 +49,7 @@ return function()
       {
         text = { builtin.lnumfunc, " " },
         condition = { true, builtin.not_empty },
-        -- click = "v:lua.ScLa",
+        click = "v:lua.ScLa",
       },
       {
         sign = { namespace = { "gitsign*" }, colwidth = 1 },
@@ -63,6 +60,6 @@ return function()
         condition = { true, builtin.not_empty },
         -- click = "v:lua.ScFa",
       },
-    },
+    }
   })
 end
