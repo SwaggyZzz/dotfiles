@@ -25,7 +25,12 @@ M.setup = function()
   })
 
   local capabilities = vim.lsp.protocol.make_client_capabilities() -- 可以不要初始化
+
   capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+  -- Option 2: nvim lsp as LSP client
+  -- Tell the server the capability of foldingRange,
+  -- Neovim hasn't added foldingRange to default capabilities, users must add it manually
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,

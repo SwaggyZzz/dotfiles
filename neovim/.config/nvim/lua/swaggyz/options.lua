@@ -1,143 +1,78 @@
-local global = require("swaggyz.global")
 local opt = vim.opt
 
-local function load_options()
-  local global_local = {
-    -- backupdir = global.cache_dir .. "backup/",
-    -- directory = global.cache_dir .. "swap/",
-    -- pumblend = 10,
-    -- spellfile = global.cache_dir .. "spell/en.uft-8.add",
-    -- viewdir = global.cache_dir .. "view/",
-    -- winblend = 10,
-    autoindent = true,
-    autoread = true,
-    autowrite = true,
-    smartindent = true,
-    backspace = "indent,eol,start",
-    backup = false,
-    backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim",
-    breakat = [[\ \	;:,!?]],
-    breakindentopt = "shift:2,min:20",
-    clipboard = "unnamedplus",
-    cmdheight = 1, -- 0, 1, 2
-    cmdwinheight = 5,
-    complete = ".,w,b,k",
-    completeopt = "menuone,noselect",
-    concealcursor = "niv",
-    conceallevel = 0,
-    confirm = true,
-    -- cursorcolumn = true,
-    cursorline = true,
-    diffopt = "filler,iwhite,internal,linematch:60,algorithm:patience",
-    display = "lastline",
-    encoding = "utf-8",
-    equalalways = false,
-    errorbells = true,
-    expandtab = true,
-    fileformats = "unix,mac,dos",
-    foldenable = true,
-    foldlevelstart = 99,
-    formatoptions = "1jcroql",
-    grepformat = "%f:%l:%c:%m",
-    grepprg = "rg --hidden --vimgrep --smart-case --",
-    helpheight = 12,
-    hidden = true,
-    history = 2000,
-    ignorecase = true,
-    inccommand = "nosplit",
-    incsearch = true,
-    infercase = true,
-    jumpoptions = "stack",
-    laststatus = 2,
-    linebreak = true,
-    list = true,
-    listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←",
-    magic = true,
-    mousescroll = "ver:3,hor:6",
-    number = true,
-    numberwidth = 4,
-    previewheight = 12,
-    pumheight = 15,
-    redrawtime = 1500,
-    relativenumber = true,
-    ruler = true,
-    scrolloff = 2,
-    sessionoptions = "buffers,curdir,help,tabpages,winsize",
-    shada = "!,'300,<50,@100,s10,h",
-    shiftround = true,
-    shiftwidth = 2,
-    shortmess = "aoOTIcF",
-    showbreak = "↳  ",
-    showcmd = false,
-    showmode = false,
-    showtabline = 2,
-    sidescrolloff = 5,
-    signcolumn = "yes",
-    smartcase = true,
-    smarttab = true,
-    softtabstop = 2,
-    splitbelow = true,
-    splitkeep = "cursor",
-    splitright = true,
-    startofline = false,
-    swapfile = false,
-    switchbuf = "usetab,uselast",
-    synmaxcol = 2500,
-    tabstop = 2,
-    termguicolors = true,
-    timeout = true,
-    timeoutlen = 500,
-    ttimeout = true,
-    ttimeoutlen = 0,
-    undodir = global.cache_dir .. "undo/",
-    undofile = true,
-    -- Please do NOT set `updatetime` to above 500, otherwise most plugins may not function correctly
-    updatetime = 200,
-    viewoptions = "folds,cursor,curdir,slash,unix",
-    virtualedit = "block",
-    visualbell = true,
-    whichwrap = "h,l,<,>,[,],~",
-    wildignore =
-    ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**",
-    wildignorecase = true,
-    winminwidth = 10,
-    winwidth = 30,
-    wrap = false,
-    wrapscan = true,
-    writebackup = false,
-  }
-  local function isempty(s)
-    return s == nil or s == ""
-  end
 
-  -- custom python provider
-  local conda_prefix = os.getenv("CONDA_PREFIX")
-  if not isempty(conda_prefix) then
-    vim.g.python_host_prog = conda_prefix .. "/bin/python"
-    vim.g.python3_host_prog = conda_prefix .. "/bin/python"
-  elseif global.is_mac then
-    vim.g.python_host_prog = "/usr/bin/python"
-    vim.g.python3_host_prog = "/usr/local/bin/python3"
-  else
-    vim.g.python_host_prog = "/usr/bin/python"
-    vim.g.python3_host_prog = "/usr/bin/python3"
-  end
-
-  for name, value in pairs(global_local) do
-    vim.o[name] = value
-  end
-
-  -- Fix sqlite3 missing-lib issue on Windows
-  if global.is_windows then
-    -- Download the DLLs form https://www.sqlite.org/download.html
-    vim.g.sqlite_clib_path = global.home .. "/Documents/sqlite-dll-win64-x64-3400200/sqlite3.dll"
-  end
+if not vim.env.SSH_TTY then
+  -- only set clipboard if not in ssh, to make sure the OSC 52
+  -- integration works automatically. Requires Neovim >= 0.10.0
+  opt.clipboard = "unnamedplus" -- Sync with system clipboard
 end
 
 
-load_options()
+opt.autowrite = true -- Enable auto write
+opt.autoread = true
+opt.autoindent = true
 
-if vim.fn.has("nvim-0.9.0") == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess:append({ C = true })
+opt.cmdheight = 1 -- 0, 1, 2
+-- opt.cmdwinheight = 5
+opt.completeopt = "menu,menuone,noselect"
+opt.conceallevel = 2           -- Hide * markup for bold and italic, but not markers with substitutions
+opt.confirm = true             -- Confirm to save changes before exiting modified buffer
+opt.cursorline = true          -- Enable highlighting of the current line
+opt.expandtab = true           -- Use spaces instead of tabs
+opt.formatoptions = "jcroqlnt" -- tcqj
+opt.grepformat = "%f:%l:%c:%m"
+opt.grepprg = "rg --vimgrep"
+opt.ignorecase = true      -- Ignore case
+opt.inccommand = "nosplit" -- preview incremental substitute
+opt.laststatus = 3         -- global statusline
+opt.list = true            -- Show some invisible characters (tabs...
+opt.mouse = "a"            -- Enable mouse mode
+opt.number = true          -- Print line number
+opt.pumblend = 10          -- Popup blend
+opt.pumheight = 10         -- Maximum number of entries in a popup
+opt.relativenumber = true  -- Relative line numbers
+opt.scrolloff = 4          -- Lines of context
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+opt.shiftround = true      -- Round indent
+opt.shiftwidth = 2         -- Size of an indent
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.showmode = false       -- Dont show mode since we have a statusline
+opt.sidescrolloff = 8      -- Columns of context
+opt.signcolumn = "yes"     -- Always show the signcolumn, otherwise it would shift the text each time
+opt.smartcase = true       -- Don't ignore case with capitals
+opt.smartindent = true     -- Insert indents automatically
+opt.spelllang = { "en" }
+opt.splitbelow = true      -- Put new windows below current
+opt.splitkeep = "screen"
+opt.splitright = true      -- Put new windows right of current
+opt.tabstop = 2            -- Number of spaces tabs count for
+opt.termguicolors = true   -- True color support
+if not vim.g.vscode then
+  opt.timeoutlen = 300     -- Lower than default (1000) to quickly trigger which-key
 end
+opt.undofile = true
+opt.undolevels = 10000
+opt.updatetime = 200               -- Save swap file and trigger CursorHold
+opt.virtualedit = "block"          -- Allow cursor to move where there is no text in visual block mode
+opt.wildmode = "longest:full,full" -- Command-line completion mode
+opt.winminwidth = 5                -- Minimum window width
+opt.wrap = false                   -- Disable line wrap
+opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
+
+if vim.fn.has("nvim-0.10") == 1 then
+  opt.smoothscroll = true
+end
+
+-- Folding
+opt.foldlevel = 99
+opt.foldmethod = "indent"
+
+-- Fix markdown indentation settings
+vim.g.markdown_recommended_style = 0
