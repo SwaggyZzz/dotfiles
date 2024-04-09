@@ -143,13 +143,13 @@ packadd({
   "kevinhwang91/nvim-ufo",
   lazy = true,
   dependencies = "kevinhwang91/promise-async",
-  init = function()
-    vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-    vim.o.foldcolumn = "0" -- 0-no show fold icon 1-show fold icon in statuscolumn
-    vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
-    vim.o.foldlevelstart = 99
-    vim.o.foldenable = true
-  end,
+  -- init = function()
+  --   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+  --   vim.o.foldcolumn = "1" -- 0-no show fold icon 1-show fold icon in statuscolumn
+  --   vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+  --   vim.o.foldlevelstart = 99
+  --   vim.o.foldenable = true
+  -- end,
 })
 
 packadd({

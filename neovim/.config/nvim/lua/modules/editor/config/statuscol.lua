@@ -37,30 +37,12 @@ return function()
     },
 
     relculright = true,
-    segments = {
-      {
-        text = { " " },
-        condition = { true },
-      },
-      {
-        text = { builtin.lnumfunc, " " },
-        condition = { true, builtin.not_empty },
-        click = "v:lua.ScLa",
-      },
-      -- { text = { "%s" }, click = "v:lua.ScSa" },
-      {
-        sign = { namespace = { "gitsign*" }, colwidth = 1 },
-      },
-    }
-
     -- segments = {
+    --   -- { text = { "%s" }, click = "v:lua.ScSa" },
+
     --   {
     --     text = { " " },
     --     condition = { true },
-    --   },
-    --   {
-    --     sign = { name = { "Dap*" }, namespace = { "bulb*" } },
-    --     click = "v:lua.ScSa",
     --   },
     --   {
     --     text = { builtin.lnumfunc, " " },
@@ -69,13 +51,32 @@ return function()
     --   },
     --   {
     --     sign = { namespace = { "gitsign*" }, colwidth = 1 },
-    --     -- click = "v:lua.ScSa",
-    --   },
-    --   {
-    --     text = { builtin.foldfunc, "  " },
-    --     condition = { true, builtin.not_empty },
-    --     -- click = "v:lua.ScFa",
     --   },
     -- }
+
+    segments = {
+      {
+        text = { " " },
+        condition = { true },
+      },
+      {
+        sign = { name = { "Dap*" }, namespace = { "bulb*" } },
+        click = "v:lua.ScSa",
+      },
+      {
+        text = { builtin.lnumfunc, " " },
+        condition = { true, builtin.not_empty },
+        click = "v:lua.ScLa",
+      },
+      {
+        sign = { namespace = { "gitsign*" }, colwidth = 1 },
+        -- click = "v:lua.ScSa",
+      },
+      {
+        text = { builtin.foldfunc, "  " },
+        condition = { true, builtin.not_empty },
+        -- click = "v:lua.ScFa",
+      },
+    }
   })
 end

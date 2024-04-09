@@ -69,7 +69,7 @@ opt.fillchars = {
 
 -- Fold Opts
 -- opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-opt.foldcolumn = "0" -- 0-no show fold icon 1-show fold icon in statuscolumn
+opt.foldcolumn = "1" -- 0-no show fold icon 1-show fold icon in statuscolumn
 opt.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
 opt.foldlevelstart = 99
 opt.foldenable = true
