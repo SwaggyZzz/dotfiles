@@ -84,7 +84,7 @@ return {
         event = "VeryLazy",
         config = function()
           require("window-picker").setup({
-            selection_chars = "HLJKFDSA;CMRUEIWOQP",
+            selection_chars = "ABCDEFGHLJKFDS;CMRUEIWOQP",
             filter_rules = {
               include_current_win = false,
               autoselect_one = true,
