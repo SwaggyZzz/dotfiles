@@ -14,7 +14,6 @@ keymap.del("n", "<C-l>")
 -- Format
 keymap.del("n", "<leader>cf")
 
-
 --Buffer
 keymap.del("n", "<S-h>")
 keymap.del("n", "<S-l>")
@@ -24,7 +23,9 @@ keymap.del("n", "<leader>bb")
 keymap.del("n", "<leader>`")
 
 -- =====================================================
-keymap.set("n", "<A-w>", function() require("mini.bufremove").delete(0, false) end)
+keymap.set("n", "<A-w>", function()
+  require("mini.bufremove").delete(0, false)
+end)
 keymap.set("n", "<A-s>", "<CMD>w<CR>")
 keymap.set("i", "<A-s>", "<ESC><CMD>w<CR>")
 
@@ -54,5 +55,5 @@ keymap.set({ "n", "t" }, "<A-j>", "<CMD>NavigatorDown<CR>")
 keymap.set({ "n", "t" }, "<A-p>", "<CMD>NavigatorPrevious<CR>")
 
 -- BufferLine
-keymap.set("n", "<C-h>","<CMD>BufferLineCyclePrev<CR>" )
-keymap.set("n", "<C-l>","<CMD>BufferLineCycleNext<CR>" )
+keymap.set("n", "<C-h>", "<CMD>BufferLineCyclePrev<CR>")
+keymap.set("n", "<C-l>", "<CMD>BufferLineCycleNext<CR>")
