@@ -1,15 +1,15 @@
-local options = {
-  formatters_by_ft = {
-    lua = { "stylua" },
-    -- css = { "prettier" },
-    -- html = { "prettier" },
-  },
+return function(_, opts)
+  for _, key in ipairs({ "format_on_save", "format_after_save" }) do
+    if opts[key] then
+      -- LazyVim.warn(
+      --   ("Don't set `opts.%s` for `conform.nvim`.\n**LazyVim** will use the conform formatter automatically"):format(
+      --     key
+      --   )
+      -- )
+      ---@diagnostic disable-next-line: no-unknown
+      opts[key] = nil
+    end
+  end
+  require("conform").setup(opts)
+end
 
-  -- format_on_save = {
-  --   -- These options will be passed to conform.format()
-  --   timeout_ms = 500,
-  --   lsp_fallback = true,
-  -- },
-}
-
-require("conform").setup(options)
