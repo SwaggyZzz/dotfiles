@@ -1,6 +1,5 @@
 return function()
-  local transparent_background = true
-  local clear = {}
+  local transparent_background = require("core.settings").transparent_background
 
   require("catppuccin").setup({
     background = { light = "latte", dark = "mocha" }, -- latte, frappe, macchiato, mocha
@@ -14,23 +13,71 @@ return function()
     transparent_background = transparent_background,
     show_end_of_buffer = false, -- show the '~' characters after the end of buffers
     term_colors = true,
-    compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
     styles = {
       comments = { "italic" },
-      properties = { "italic" },
+      conditionals = { "bold", "italic" },
       functions = { "bold" },
-      keywords = { "italic" },
-      operators = { "bold" },
-      conditionals = { "bold" },
-      loops = { "bold" },
-      booleans = { "bold", "italic" },
-      numbers = {},
-      types = {},
-      strings = {},
-      variables = {},
+      constants = { "bold" },
+      keywords = { "bold", "italic" },
     },
+    color_overrides = {},
+    custom_highlights = function(C)
+      return {
+        RainbowDelimiterRed = { fg = "#ff5ea0" },
+        RainbowDelimiterYellow = { fg = "#f1ff5e" },
+        RainbowDelimiterBlue = { fg = "#5ef1ff" },
+        RainbowDelimiterOrange = { fg = "#ffbd5e" },
+        RainbowDelimiterGreen = { fg = "#5eff6c" },
+        RainbowDelimiterViolet = { fg = "#ff5ef1" },
+        RainbowDelimiterCyan = { fg = "#5ef1ff" },
+        FloatBorder = { fg = C.yellow },
+      }
+    end,
     integrations = {
+      aerial = true,
+      alpha = true,
+      dashboard = true,
+      gitsigns = true,
+      headlines = true,
+      markdown = true,
+      navic = { enabled = true, custom_bg = "lualine" },
+      telescope = {
+        enabled = true,
+      },
+      dropbar = {
+        enabled = true,
+        color_mode = true,
+      },
+      flash = true,
+      barbar = true,
+      leap = true,
+      neotree = true,
+      neotest = true,
+      mason = true,
+      noice = true,
+      notify = true,
+      which_key = true,
+      semantic_tokens = true,
+      mini = {
+        enabled = true,
+      },
+      cmp = true,
+      dap = true,
+      dap_ui = true,
+      treesitter_context = true,
       treesitter = true,
+      window_picker = true,
+      rainbow_delimiters = true,
+      symbols_outline = true,
+      lsp_trouble = true,
+      illuminate = {
+        enabled = true,
+        lsp = true,
+      },
+      indent_blankline = {
+        enabled = true,
+        colored_indent_levels = true,
+      },
       native_lsp = {
         enabled = true,
         virtual_text = {
@@ -45,129 +92,10 @@ return function()
           warnings = { "underline" },
           information = { "underline" },
         },
+        inlay_hints = {
+          background = false,
+        },
       },
-      aerial = true,
-      alpha = true,
-      barbar = false,
-      beacon = false,
-      cmp = true,
-      dap = true,
-      dap_ui = true,
-      dashboard = false,
-      dropbar = { enabled = true, color_mode = true },
-      fern = false,
-      fidget = true,
-      flash = true,
-      gitgutter = false,
-      gitsigns = true,
-      harpoon = false,
-      headlines = false,
-      hop = true,
-      illuminate = true,
-      indent_blankline = { enabled = true, colored_indent_levels = false },
-      leap = false,
-      lightspeed = false,
-      lsp_saga = true,
-      lsp_trouble = true,
-      markdown = true,
-      mason = true,
-      mini = false,
-      navic = { enabled = false },
-      neogit = false,
-      neotest = false,
-      neotree = { enabled = false, show_root = true, transparent_panel = false },
-      noice = false,
-      notify = true,
-      nvimtree = true,
-      overseer = false,
-      pounce = false,
-      rainbow_delimiters = true,
-      sandwich = false,
-      semantic_tokens = true,
-      symbols_outline = false,
-      telekasten = false,
-      telescope = { enabled = true },
-      treesitter_context = true,
-      ts_rainbow = false,
-      vim_sneak = false,
-      vimwiki = false,
-      which_key = true,
-    },
-    color_overrides = {},
-    highlight_overrides = {
-      ---@param cp palette
-      all = function(cp)
-        return {
-          -- For base configs
-          NormalFloat = { fg = cp.text, bg = transparent_background and cp.none or cp.mantle },
-          FloatBorder = {
-            fg = transparent_background and cp.blue or cp.mantle,
-            bg = transparent_background and cp.none or cp.mantle,
-          },
-          CursorLineNr = { fg = cp.green },
-
-          -- For native lsp configs
-          DiagnosticVirtualTextError = { bg = cp.none },
-          DiagnosticVirtualTextWarn = { bg = cp.none },
-          DiagnosticVirtualTextInfo = { bg = cp.none },
-          DiagnosticVirtualTextHint = { bg = cp.none },
-          LspInfoBorder = { link = "FloatBorder" },
-
-          -- For mason.nvim
-          MasonNormal = { link = "NormalFloat" },
-
-          -- For indent-blankline
-          IblIndent = { fg = cp.surface0 },
-          IblScope = { fg = cp.surface2, style = { "bold" } },
-
-          -- For nvim-cmp and wilder.nvim
-          Pmenu = { fg = cp.overlay2, bg = transparent_background and cp.none or cp.base },
-          PmenuBorder = { fg = cp.surface1, bg = transparent_background and cp.none or cp.base },
-          PmenuSel = { bg = cp.green, fg = cp.base },
-          CmpItemAbbr = { fg = cp.overlay2 },
-          CmpItemAbbrMatch = { fg = cp.blue, style = { "bold" } },
-          CmpDoc = { link = "NormalFloat" },
-          CmpDocBorder = {
-            fg = transparent_background and cp.surface1 or cp.mantle,
-            bg = transparent_background and cp.none or cp.mantle,
-          },
-
-          -- For fidget
-          FidgetTask = { bg = cp.none, fg = cp.surface2 },
-          FidgetTitle = { fg = cp.blue, style = { "bold" } },
-
-          -- For nvim-notify
-          NotifyBackground = { bg = cp.base },
-
-          -- For nvim-tree
-          NvimTreeRootFolder = { fg = cp.pink },
-          NvimTreeIndentMarker = { fg = cp.surface2 },
-
-          -- For trouble.nvim
-          TroubleNormal = { bg = transparent_background and cp.none or cp.base },
-
-          -- For telescope.nvim
-          TelescopeMatching = { fg = cp.lavender },
-          TelescopeResultsDiffAdd = { fg = cp.green },
-          TelescopeResultsDiffChange = { fg = cp.yellow },
-          TelescopeResultsDiffDelete = { fg = cp.red },
-
-          -- For glance.nvim
-          GlanceWinBarFilename = { fg = cp.subtext1, style = { "bold" } },
-          GlanceWinBarFilepath = { fg = cp.subtext0, style = { "italic" } },
-          GlanceWinBarTitle = { fg = cp.teal, style = { "bold" } },
-          GlanceListCount = { fg = cp.lavender },
-          GlanceListFilepath = { link = "Comment" },
-          GlanceListFilename = { fg = cp.blue },
-          GlanceListMatch = { fg = cp.lavender, style = { "bold" } },
-          GlanceFoldIcon = { fg = cp.green },
-
-          -- For treesitter
-          ["@keyword.return"] = { fg = cp.pink, style = clear },
-          ["@error.c"] = { fg = cp.none, style = clear },
-          ["@error.cpp"] = { fg = cp.none, style = clear },
-        }
-      end,
     },
   })
 end

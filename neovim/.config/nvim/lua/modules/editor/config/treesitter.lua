@@ -1,74 +1,30 @@
-return function()
-  local status, ts = pcall(require, "nvim-treesitter.configs")
-  if (not status) then return end
+return vim.schedule_wrap(function()
+	-- vim.api.nvim_set_option_value("foldmethod", "expr", {})
+	-- vim.api.nvim_set_option_value("foldexpr", "nvim_treesitter#foldexpr()", {})
 
-  -- vim.api.nvim_set_option_value("foldmethod", "expr", {})
-  -- vim.api.nvim_set_option_value("foldexpr", "nvim_treesitter#foldexpr()", {})
+  require("nvim-treesitter.configs").setup({
+		ensure_installed = require("core.settings").treesitter_deps,
+		highlight = {
+			enable = true,
+			-- disable = function(ft, bufnr)
+			-- 	if vim.tbl_contains({ "vim" }, ft) then
+			-- 		return true
+			-- 	end
 
-
-  ts.setup({
-    highlight = {
-      enable = true,
-      disable = function(lang, buf)
-        if vim.tbl_contains({ "latex" }, lang) then
-          return true
-        end
-
-        local max_filesize = 150 * 1024 -- 150 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-          return true
-        end
-      end,
-
-      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-      -- Using this option may slow down your editor, and you may see some duplicate highlights.
-      -- Instead of true it can also be a list of languages
-      additional_vim_regex_highlighting = false,
+			-- 	local ok, is_large_file = pcall(vim.api.nvim_buf_get_var, bufnr, "bigfile_disable_treesitter")
+			-- 	return ok and is_large_file
+			-- end,
+			-- additional_vim_regex_highlighting = false,
+		},
+    textobjects = {
+      move = {
+        enable = true,
+        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+      },
     },
-    indent = {
-      enable = true,
-    },
-    matchup = { enable = true },
-    ensure_installed = {
-      "bash",
-      "c",
-      "cpp",
-      "fish",
-      "go",
-      "gomod",
-      "gowork",
-      "gosum",
-      "lua",
-      "luadoc",
-      "make",
-      "markdown",
-      "markdown_inline",
-      "python",
-      "rust",
-      "toml",
-      "kdl",
-      -- FE ---
-      "tsx",
-      "typescript",
-      "javascript",
-      "html",
-      "css",
-      "vue",
-      "graphql",
-      "json",
-      "svelte",
-      -- FE ---
-      "gitcommit",
-      "vim",
-      "vimdoc",
-      "yaml",
-    },
-  })
-
-  -- https://github.com/nvim-treesitter/nvim-treesitter/issues/1111#issuecomment-1216655480
-  -- local treesitterFix = require("editor.config.treesitter-css-in-js")
-  -- treesitterFix.directives()
-  -- treesitterFix.queries()
-end
+	})
+	require("nvim-treesitter.install").prefer_git = true
+end)

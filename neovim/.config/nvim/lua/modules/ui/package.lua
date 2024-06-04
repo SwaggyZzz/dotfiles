@@ -1,82 +1,104 @@
--- packadd({
---   "lunarvim/lunar.nvim",
---   lazy = true,
--- })
 packadd({
-  "Jint-lzxy/nvim",
+  "catppuccin/nvim",
+  lazy = false,
   priority = 1000,
-  branch = "refactor/syntax-highlighting",
   name = "catppuccin",
   config = require("ui.config.catppuccin"),
 })
--- packadd({
---   "folke/tokyonight.nvim",
---   lazy = true,
---   -- lazy = false,
---   -- priority = 1000,
---   config = function()
---     require("ui.config.tokynoight")
---   end,
--- })
--- packadd({
---   {
---     "catppuccin/nvim",
---     name = "catppuccin",
---     priority = 1000,
---     config = require("ui.config.catppuccin"),
---   }
--- })
-packadd({
-  "j-hui/fidget.nvim",
-  lazy = true,
-  event = "LspAttach",
-  config = require("ui.config.fidget"),
-})
 
 packadd({
-  "akinsho/bufferline.nvim",
-  lazy = true,
-  event = "VeryLazy",
-  config = require("ui.config.bufferline"),
+  "nvimdev/dashboard-nvim",
+  lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+  config = require("ui.config.dashboard"),
 })
+
 packadd({
   "nvim-lualine/lualine.nvim",
-  lazy = true,
-  event = "VimEnter",
-  config = require("ui.config.lualine"),
-})
-
-packadd({
-  "goolord/alpha-nvim",
-  event = "VimEnter",
-  config = require("ui.config.alpha")
+  event = "VeryLazy",
+  dependencies = {
+    "meuter/lualine-so-fancy.nvim",
+  },
+  opts = function()
+    local icons = {
+      misc = require("utils.icons").get("misc"),
+      ui = require("utils.icons").get("ui"),
+      git = require("utils.icons").get("git")
+    }
+    return {
+      options = {
+        theme = "catppuccin",
+        -- component_separators = { left = "│", right = "│" },
+        -- section_separators = { left = "", right = "" },
+        component_separators = "",
+        section_separators = { left = "", right = "" },
+        globalstatus = true,
+        refresh = {
+          statusline = 100,
+        },
+      },
+      sections = {
+        lualine_a = {
+          { "fancy_mode", width = 3 },
+        },
+        lualine_b = {
+          { "fancy_branch", icon = { icons.git.Branch } },
+          { "fancy_diff" },
+        },
+        lualine_c = {
+          {
+            "fancy_cwd",
+            icon = { icons.ui.FolderWithHeart, color = { fg = "SkyBlue3" } },
+            substitute_home = true
+          },
+        },
+        lualine_x = {
+          { "fancy_diagnostics" },
+          { "fancy_searchcount" },
+          { "fancy_location" },
+        },
+        lualine_y = {
+          {
+            "fancy_filetype",
+            ts_icon = icons.misc.Tree
+          },
+        },
+        lualine_z = {
+          {
+            "fancy_lsp_servers",
+            split = "|",
+            icon = icons.misc.LspAvailable
+          },
+        },
+      },
+      extensions = { "nvim-tree", "neo-tree", "lazy", "quickfix", "trouble" },
+    }
+  end,
 })
 
 packadd({
   "lukas-reineke/indent-blankline.nvim",
   lazy = true,
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-  config = require("ui.config.indent-blankline"),
-  main = "ibl"
-})
-
-packadd({
-  "echasnovski/mini.indentscope",
-  lazy = true,
-  version = false, -- wait till new 0.7.0 release to put it back on semver
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = { "CursorHold", "CursorHoldI" },
   opts = {
-    symbol = "│",
-    options = { try_as_border = true },
-  },
-  init = function()
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = {
+    debounce = 200,
+    whitespace = { remove_blankline_trail = true },
+    indent = {
+      char = "│",
+      tab_char = "│",
+    },
+    scope = {
+      enabled = true,
+      char = "┃",
+      show_start = false,
+      show_end = false
+    },
+    exclude = {
+      filetypes = {
+        "", -- for all buffers without a file type
         "help",
         "alpha",
         "dashboard",
         "neo-tree",
-        "nvimtree",
         "Trouble",
         "trouble",
         "lazy",
@@ -84,92 +106,66 @@ packadd({
         "notify",
         "toggleterm",
         "lazyterm",
+        "NvimTree",
+        "fugitive",
+        "git",
+        "gitcommit",
+        "help",
+        "json",
+        "log",
+        "markdown",
       },
-      callback = function()
-        vim.b.miniindentscope_disable = true
-      end,
-    })
-  end
+    },
+  },
+  main = "ibl",
 })
+
+packadd({
+  "akinsho/bufferline.nvim",
+  event = "VeryLazy",
+  after = "catppuccin",
+  config = require("ui.config.bufferline"),
+})
+
+packadd({
+  "rcarriga/nvim-notify",
+  lazy = true,
+  event = "VeryLazy",
+  config = require("ui.config.notify"),
+})
+
+packadd({ "nvim-tree/nvim-web-devicons", lazy = true })
+packadd({ "MunifTanjim/nui.nvim", lazy = true })
 
 packadd({
   "folke/noice.nvim",
   event = "VeryLazy",
-  config = function()
-    require("ui.config.noice")
-  end,
-})
-
--- ui components
--- packadd({
---   "MunifTanjim/nui.nvim",
---   lazy = true
--- })
-
--- icons
-packadd({
-  "nvim-tree/nvim-web-devicons",
-  lazy = true
-})
--- better vim.ui
-packadd({
-  "stevearc/dressing.nvim",
-  event = "VeryLazy",
-  dependencies = "MunifTanjim/nui.nvim",
-  -- init = function()
-  --   ---@diagnostic disable-next-line: duplicate-set-field
-  --   vim.ui.select = function(...)
-  --     require("lazy").load({ plugins = { "dressing.nvim" } })
-  --     return vim.ui.select(...)
-  --   end
-  --   ---@diagnostic disable-next-line: duplicate-set-field
-  --   vim.ui.input = function(...)
-  --     require("lazy").load({ plugins = { "dressing.nvim" } })
-  --     return vim.ui.input(...)
-  --   end
-  -- end,
-})
-packadd({
-  "rcarriga/nvim-notify",
-  keys = {
-    {
-      "<leader>un",
-      function()
-        require("notify").dismiss({ silent = true, pending = true })
-      end,
-      desc = "Dismiss all Notifications",
+  opts = {
+    lsp = {
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
+      },
+    },
+    routes = {
+      {
+        filter = {
+          event = "msg_show",
+          any = {
+            { find = "%d+L, %d+B" },
+            { find = "; after #%d+" },
+            { find = "; before #%d+" },
+          },
+        },
+        view = "mini",
+      },
+    },
+    presets = {
+      bottom_search = true,
+      command_palette = true,
+      long_message_to_split = true,
+      inc_rename = true,
     },
   },
-  opts = {
-    -- timeout = 3000,
-    max_height = function()
-      return math.floor(vim.o.lines * 0.75)
-    end,
-    max_width = function()
-      return math.floor(vim.o.columns * 0.75)
-    end,
-    on_open = function(win)
-      vim.api.nvim_win_set_config(win, { zindex = 100 })
-    end,
-  },
-  config = function()
-    require("notify").setup({
-      background_colour = "#000000",
-    })
-  end,
-  init = function()
-    local banned_messages = {
-      "No information available",
-      "LSP[tsserver] Inlay Hints request failed. Requires TypeScript 4.4+.",
-      "LSP[tsserver] Inlay Hints request failed. File not opened in the editor.",
-    }
-    vim.notify = function(msg, ...)
-      for _, banned in ipairs(banned_messages) do
-        if msg == banned then
-          return
-        end
-      end
-      return require("notify")(msg, ...)
-    end
-  end,
 })
