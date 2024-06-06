@@ -3,14 +3,28 @@ local M = {}
 local map = vim.keymap.set
 
 function M.on_attach(client, bufnr)
+  -- if client.supports_method("textDocument/inlayHint") then
+  --   local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+  --   if type(ih) == "function" then
+  --     ih(buf, value)
+  --   elseif type(ih) == "table" and ih.enable then
+  --     if value == nil then
+  --       value = not ih.is_enabled({ bufnr = buf or 0 })
+  --     end
+  --     ih.enable(true, { bufnr = bufnr })
+  --   end
+  -- end
+
   local function opts(desc)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
 
   map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-  map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+  map("n", "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
+    opts "Go to definition")
   map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
-  -- map("n", "<leader>sh", vim.lsp.buf.signature_help, opts "Show signature help")
+  map("n", "K", vim.lsp.buf.hover, opts "Hover")
+  map("n", "gK", vim.lsp.buf.signature_help, opts "Show signature help")
 
   -- map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
   -- map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
@@ -115,6 +129,10 @@ function M.diagnostics_setup()
   end
 
   vim.diagnostic.config(vim.deepcopy(opts))
+end
+
+function M.inlay_hint_setup()
+
 end
 
 return M

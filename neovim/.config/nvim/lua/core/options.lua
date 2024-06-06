@@ -14,6 +14,8 @@ o.clipboard = "unnamedplus"
 o.cursorline = true
 o.cursorlineopt = "number"
 
+o.confirm = true -- Confirm to save changes before exiting modified buffer
+
 -- Indenting
 o.autoindent = true
 o.expandtab = true

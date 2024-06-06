@@ -52,8 +52,8 @@ map("n", "gco", "o<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Commen
 map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Comment Above" })
 
 
-map("n", "n", "nzz")
-map("n", "N", "Nzz")
+-- map("n", "n", "nzz")
+-- map("n", "N", "Nzz")
 
 --------------- NvimTree ---------------
 map("n", "<C-n>", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
