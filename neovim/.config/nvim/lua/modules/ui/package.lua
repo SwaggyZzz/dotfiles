@@ -1,7 +1,6 @@
 packadd({
   "catppuccin/nvim",
   lazy = false,
-  priority = 1000,
   name = "catppuccin",
   config = require("ui.config.catppuccin"),
 })
@@ -162,10 +161,18 @@ packadd({
       },
     },
     presets = {
-      bottom_search = true,
+      bottom_search = false,
       command_palette = true,
       long_message_to_split = true,
       inc_rename = true,
     },
   },
 })
+
+-- packadd({
+--   'rasulomaroff/reactive.nvim',
+--   event = "VeryLazy",
+--   opts = {
+--     load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
+--   },
+-- })

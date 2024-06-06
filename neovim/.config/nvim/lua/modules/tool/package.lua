@@ -1,14 +1,7 @@
 packadd({
   'numToStr/Navigator.nvim',
   event = "VeryLazy",
-  config = function()
-    vim.keymap.set({ 'n', 't' }, '<A-h>', '<CMD>NavigatorLeft<CR>')
-    vim.keymap.set({ 'n', 't' }, '<A-l>', '<CMD>NavigatorRight<CR>')
-    vim.keymap.set({ 'n', 't' }, '<A-k>', '<CMD>NavigatorUp<CR>')
-    vim.keymap.set({ 'n', 't' }, '<A-j>', '<CMD>NavigatorDown<CR>')
-    vim.keymap.set({ 'n', 't' }, '<A-p>', '<CMD>NavigatorPrevious<CR>')
-    require('Navigator').setup()
-  end
+  opts = {}
 })
 
 packadd({
@@ -19,3 +12,21 @@ packadd({
 })
 
 packadd({ "nvim-lua/plenary.nvim", lazy = true })
+
+packadd({
+  "ojroques/nvim-bufdel",
+  lazy = true,
+  cmd = { "BufDel", "BufDelAll", "BufDelOthers" },
+})
+
+packadd({
+  "nvim-telescope/telescope.nvim",
+  lazy = true,
+  cmd = "Telescope",
+  version = false, -- telescope did only one release, so use HEAD for now
+  config = require("tool.config.telescope"),
+  dependencies = {
+    { "nvim-telescope/telescope-live-grep-args.nvim" },
+    { "nvim-telescope/telescope-fzf-native.nvim",    build = "make" },
+  },
+})

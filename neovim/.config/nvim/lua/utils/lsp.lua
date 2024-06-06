@@ -71,75 +71,50 @@ function M.get_clients(opts)
   return opts and opts.filter and vim.tbl_filter(opts.filter, ret) or ret
 end
 
----@param opts? Formatter| {filter?: (string|lsp.Client.filter)}
-function M.formatter(opts)
-  opts = opts or {}
-  local filter = opts.filter or {}
-  filter = type(filter) == "string" and { name = filter } or filter
-  ---@cast filter lsp.Client.filter
-  ---@type Formatter
-  local ret = {
-    name = "LSP",
-    primary = true,
-    priority = 1,
-    format = function(buf)
-      M.format(
-        vim.tbl_deep_extend(
-          "force",
-          {},
-          filter,
-          { bufnr = buf }
-        ))
-    end,
-    sources = function(buf)
-      local clients = M.get_clients(
-        vim.tbl_deep_extend(
-          "force",
-          {},
-          filter,
-          { bufnr = buf }
-        ))
-      ---@param client vim.lsp.Client
-      local ret = vim.tbl_filter(function(client)
-        return client.supports_method("textDocument/formatting")
-            or client.supports_method("textDocument/rangeFormatting")
-      end, clients)
-      ---@param client vim.lsp.Client
-      return vim.tbl_map(function(client)
-        return client.name
-      end, ret)
-    end,
+function M.diagnostics_setup()
+  local icons = {
+    diagnostics = require("utils.icons").get("diagnostics")
+  }
+  local opts = {
+    underline = true,
+    update_in_insert = false,
+    virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "●",
+      -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+      -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+      -- prefix = "icons",
+    },
+    severity_sort = true,
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
+      },
+    },
   }
 
-  return vim.tbl_deep_extend(
-    "force",
-    {},
-    ret,
-    opts
-  ) --[[@as Formatter]]
-end
-
----@alias lsp.Client.format {timeout_ms?: number, format_options?: table} | lsp.Client.filter
-
----@param opts? lsp.Client.format
-function M.format(opts)
-  local settings =  require("core.settings")
-  opts = vim.tbl_deep_extend(
-    "force",
-    {},
-    opts or {},
-   settings.lsp_format_opts,
-   settings.conform_format_opts
-  )
-  local ok, conform = pcall(require, "conform")
-  -- use conform for formatting with LSP when available,
-  -- since it has better format diffing
-  if ok then
-    opts.formatters = {}
-    conform.format(opts)
-  else
-    vim.lsp.buf.format(opts)
+  for severity, icon in pairs(opts.signs.text) do
+    local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
+    name = "DiagnosticSign" .. name
+    vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
   end
+
+  if opts.virtual_text.prefix == "icons" then
+    opts.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
+        or function(diagnostic)
+          for d, icon in pairs(icons.diagnostics) do
+            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+              return icon
+            end
+          end
+        end
+  end
+
+  vim.diagnostic.config(vim.deepcopy(opts))
 end
 
 return M

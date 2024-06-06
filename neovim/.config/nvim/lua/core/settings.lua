@@ -1,42 +1,5 @@
 local settings = {}
 
--- Set it to false if there are no need to format on save.
----@type boolean
-settings["format_on_save"] = true
-
--- Set it to false if the notification after formatting is annoying.
----@type boolean
-settings["format_notify"] = true
-
--- Set it to true if you prefer formatting ONLY the *changed lines* as defined by your version control system.
--- NOTE: This entry will only be respected if:
---  > The buffer to be formatted is under version control (Git or Mercurial);
---  > Any of the server attached to that buffer supports |DocumentRangeFormattingProvider| server capability.
--- Otherwise Neovim would fall back to format the whole buffer, and a warning will be issued.
----@type boolean
-settings["format_modifications_only"] = false
-
--- Set the format disabled directories here, files under these dirs won't be formatted on save.
---- NOTE: Directories may contain regular expressions (grammar: vim). |regexp|
---- NOTE: Directories are automatically normalized. |vim.fs.normalize()|
----@type string[]
-settings["format_disabled_dirs"] = {
-  -- Example
-  "~/format_disabled_dir",
-}
-
--- Set it to false if diagnostics virtual text is annoying.
--- If disabled, you may browse lsp diagnostics using trouble.nvim (press `gt` to toggle it).
----@type boolean
-settings["diagnostics_virtual_text"] = true
-
--- Set it to one of the values below if you want to change the visible severity level of lsp diagnostics.
--- Priority: `Error` > `Warning` > `Information` > `Hint`.
---  > e.g. if you set this option to `Warning`, only lsp warnings and errors will be shown.
--- NOTE: This entry only works when `diagnostics_virtual_text` is true.
----@type "Error"|"Warning"|"Information"|"Hint"
-settings["diagnostics_level"] = "Hint"
-
 -- Set it to false if you don't use nvim to open big files.
 ---@type boolean
 settings["load_big_files_faster"] = true
@@ -82,18 +45,6 @@ settings["server_formatting_block_list"] = {
   clangd = true,
 }
 
-settings["conform_format_opts"] = {
-  timeout_ms = 3000,
-  async = false,               -- not recommended to change
-  quiet = false,               -- not recommended to change
-  lsp_fallback = true,         -- not recommended to change
-}
-
-settings["lsp_format_opts"] = {
-  formatting_options = nil,
-  timeout_ms = nil,
-}
-
 -- Set the language servers that will be installed during bootstrap here.
 -- check the below link for all the supported LSPs:
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations
@@ -104,28 +55,14 @@ settings["lsp_deps"] = {
   "yamlls",
   "lua_ls",
   --- FE ---
-  "tsserver",
+  -- "tsserver",
+  "vtsls",
   "html",
   "cssls",
   "cssmodules_ls",
   "tailwindcss",
   "eslint",
   --- -- ---
-}
-
--- Set the general-purpose servers that will be installed during bootstrap here.
--- Check the below link for all supported sources.
--- in `code_actions`, `completion`, `diagnostics`, `formatting`, `hover` folders:
--- https://github.com/nvimtools/none-ls.nvim/tree/main/lua/null-ls/builtins
----@type string[]
-settings["null_ls_deps"] = {
-  "clang_format",
-  "gofumpt",
-  "goimports",
-  "prettier",
-  "shfmt",
-  "stylua",
-  "vint",
 }
 
 -- Set the Treesitter parsers that will be installed during bootstrap here.
@@ -165,32 +102,6 @@ settings["treesitter_deps"] = {
   "vim",
   "vimdoc",
   "yaml",
-}
-
--- Set the dashboard startup image here
--- You can generate the ascii image using: https://github.com/TheZoraiz/ascii-image-converter
--- More info: https://github.com/ayamir/nvimdots/wiki/Issues#change-dashboard-startup-image
----@type string[]
-settings["dashboard_image"] = {
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣡⣾⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣟⠻⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⣷⣿⣿⣿⣿⣿⣿⣿⣾⣯⣿⡿⢧⡚⢷⣌⣽⣿⣿⣿⣿⣿⣶⡌⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⠇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣇⣘⠿⢹⣿⣿⣿⣿⣿⣻⢿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⠀⢸⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⡟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣻⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⡇⠀⣬⠏⣿⡇⢻⣿⣿⣿⣿⣿⣿⣿⣷⣼⣿⣿⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⠀⠈⠁⠀⣿⡇⠘⡟⣿⣿⣿⣿⣿⣿⣿⣿⡏⠿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣇⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⡏⠀⠀⠐⠀⢻⣇⠀⠀⠹⣿⣿⣿⣿⣿⣿⣩⡶⠼⠟⠻⠞⣿⡈⠻⣟⢻⣿⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢿⠀⡆⠀⠘⢿⢻⡿⣿⣧⣷⢣⣶⡃⢀⣾⡆⡋⣧⠙⢿⣿⣿⣟⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⡥⠂⡐⠀⠁⠑⣾⣿⣿⣾⣿⣿⣿⡿⣷⣷⣿⣧⣾⣿⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⡿⣿⣍⡴⠆⠀⠀⠀⠀⠀⠀⠀⠀⣼⣄⣀⣷⡄⣙⢿⣿⣿⣿⣿⣯⣶⣿⣿⢟⣾⣿⣿⢡⣿⣿⣿⣿⣿]],
-  [[⣿⡏⣾⣿⣿⣿⣷⣦⠀⠀⠀⢀⡀⠀⠀⠠⣭⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣡⣾⣿⣿⢏⣾⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⣿⣿⣿⣿⣿⡴⠀⠀⠀⠀⠀⠠⠀⠰⣿⣿⣿⣷⣿⠿⠿⣿⣿⣭⡶⣫⠔⢻⢿⢇⣾⣿⣿⣿⣿⣿⣿]],
-  [[⣿⣿⣿⡿⢫⣽⠟⣋⠀⠀⠀⠀⣶⣦⠀⠀⠀⠈⠻⣿⣿⣿⣾⣿⣿⣿⣿⡿⣣⣿⣿⢸⣾⣿⣿⣿⣿⣿⣿⣿]],
-  [[⡿⠛⣹⣶⣶⣶⣾⣿⣷⣦⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠉⠛⠻⢿⣿⡿⠫⠾⠿⠋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣀⡆⣠⢀⣴⣏⡀⠀⠀⠀⠉⠀⠀⢀⣠⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⠿⠛⠛⠛⠛⠛⠛⠻⢿⣿⣿⣿⣿⣯⣟⠷⢷⣿⡿⠋⠀⠀⠀⠀⣵⡀⢠⡿⠋⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿]],
-  [[⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⢿⣿⣿⠂⠀⠀⠀⠀⠀⢀⣽⣿⣿⣿⣿⣿⣿⣿⣍⠛⠿⣿⣿⣿⣿⣿⣿]],
 }
 
 return settings

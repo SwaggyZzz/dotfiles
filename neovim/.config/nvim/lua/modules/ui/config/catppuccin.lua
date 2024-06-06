@@ -3,13 +3,6 @@ return function()
 
   require("catppuccin").setup({
     background = { light = "latte", dark = "mocha" }, -- latte, frappe, macchiato, mocha
-    dim_inactive = {
-      enabled = false,
-      -- Dim inactive splits/windows/buffers.
-      -- NOT recommended if you use old palette (a.k.a., mocha).
-      shade = "dark",
-      percentage = 0.15,
-    },
     transparent_background = transparent_background,
     show_end_of_buffer = false, -- show the '~' characters after the end of buffers
     term_colors = true,
@@ -21,18 +14,6 @@ return function()
       keywords = { "bold", "italic" },
     },
     color_overrides = {},
-    custom_highlights = function(C)
-      return {
-        RainbowDelimiterRed = { fg = "#ff5ea0" },
-        RainbowDelimiterYellow = { fg = "#f1ff5e" },
-        RainbowDelimiterBlue = { fg = "#5ef1ff" },
-        RainbowDelimiterOrange = { fg = "#ffbd5e" },
-        RainbowDelimiterGreen = { fg = "#5eff6c" },
-        RainbowDelimiterViolet = { fg = "#ff5ef1" },
-        RainbowDelimiterCyan = { fg = "#5ef1ff" },
-        FloatBorder = { fg = C.yellow },
-      }
-    end,
     integrations = {
       aerial = true,
       alpha = true,

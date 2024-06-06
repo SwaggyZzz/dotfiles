@@ -1,14 +1,13 @@
 return function()
-  local format_utils = require("utils.format")
-  local lsp_utils = require("utils.lsp")
-  format_utils.register(lsp_utils.formatter())
-
   local servers = require("core.settings").lsp_deps
   local lspconfg = require("lspconfig")
+  local lsp_utils = require("utils.lsp")
+
+  lsp_utils.diagnostics_setup()
 
   local server_opts = {
-    capabilities = require("utils.lsp").common_capabilities(),
-    on_attach = require("utils.lsp").on_attach
+    capabilities = lsp_utils.common_capabilities(),
+    on_attach = lsp_utils.on_attach
   }
 
   local function setup(server)

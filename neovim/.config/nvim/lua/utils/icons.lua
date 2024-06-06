@@ -138,14 +138,14 @@ local data = {
 	},
 	diagnostics = {
 		Error = "",
-		Warning = "",
-		Information = "",
+		Warn = "",
+		Info = "",
 		Question = "",
 		Hint = "󰌵",
 		-- Holo version
 		Error_alt = "󰅚",
-		Warning_alt = "󰀪",
-		Information_alt = "",
+		Warn_alt = "󰀪",
+		Info_alt = "",
 		Question_alt = "",
 		Hint_alt = "󰌶",
 	},
