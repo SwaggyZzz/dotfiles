@@ -1,7 +1,7 @@
 local keymap = vim.keymap
-local opts = { noremap = true, silent = true }
+local map = vim.keymap.set
 
--- ============== Delete Default Keymaps ===============
+--------------- Delete Default Keymaps ---------------
 
 keymap.del("n", "<A-j>")
 keymap.del("n", "<A-k>")
@@ -22,38 +22,48 @@ keymap.del("n", "]b")
 keymap.del("n", "<leader>bb")
 keymap.del("n", "<leader>`")
 
--- =====================================================
-keymap.set("n", "<A-w>", function()
-  require("mini.bufremove").delete(0, false)
-end)
-keymap.set("n", "<A-s>", "<CMD>w<CR>")
-keymap.set("i", "<A-s>", "<ESC><CMD>w<CR>")
+-------------------------------------------------------
 
--- Increment/decrement
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "-", "<C-x>")
+map("i", "jk", "<ESC>")
 
--- Delete a word backwards
--- keymap.set("n", "dw", 'vb"_d')
+map("n", "H", "^")
+map("n", "L", "$")
 
--- Select all
-keymap.set("n", "<C-a>", "gg<S-v>G")
+map("n", "<A-w>", "<CMD>BufDel<CR>", { desc = "Close Buffer" })
+map("n", "<A-s>", "<CMD>w<CR>")
+map("i", "<A-s>", "<ESC><CMD>w<CR>")
+
+-- Resize window using <ctrl> arrow keys
+map("n", "<S-Up>", "<CMD>resize +2<CR>", { desc = "Increase Window Height" })
+map("n", "<S-Down>", "<CMD>resize -2<CR>", { desc = "Decrease Window Height" })
+map("n", "<S-Left>", "<CMD>vertical resize -2<CR>", { desc = "Decrease Window Width" })
+map("n", "<S-Right>", "<CMD>vertical resize +2<CR>", { desc = "Increase Window Width" })
 
 -- Format
-keymap.set("n", "<A-S-f>", "<CMD>LazyFormat<CR>")
+keymap.set("n", "<A-S-f>", "<CMD>LazyFormat<CR>", { desc = "Format" })
 
-keymap.set("n", "H", "^")
-keymap.set("n", "L", "$")
+-- Commenting
+map("n", "gco", "o<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
+map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Comment Above" })
 
--- ====================== Plugins Keymaps ============================
+--------------- Naviagte ---------------
+map({ "n", "t" }, "<A-h>", "<CMD>NavigatorLeft<CR>")
+map({ "n", "t" }, "<A-l>", "<CMD>NavigatorRight<CR>")
+map({ "n", "t" }, "<A-k>", "<CMD>NavigatorUp<CR>")
+map({ "n", "t" }, "<A-j>", "<CMD>NavigatorDown<CR>")
+map({ "n", "t" }, "<A-p>", "<CMD>NavigatorPrevious<CR>")
 
--- Naviagte
-keymap.set({ "n", "t" }, "<A-h>", "<CMD>NavigatorLeft<CR>")
-keymap.set({ "n", "t" }, "<A-l>", "<CMD>NavigatorRight<CR>")
-keymap.set({ "n", "t" }, "<A-k>", "<CMD>NavigatorUp<CR>")
-keymap.set({ "n", "t" }, "<A-j>", "<CMD>NavigatorDown<CR>")
-keymap.set({ "n", "t" }, "<A-p>", "<CMD>NavigatorPrevious<CR>")
-
--- BufferLine
-keymap.set("n", "<C-h>", "<CMD>BufferLineCyclePrev<CR>")
-keymap.set("n", "<C-l>", "<CMD>BufferLineCycleNext<CR>")
+--------------- BufferLine ---------------
+map("n", "<C-h>", "<CMD>BufferLineCyclePrev<CR>")
+map("n", "<C-l>", "<CMD>BufferLineCycleNext<CR>")
+map("n", "<A-S-h>", "<CMD>BufferLineMovePrev<CR>")
+map("n", "<A-S-l>", "<CMD>BufferLineMoveNext<CR>")
+map("n", "<leader>1", "<CMD>BufferLineGoToBuffer 1<CR>")
+map("n", "<leader>2", "<CMD>BufferLineGoToBuffer 2<CR>")
+map("n", "<leader>3", "<CMD>BufferLineGoToBuffer 3<CR>")
+map("n", "<leader>4", "<CMD>BufferLineGoToBuffer 4<CR>")
+map("n", "<leader>5", "<CMD>BufferLineGoToBuffer 5<CR>")
+map("n", "<leader>6", "<CMD>BufferLineGoToBuffer 6<CR>")
+map("n", "<leader>7", "<CMD>BufferLineGoToBuffer 7<CR>")
+map("n", "<leader>8", "<CMD>BufferLineGoToBuffer 8<CR>")
+map("n", "<leader>9", "<CMD>BufferLineGoToBuffer 9<CR>")
