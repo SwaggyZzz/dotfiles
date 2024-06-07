@@ -86,19 +86,18 @@ return {
       { "[b",    false },
       { "]b",    false },
     },
-    opts = {
-      options = {
+    opts = function(_, opts)
+      local options = vim.tbl_deep_extend('force', opts.options, {
         always_show_bufferline = true,
         numbers = function(opts)
           return string.format("%s", opts.ordinal)
         end,
-      }
-    },
-    config = function(_, opts)
+      })
+      opts.options = options
+
       if vim.g.colors_name:find("catppuccin") then
         opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
       end
-      require("bufferline").setup(opts)
-    end
+    end,
   },
 }
