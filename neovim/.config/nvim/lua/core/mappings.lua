@@ -18,7 +18,7 @@ map("n", "-", "<C-x>")
 
 -- Format
 map({ "n", "v" }, "<A-S-f>", function()
-  vim.api.nvim_command([[CodeFormat]])
+	vim.api.nvim_command([[CodeFormat]])
 end, { desc = "Format" })
 
 -- Select all
@@ -51,12 +51,11 @@ map("v", ">", ">gv")
 map("n", "gco", "o<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Comment Above" })
 
-
 -- map("n", "n", "nzz")
 -- map("n", "N", "Nzz")
 
 --------------- NvimTree ---------------
-map("n", "<C-n>", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
+map("n", "<leader>e", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
 map("n", "<leader>ne", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
 map("n", "<leader>nf", "<CMD>NvimTreeFindFile<CR>", { desc = "FileTree Find File" })
 map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
@@ -64,13 +63,13 @@ map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" }
 --------------- Telescope ---------------
 map("n", "<leader>ff", "<CMD>Telescope find_files<CR>", { desc = "Telescope find file" })
 map("n", "<leader>fs", function()
-  require("telescope.builtin").grep_string({ word_match = "-w" })
+	require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find current word" })
 map("v", "<leader>fs", function()
-  require("telescope.builtin").grep_string({ word_match = "-w" })
+	require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find selection word" })
 map("n", "<leader>/", function()
-  require("telescope").extensions.live_grep_args.live_grep_args()
+	require("telescope").extensions.live_grep_args.live_grep_args()
 end, { desc = "Telescope find word" })
 
 --------------- Naviagte ---------------
