@@ -68,5 +68,5 @@ return {
       })
       return opts
     end,
-  }
+  },
 }

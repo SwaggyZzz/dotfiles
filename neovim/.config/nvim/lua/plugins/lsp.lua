@@ -34,20 +34,24 @@ return {
           },
         },
       },
+      inlay_hints = {
+        enabled = true,
+        exclude = { "typescriptreact" }, -- filetypes for which you don't want to enable inlay hints
+      },
+      setup = {
+        eslint = function()
+          require("lazyvim.util").lsp.on_attach(function(client)
+            vim.notify(client.name)
+            if client.name == "vtsls" then
+              client.server_capabilities.documentFormattingProvider = false
+            end
+          end)
+        end,
+      },
     },
   },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
-    opts = {
-      bind = true,
-      handler_opts = {
-        border = "rounded", -- double, rounded, single, shadow, none, or a table of borders
-      },
-      transparency = 100,
-    },
-    config = function(_, opts)
-      require("lsp_signature").setup(opts)
-    end,
-  }
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "VeryLazy",
+  -- }
 }

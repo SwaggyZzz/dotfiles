@@ -11,19 +11,18 @@ return {
             -- end
             -- return vim.fs.basename(ctx.filename) ~= "README.md"
 
-            return not vim.fs.find(
-              {
-                "saas",
-                "motor%-design",
-                "ad_match_mono"
-              },
-              {
-                type = "directory",
-                path = ctx.dirname,
-                upward = true
-              })[1]
+            return not vim.fs.find({
+              "saas",
+              "motor%-design",
+              "ad_match_mono",
+              "blitz",
+            }, {
+              type = "directory",
+              path = ctx.dirname,
+              upward = true,
+            })[1]
           end,
-        }
+        },
         -- # Example of using dprint only when a dprint.json file is present
         -- dprint = {
         --   condition = function(ctx)

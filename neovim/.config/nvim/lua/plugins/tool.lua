@@ -16,7 +16,13 @@ return {
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
       { "<leader><space>", false },
-      { "<leader>/",       function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Grep (Root Dir)" },
+      {
+        "<leader>/",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args()
+        end,
+        desc = "Grep (Root Dir)",
+      },
     },
     opts = function(_, opts)
       local lga_actions = require("telescope-live-grep-args.actions")
@@ -32,7 +38,7 @@ return {
           live_grep_args = {
             auto_quoting = true, -- enable/disable auto-quoting
             -- define mappings, e.g.
-            mappings = {         -- extend mappings
+            mappings = { -- extend mappings
               i = {
                 ["<C-k>"] = lga_actions.quote_prompt(),
                 ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
@@ -44,8 +50,8 @@ return {
             -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
             filetypes = { "png", "webp", "jpg", "jpeg" },
             -- find command (defaults to `fd`)
-            find_cmd = "rg"
-          }
+            find_cmd = "rg",
+          },
         },
       })
     end,
@@ -63,5 +69,10 @@ return {
         end,
       },
     },
-  }
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 }
