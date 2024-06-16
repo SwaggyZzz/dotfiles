@@ -33,7 +33,8 @@ return function(_, opts)
             {
               "saas",
               "motor%-design",
-              "ad_match_mono"
+              "ad_match_mono",
+              "blitz"
             },
             {
               type = "directory",

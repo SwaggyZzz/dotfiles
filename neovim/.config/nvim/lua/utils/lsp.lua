@@ -15,6 +15,10 @@ function M.on_attach(client, bufnr)
   --   end
   -- end
 
+  if client.name == "vtsls" then
+    client.server_capabilities.documentFormattingProvider = false
+  end
+
   local function opts(desc)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end

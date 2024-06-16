@@ -4,7 +4,7 @@ return function()
   require("catppuccin").setup({
     background = { light = "latte", dark = "mocha" }, -- latte, frappe, macchiato, mocha
     transparent_background = transparent_background,
-    show_end_of_buffer = false, -- show the '~' characters after the end of buffers
+    show_end_of_buffer = false,                       -- show the '~' characters after the end of buffers
     term_colors = true,
     styles = {
       comments = { "italic" },
@@ -14,6 +14,46 @@ return function()
       keywords = { "bold", "italic" },
     },
     color_overrides = {},
+    highlight_overrides = {
+      ---@param cp palette
+      all = function(cp)
+        return {
+          -- For base configs
+          NormalFloat = { fg = cp.text, bg = transparent_background and cp.none or cp.mantle },
+          FloatBorder = {
+            fg = transparent_background and cp.blue or cp.mantle,
+            bg = transparent_background and cp.none or cp.mantle,
+          },
+          CursorLineNr = { fg = cp.green },
+
+          -- For native lsp configs
+          DiagnosticVirtualTextError = { bg = cp.none },
+          DiagnosticVirtualTextWarn = { bg = cp.none },
+          DiagnosticVirtualTextInfo = { bg = cp.none },
+          DiagnosticVirtualTextHint = { bg = cp.none },
+          LspInfoBorder = { link = "FloatBorder" },
+
+          -- For mason.nvim
+          MasonNormal = { link = "NormalFloat" },
+
+          -- For indent-blankline
+          IblIndent = { fg = cp.surface0 },
+          IblScope = { fg = cp.surface2, style = { "bold" } },
+
+          -- For nvim-cmp
+          PmenuSel = { bg = cp.green, fg = cp.base },
+          Pmenu = { fg = cp.overlay2, bg = transparent_background and cp.none or cp.base },
+					PmenuBorder = { fg = cp.surface1, bg = transparent_background and cp.none or cp.base },
+
+          -- For nvim-notify
+          NotifyBackground = { bg = cp.base },
+
+          -- For nvim-tree
+          NvimTreeRootFolder = { fg = cp.pink },
+          NvimTreeIndentMarker = { fg = cp.surface2 },
+        }
+      end,
+    },
     integrations = {
       aerial = true,
       alpha = true,

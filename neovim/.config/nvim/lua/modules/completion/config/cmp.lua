@@ -8,19 +8,6 @@ return function()
     cmp = require("utils.icons").get("cmp"),
   }
 
-  local border = function(hl)
-    return {
-      { "┌", hl },
-      { "─", hl },
-      { "┐", hl },
-      { "│", hl },
-      { "┘", hl },
-      { "─", hl },
-      { "└", hl },
-      { "│", hl },
-    }
-  end
-
   cmp.setup({
     snippet = {
       expand = function(args)
@@ -29,13 +16,28 @@ return function()
     },
     window = {
       completion = {
-        border = border("PmenuBorder"),
-        winhighlight = "Normal:Pmenu,CursorLine:PmenuSel,Search:PmenuSel",
-        scrollbar = false,
+        border = {
+          { "󱐋", "WarningMsg" },
+          { "─", "Comment" },
+          { "╮", "Comment" },
+          { "│", "Comment" },
+          { "╯", "Comment" },
+          { "─", "Comment" },
+          { "╰", "Comment" },
+          { "│", "Comment" },
+        },
       },
       documentation = {
-        border = border("CmpDocBorder"),
-        winhighlight = "Normal:CmpDoc",
+        border = {
+          { "", "DiagnosticHint" },
+          { "─", "Comment" },
+          { "╮", "Comment" },
+          { "│", "Comment" },
+          { "╯", "Comment" },
+          { "─", "Comment" },
+          { "╰", "Comment" },
+          { "│", "Comment" },
+        },
       },
     },
     performance = {
@@ -44,19 +46,19 @@ return function()
     },
     sorting = defaults.sorting,
     sources = {
-			{ name = "nvim_lsp", max_item_count = 350 },
-			{ name = "nvim_lua" },
-			{ name = "luasnip" },
-			{ name = "path" },
-			{
-				name = "buffer",
-				option = {
-					get_bufnrs = function()
-						return vim.api.nvim_list_bufs()
-					end,
-				},
-			},
-		},
+      { name = "nvim_lsp", max_item_count = 350 },
+      { name = "nvim_lua" },
+      { name = "luasnip" },
+      { name = "path" },
+      {
+        name = "buffer",
+        option = {
+          get_bufnrs = function()
+            return vim.api.nvim_list_bufs()
+          end,
+        },
+      },
+    },
     formatting = {
       fields = { "abbr", "kind", "menu" },
       format = function(entry, item)

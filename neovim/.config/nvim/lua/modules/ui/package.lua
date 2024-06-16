@@ -37,7 +37,7 @@ packadd({
       },
       sections = {
         lualine_a = {
-          { "fancy_mode", width = 3 },
+          { "fancy_mode", width = 6 },
         },
         lualine_b = {
           { "fancy_branch", icon = { icons.git.Branch } },
@@ -79,7 +79,6 @@ packadd({
   lazy = true,
   event = { "CursorHold", "CursorHoldI" },
   opts = {
-    debounce = 200,
     whitespace = { remove_blankline_trail = true },
     indent = {
       char = "│",
@@ -176,10 +175,10 @@ packadd({
   },
 })
 
--- packadd({
---   'rasulomaroff/reactive.nvim',
---   event = "VeryLazy",
---   opts = {
---     load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
---   },
--- })
+packadd({
+  'rasulomaroff/reactive.nvim',
+  event = "VeryLazy",
+  opts = {
+    load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
+  },
+})
