@@ -24,10 +24,8 @@ require("lazy").setup({
       require "options"
     end,
   },
-  { import = "plugins.treesitter" },
-  { import = "plugins.editor" },
-  { import = "plugins.formatting" },
-  { import = "plugins.lsp" },
+
+  { import = "plugins" },
 }, lazy_config)
 
 -- load theme
@@ -35,7 +33,9 @@ dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
 require "nvchad.autocmds"
+require("events")
 
 vim.schedule(function()
   require "mappings"
 end)
+

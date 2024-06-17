@@ -11,13 +11,7 @@ local map = vim.keymap.set
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
-map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
-map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
-
-map("n", "<leader>fm", function()
-  require("conform").format { lsp_fallback = true }
-end, { desc = "format files" })
 
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "lsp diagnostic loclist" })
@@ -34,13 +28,13 @@ map("n", "<S-tab>", function()
 end, { desc = "buffer goto prev" })
 
 -- Comment
-map("n", "<leader>/", function()
+map("n", "<A-/>", function()
   require("Comment.api").toggle.linewise.current()
 end, { desc = "comment toggle" })
 
 map(
   "v",
-  "<leader>/",
+  "<A-/>",
   "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
   { desc = "comment toggle" }
 )
@@ -74,29 +68,56 @@ end, { desc = "blankline jump to current context" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
-map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
+-- Save file
+map({ "i", "x", "n", "s" }, "<A-s>", "<CMD>w<cr><ESC>", { desc = "Save File" })
+-- Close Buffer
 map("n", "<A-w>", function()
   require("nvchad.tabufline").close_buffer()
-end, { desc = "buffer close" })
-map("n", "<A-s>", "<CMD>w<CR>", { desc = "file save" })
-map("i", "<A-s>", "<ESC><CMD>w<CR>", { desc = "file save" })
-
+end, { desc = "Close Buffer" })
+-- Quit all
+map("n", "<leader>qq", "<CMD>qa<CR>", { desc = "Quit All" })
+-- Windows
+map("n", "<leader>ww", "<C-W>p", { desc = "Other Window", remap = true })
+map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
+map("n", "<leader>w-", "<C-W>s", { desc = "Split Window Below", remap = true })
+map("n", "<leader>w|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
+-- Resize window using <ctrl> arrow keys
+map("n", "<S-Up>", "<CMD>resize +2<CR>", { desc = "Increase Window Height" })
+map("n", "<S-Down>", "<CMD>resize -2<CR>", { desc = "Decrease Window Height" })
+map("n", "<S-Left>", "<CMD>vertical resize -2<CR>", { desc = "Decrease Window Width" })
+map("n", "<S-Right>", "<CMD>vertical resize +2<CR>", { desc = "Increase Window Width" })
 
-map("n", "+", "<C-a>", { desc = "Increase" })
-map("n", "-", "<C-x>", { desc = "Decrease" })
+-- Move Lines
+map("i", "<A-j>", "<esc><CMD>m .+1<CR>==gi", { desc = "Move Down" })
+map("i", "<A-k>", "<esc><CMD>m .-2<CR>==gi", { desc = "Move Up" })
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move Down" })
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move Up" })
+
+-- Increment/decrement
+map("n", "+", "<C-a>")
+map("n", "-", "<C-x>")
 
 -- Delete a word backwards
 -- map("n", "dw", 'vb"_d')
 
-map("n", "<C-a>", "gg<S-v>G", { desc = "Select all" })
-
 -- Format
--- map("n", "<A-S-f>", "<CMD>LazyFormat<CR>")
+map("n", "<A-S-f>", function()
+  require("conform").format {
+    bufnr = vim.api.nvim_get_current_buf(),
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 500,
+  }
+end, { desc = "Code Format" })
 
 map("n", "H", "^", { desc = "move beginning of line" })
 map("n", "L", "$", { desc = "move end of line" })
+
+-- better indenting
+map("v", "<", "<gv")
+map("v", ">", ">gv")
 
 
 -- ====================== Plugins Keymaps ============================

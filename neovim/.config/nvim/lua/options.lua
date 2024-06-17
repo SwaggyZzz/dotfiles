@@ -1,6 +1,10 @@
 require "nvchad.options"
 
--- add yours here!
+local opt = vim.opt
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+opt.confirm = true -- Confirm to save changes before exiting modified buffer
+opt.cursorline = true -- Enable highlighting of the current line
+opt.number = true -- Print line number
+opt.relativenumber = true -- Relative line numbers
+
+vim.o.cursorlineopt ='number,line'
