@@ -18,7 +18,12 @@ map("n", "-", "<C-x>")
 
 -- Format
 map({ "n", "v" }, "<A-S-f>", function()
-	vim.api.nvim_command([[CodeFormat]])
+	require("conform").format({
+		bufnr = vim.api.nvim_get_current_buf(),
+		lsp_fallback = true,
+		async = false,
+		timeout_ms = 500,
+	})
 end, { desc = "Format" })
 
 -- Select all
@@ -55,9 +60,8 @@ map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Commen
 -- map("n", "N", "Nzz")
 
 --------------- NvimTree ---------------
-map("n", "<leader>e", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
-map("n", "<leader>ne", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
-map("n", "<leader>nf", "<CMD>NvimTreeFindFile<CR>", { desc = "FileTree Find File" })
+map("n", "<leader>e", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
+map("n", "<C-n>", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
 map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
 
 --------------- Telescope ---------------

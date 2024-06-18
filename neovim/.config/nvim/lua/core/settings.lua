@@ -1,16 +1,5 @@
 local settings = {}
 
--- Set it to false if you don't use nvim to open big files.
----@type boolean
-settings["load_big_files_faster"] = true
-
--- Change the colors of the global palette here.
--- Settings will complete their replacement at initialization.
--- Parameters will be automatically completed as you type.
--- Example: { sky = "#04A5E5" }
----@type palette[]
-settings["palette_overwrite"] = {}
-
 -- Set the colorscheme to use here.
 -- Available values are: `catppuccin`, `catppuccin-latte`, `catppucin-mocha`, `catppuccin-frappe`, `catppuccin-macchiato`.
 ---@type string
@@ -26,30 +15,11 @@ settings["transparent_background"] = true
 ---@type "dark"|"light"
 settings["background"] = "dark"
 
--- Set the command for handling external URLs here. The executable must be available on your $PATH.
--- This entry is IGNORED on Windows and macOS, which have their default handlers builtin.
----@type string
-settings["external_browser"] = "chrome-cli open"
-
--- Filetypes in this list will skip lsp formatting if rhs is true.
----@type table<string, boolean>
-settings["formatter_block_list"] = {
-  lua = false, -- example
-}
-
--- Servers in this list will skip setting formatting capabilities if rhs is true.
----@type table<string, boolean>
-settings["server_formatting_block_list"] = {
-  lua_ls = true,
-  tsserver = true,
-  clangd = true,
-}
-
 -- Set the language servers that will be installed during bootstrap here.
 -- check the below link for all the supported LSPs:
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations
 ---@type string[]
-settings["lsp_deps"] = {
+settings["lsp_servers"] = {
   "bashls",
   "jsonls",
   "yamlls",
@@ -62,14 +32,14 @@ settings["lsp_deps"] = {
   "cssmodules_ls",
   "tailwindcss",
   "eslint",
-  --- -- ---
+  ----------
 }
 
 -- Set the Treesitter parsers that will be installed during bootstrap here.
 -- Check the below link for all supported languages:
 -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
 ---@type string[]
-settings["treesitter_deps"] = {
+settings["treesitter_parsers"] = {
   "bash",
   "c",
   "cpp",

@@ -23,12 +23,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
--- Manual format
-vim.api.nvim_create_user_command("CodeFormat", function()
-  require("conform").format({
-    bufnr = vim.api.nvim_get_current_buf(),
-    lsp_fallback = true,
-    async = false,
-    timeout_ms = 500,
-  })
-end, { desc = "Format selection or buffer" })
+-- -- Manual format
+-- vim.api.nvim_create_user_command("CodeFormat", function()
+--   require("conform").format({
+--     bufnr = vim.api.nvim_get_current_buf(),
+--     lsp_fallback = true,
+--     async = false,
+--     timeout_ms = 500,
+--   })
+-- end, { desc = "Format selection or buffer" })
