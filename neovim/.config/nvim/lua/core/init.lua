@@ -34,8 +34,11 @@ local clipboard_config = function()
 end
 
 local load_core = function()
-	leader_map()
+	vim.g.loaded_netrw = 1
+	vim.g.loaded_netrwPlugin = 1
 
+
+	leader_map()
 	-- clipboard_config()
 
 	require("core.options")

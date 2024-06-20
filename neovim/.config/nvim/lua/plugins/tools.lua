@@ -2,14 +2,8 @@ return {
 	{ "nvim-lua/plenary.nvim", lazy = true },
 	{
 		"nvim-tree/nvim-tree.lua",
-		cmd = {
-			"NvimTreeToggle",
-			"NvimTreeOpen",
-			"NvimTreeFindFile",
-			"NvimTreeFindFileToggle",
-			"NvimTreeRefresh",
-			"NvimTreeFocus",
-		},
+		lazy = false,
+		version = "*",
 		config = require("configs.tools.nvim-tree"),
 	},
 	{

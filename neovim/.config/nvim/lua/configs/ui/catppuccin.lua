@@ -4,7 +4,7 @@ return function()
   require("catppuccin").setup({
     background = { light = "latte", dark = "mocha" }, -- latte, frappe, macchiato, mocha
     transparent_background = transparent_background,
-    show_end_of_buffer = false,                       -- show the '~' characters after the end of buffers
+    show_end_of_buffer = false, -- show the '~' characters after the end of buffers
     term_colors = true,
     styles = {
       comments = { "italic" },
@@ -35,6 +35,9 @@ return function()
 
           -- For mason.nvim
           MasonNormal = { link = "NormalFloat" },
+
+          -- For telescope.nvim
+          TelescopeMatching = { fg = cp.lavender },
 
           -- For indent-blankline
           IblIndent = { fg = cp.surface0 },

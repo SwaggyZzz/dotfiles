@@ -48,5 +48,5 @@ return {
         ensure_installed()
       end
     end,
-  }
+  },
 }

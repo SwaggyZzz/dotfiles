@@ -95,3 +95,11 @@ map("n", "<leader>6", "<CMD>BufferLineGoToBuffer 6<CR>")
 map("n", "<leader>7", "<CMD>BufferLineGoToBuffer 7<CR>")
 map("n", "<leader>8", "<CMD>BufferLineGoToBuffer 8<CR>")
 map("n", "<leader>9", "<CMD>BufferLineGoToBuffer 9<CR>")
+
+--------------- Todo-Comments ---------------
+map("n", "]t", function()
+	require("todo-comments").jump_next()
+end, { desc = "Next Todo Comment" })
+map("n", "[t", function()
+	require("todo-comments").jump_prev()
+end, { desc = "Prev Todo Comment" })
