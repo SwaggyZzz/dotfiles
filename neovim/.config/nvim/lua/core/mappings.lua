@@ -24,6 +24,15 @@ map({ "n", "v" }, "<A-S-f>", function()
     async = false,
     timeout_ms = 500,
   })
+  -- local formatters = require("conform").list_formatters()
+  -- local str = ""
+  --
+  -- vim.notify(tostring(#formatters))
+  --
+  -- for _, value in ipairs(formatters) do
+  --   str = str .. ", " .. value.name
+  -- end
+  -- vim.notify(str)
 end, { desc = "Format" })
 
 -- Select all

@@ -1,6 +1,7 @@
 return function()
   local lspconfig = require("lspconfig")
   local servers = require("core.settings").lsp_servers
+  local eslint_format_dir = require("core.settings").eslint_format_dir
 
   local diagnostic_setup = function()
     local opts = {
@@ -32,11 +33,12 @@ return function()
   end
 
   local disabled_vtsls_format = function(dir)
-    if dir and string.match(dir, "saas|motor%-design|ad_match_mono|blitz") then
-      return true
-    else
-      return false
+    for _, d in ipairs(eslint_format_dir) do
+      if string.match(dir, d) then
+        return true
+      end
     end
+    return false
   end
 
   local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")

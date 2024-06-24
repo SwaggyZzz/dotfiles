@@ -35,20 +35,17 @@ return {
               -- end
               -- return vim.fs.basename(ctx.filename) ~= "README.md"
 
-              return not vim.fs.find(
-                {
-                  "saas",
-                  "motor%-design",
-                  "ad_match_mono",
-                  "blitz"
-                },
-                {
-                  type = "directory",
-                  path = ctx.dirname,
-                  upward = true
-                })[1]
+              local eslint_format_dir = require("core.settings").eslint_format_dir
+
+              for _, dir in ipairs(eslint_format_dir) do
+                if string.match(ctx.dirname, dir) then
+                  return false
+                end
+              end
+
+              return true
             end,
-          }
+          },
           -- # Example of using dprint only when a dprint.json file is present
           -- dprint = {
           --   condition = function(ctx)
@@ -64,6 +61,6 @@ return {
       }
 
       require("conform").setup(opts)
-    end
+    end,
   },
 }

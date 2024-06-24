@@ -35,6 +35,15 @@ settings["lsp_servers"] = {
   ----------
 }
 
+settings["eslint_format_dir"] = {
+  "/work/saas",
+  "/motor-design",
+  "/ad_match_mono",
+  "/work/blitz",
+  "/motor_mp",
+  "ad_basic_pages",
+}
+
 -- Set the Treesitter parsers that will be installed during bootstrap here.
 -- Check the below link for all supported languages:
 -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
