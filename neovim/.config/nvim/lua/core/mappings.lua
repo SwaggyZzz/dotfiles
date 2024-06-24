@@ -18,12 +18,12 @@ map("n", "-", "<C-x>")
 
 -- Format
 map({ "n", "v" }, "<A-S-f>", function()
-	require("conform").format({
-		bufnr = vim.api.nvim_get_current_buf(),
-		lsp_fallback = true,
-		async = false,
-		timeout_ms = 500,
-	})
+  require("conform").format({
+    bufnr = vim.api.nvim_get_current_buf(),
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 500,
+  })
 end, { desc = "Format" })
 
 -- Select all
@@ -59,6 +59,19 @@ map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Commen
 -- map("n", "n", "nzz")
 -- map("n", "N", "Nzz")
 
+--------------- Lsp --------------------
+map("n", "gd", function()
+  require("telescope.builtin").lsp_definitions({ reuse_win = true })
+end, { desc = "LSP Go to definition" })
+map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Go to declaration" })
+map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Go to implementation" })
+map("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
+map("n", "gK", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
+map("n", "<c-k>", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
+
+map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code action" })
+map("n", "gr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP Show references" })
+
 --------------- NvimTree ---------------
 map("n", "<leader>e", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
 map("n", "<C-n>", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
@@ -67,16 +80,16 @@ map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" }
 --------------- Telescope ---------------
 map("n", "<leader>ff", "<CMD>Telescope find_files<CR>", { desc = "Telescope find file" })
 map("n", "<leader>fs", function()
-	require("telescope.builtin").grep_string({ word_match = "-w" })
+  require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find current word" })
 map("v", "<leader>fs", function()
-	require("telescope.builtin").grep_string({ word_match = "-w" })
+  require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find selection word" })
 map("n", "<leader>/", function()
-	require("telescope").extensions.live_grep_args.live_grep_args()
+  require("telescope").extensions.live_grep_args.live_grep_args()
 end, { desc = "Telescope find word" })
 
---------------- Naviagte ---------------
+--------------- Naviagte -----------------
 map({ "n", "t" }, "<A-h>", "<CMD>NavigatorLeft<CR>")
 map({ "n", "t" }, "<A-l>", "<CMD>NavigatorRight<CR>")
 map({ "n", "t" }, "<A-k>", "<CMD>NavigatorUp<CR>")
@@ -96,10 +109,10 @@ map("n", "<leader>7", "<CMD>BufferLineGoToBuffer 7<CR>")
 map("n", "<leader>8", "<CMD>BufferLineGoToBuffer 8<CR>")
 map("n", "<leader>9", "<CMD>BufferLineGoToBuffer 9<CR>")
 
---------------- Todo-Comments ---------------
+--------------- Todo-Comments ------------
 map("n", "]t", function()
-	require("todo-comments").jump_next()
+  require("todo-comments").jump_next()
 end, { desc = "Next Todo Comment" })
 map("n", "[t", function()
-	require("todo-comments").jump_prev()
+  require("todo-comments").jump_prev()
 end, { desc = "Prev Todo Comment" })

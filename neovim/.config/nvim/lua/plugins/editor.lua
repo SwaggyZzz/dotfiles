@@ -102,4 +102,16 @@ return {
     "Bekaboo/dropbar.nvim",
     event = "VeryLazy",
   },
+  {
+    "kevinhwang91/nvim-ufo",
+    event = "VeryLazy",
+    dependencies = "kevinhwang91/promise-async",
+    config = function()
+      local map = vim.keymap.set
+      map("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
+      map("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })
+      map("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "Open Folds Except Kinds" })
+      map("n", "zm", require("ufo").closeFoldsWith, { desc = "Close Folds With Number" }) -- closeAllFolds == closeFoldsWith(0)
+    end,
+  },
 }

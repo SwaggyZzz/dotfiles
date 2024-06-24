@@ -2,8 +2,6 @@ return function()
   local lspconfig = require("lspconfig")
   local servers = require("core.settings").lsp_servers
 
-  local map = vim.keymap.set
-
   local diagnostic_setup = function()
     local opts = {
       underline = true,
@@ -49,33 +47,17 @@ return function()
     has_cmp and cmp_nvim_lsp.default_capabilities() or {}
   )
 
+  -- nvim-ufo need config
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+  }
+
   local server_opts = {
     on_attach = function(client, bufnr)
       if client.name == "vtsls" and disabled_vtsls_format(client.root_dir) then
         client.server_capabilities.documentFormattingProvider = false
       end
-
-      local function opts(desc)
-        return { buffer = bufnr, desc = "LSP " .. desc }
-      end
-
-      map("n", "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
-        opts "Go to definition")
-      map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-      map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
-      map("n", "K", vim.lsp.buf.hover, opts "Hover")
-      map("n", "gK", vim.lsp.buf.signature_help, opts "Signature Help")
-      map("n", "<c-k>", vim.lsp.buf.signature_help, opts "Signature Help")
-
-      map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
-      map("n", "gr", "<cmd>Telescope lsp_references<cr>", opts "Show references")
-
-      -- map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
-      -- map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
-
-      -- map("n", "<leader>wl", function()
-      --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-      -- end, opts "List workspace folders")
     end,
     capabilities = capabilities,
   }
@@ -129,4 +111,50 @@ return function()
   end
 
   diagnostic_setup()
+
+  require("ufo").setup({
+    provider_selector = function(bufnr, filetype, buftype)
+      local lsp_clients = vim.lsp.get_clients({
+        bufnr = bufnr,
+      })
+      if #lsp_clients > 0 then
+        return { "lsp", "treesitter" }
+      end
+
+      return { "treesitter", "indent" }
+    end,
+    close_fold_kinds_for_ft = {
+      default = { "imports", "comment" },
+    },
+    fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+      local newVirtText = {}
+      local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+      local sufWidth = vim.fn.strdisplaywidth(suffix)
+      local targetWidth = width - sufWidth
+      local curWidth = 0
+
+      for _, chunk in ipairs(virtText) do
+        local chunkText = chunk[1]
+        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        if targetWidth > curWidth + chunkWidth then
+          table.insert(newVirtText, chunk)
+        else
+          chunkText = truncate(chunkText, targetWidth - curWidth)
+          local hlGroup = chunk[2]
+          table.insert(newVirtText, { chunkText, hlGroup })
+          chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          -- str width returned from truncate() may less than 2nd argument, need padding
+          if curWidth + chunkWidth < targetWidth then
+            suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+          end
+          break
+        end
+        curWidth = curWidth + chunkWidth
+      end
+
+      table.insert(newVirtText, { suffix, "MoreMsg" })
+
+      return newVirtText
+    end,
+  })
 end

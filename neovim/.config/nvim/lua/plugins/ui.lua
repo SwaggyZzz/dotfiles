@@ -155,6 +155,7 @@ return {
           "NeoTree",
           "NvimTree",
           "lazy",
+          "dashboard",
         },
         buftypes = {
           "terminal",

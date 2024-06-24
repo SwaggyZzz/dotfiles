@@ -17,7 +17,10 @@ opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
+opt.foldenable = true
+opt.foldcolumn = "0"
 opt.foldlevel = 99
+opt.foldlevelstart = 99
 -- opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
