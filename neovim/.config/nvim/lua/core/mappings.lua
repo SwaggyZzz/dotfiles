@@ -78,6 +78,13 @@ map("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
 map("n", "gK", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
 map("n", "<c-k>", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
 
+map(
+  "n",
+  "<leader>lx",
+  "<cmd>lua vim.diagnostic.open_float({ border = 'rounded', max_width = 100 })<CR>",
+  { desc = "LSP Line Diagnostic" }
+)
+
 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code action" })
 map("n", "gr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP Show references" })
 

@@ -110,7 +110,7 @@ return {
           Codeium = "",
           TabNine = "",
         }
-        local icon = icons[item.kind]
+        local icon = icons[item.kind] or " "
 
         icon = (" " .. icon .. " ")
         item.kind = string.format("%s %s", icon, item.kind)
