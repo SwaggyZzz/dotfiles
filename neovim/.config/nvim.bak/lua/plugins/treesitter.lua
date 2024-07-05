@@ -4,9 +4,17 @@ return {
   -- syntax highlighting.
   {
     "nvim-treesitter/nvim-treesitter",
+    version = false, -- last release is way too old and doesn't work on Windows
+    lazy = true,
+    event = "BufReadPre",
+    build = ":TSUpdate",
     dependencies = {
       { "nvim-treesitter/nvim-treesitter-textobjects" },
+      {
+        "NvChad/nvim-colorizer.lua",
+      },
     },
+    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
       highlight = { enable = true },
       indent = { enable = true },
@@ -21,7 +29,7 @@ return {
       },
     },
     config = function(_, opts)
-      local treesitter_parsers = require("settings").treesitter_parsers
+      local treesitter_parsers = require("core.settings").treesitter_parsers
       opts.ensure_installed = treesitter_parsers
 
       require("nvim-treesitter.configs").setup(opts)

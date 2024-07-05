@@ -1,3 +1,3 @@
 if not vim.g.vscode then
-  require("swaggyz")
+	require("core")
 end

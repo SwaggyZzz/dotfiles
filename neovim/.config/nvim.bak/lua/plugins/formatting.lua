@@ -35,7 +35,7 @@ return {
               -- end
               -- return vim.fs.basename(ctx.filename) ~= "README.md"
 
-              local eslint_format_dir = require("settings").eslint_format_dir
+              local eslint_format_dir = require("core.settings").eslint_format_dir
 
               for _, dir in ipairs(eslint_format_dir) do
                 if string.match(ctx.dirname, dir) then

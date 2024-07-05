@@ -39,7 +39,7 @@ return function()
     },
   }
 
-  -- opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+  opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 
   require("bufferline").setup(opts)
 
