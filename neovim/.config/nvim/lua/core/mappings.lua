@@ -35,9 +35,6 @@ map({ "n", "v" }, "<A-S-f>", function()
   -- vim.notify(str)
 end, { desc = "Format" })
 
--- Select all
-map("n", "<C-a>", "gg<S-v>G")
-
 -- Windows
 map("n", "<leader>ww", "<C-W>p", { desc = "Other Window", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
@@ -69,41 +66,25 @@ map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Commen
 -- map("n", "N", "Nzz")
 
 --------------- Lsp --------------------
-map("n", "gd", function()
-  require("telescope.builtin").lsp_definitions({ reuse_win = true })
-end, { desc = "LSP Go to definition" })
-map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Go to declaration" })
-map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Go to implementation" })
-map("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
-map("n", "gK", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
-map("n", "<c-k>", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
-
-map(
-  "n",
-  "<leader>lx",
-  "<cmd>lua vim.diagnostic.open_float({ border = 'rounded', max_width = 100 })<CR>",
-  { desc = "LSP Line Diagnostic" }
-)
-
-map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code action" })
-map("n", "gr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP Show references" })
 
 --------------- NvimTree ---------------
-map("n", "<leader>e", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
-map("n", "<C-n>", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
-map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
+map("n", "<leader>e", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
+map("n", "<leader>E", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
+-- map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
 
 --------------- Telescope ---------------
 map("n", "<leader>ff", "<CMD>Telescope find_files<CR>", { desc = "Telescope find file" })
+map("n", "<leader>fb", "<CMD>Telescope buffers<CR>", { desc = "Telescope find buffers" })
 map("n", "<leader>fs", function()
   require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find current word" })
 map("v", "<leader>fs", function()
   require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find selection word" })
-map("n", "<leader>/", function()
-  require("telescope").extensions.live_grep_args.live_grep_args()
-end, { desc = "Telescope find word" })
+map("n", "<leader>/", "<CMD>Telescope live_grep<CR>", { desc = "Telescope find word" })
+-- map("n", "<leader>/", function()
+--   require("telescope").extensions.live_grep_args.live_grep_args()
+-- end, { desc = "Telescope find word" })
 
 --------------- Naviagte -----------------
 map({ "n", "t" }, "<A-h>", "<CMD>NavigatorLeft<CR>")
@@ -113,8 +94,10 @@ map({ "n", "t" }, "<A-j>", "<CMD>NavigatorDown<CR>")
 map({ "n", "t" }, "<A-p>", "<CMD>NavigatorPrevious<CR>")
 
 --------------- BufferLine ---------------
-map("n", "<C-h>", "<CMD>BufferLineCyclePrev<CR>")
-map("n", "<C-l>", "<CMD>BufferLineCycleNext<CR>")
+map("n", "<S-Tab>", "<CMD>BufferLineCyclePrev<CR>")
+map("n", "<Tab>", "<CMD>BufferLineCycleNext<CR>")
+map("n", "<leader>bl", "<CMD>BufferLineMoveNext<CR>")
+map("n", "<leader>br", "<CMD>BufferLineMovePrev<CR>")
 map("n", "<leader>1", "<CMD>BufferLineGoToBuffer 1<CR>")
 map("n", "<leader>2", "<CMD>BufferLineGoToBuffer 2<CR>")
 map("n", "<leader>3", "<CMD>BufferLineGoToBuffer 3<CR>")

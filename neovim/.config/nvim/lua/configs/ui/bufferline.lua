@@ -1,13 +1,20 @@
 return function()
+  local mocha = require("catppuccin.palettes").get_palette("mocha")
+  local transparent_background = require("core.settings").transparent_background
+
   local opts = {
     options = {
-      numbers = "ordinal",
+      -- numbers = "ordinal",
+      numbers = function(opts)
+        return string.format("%s", opts.raise(opts.ordinal))
+      end,
       close_command = "BufDel! %d",
       right_mouse_command = "BufDel! %d",
       color_icons = true,
       always_show_bufferline = true,
-      diagnostics = "nvim_lsp",
       show_buffer_close_icons = false,
+      diagnostics = false,
+      -- diagnostics = "nvim_lsp",
       -- diagnostics_indicator = function(count)
       -- 	return "(" .. count .. ")"
       -- end,
@@ -22,12 +29,18 @@ return function()
           .. (diag.warning and icons.Warn .. diag.warning or "")
         return vim.trim(ret)
       end,
+      separator_style = "thin",
+      indicator = {
+        icon = "▎",
+        style = "icon",
+      },
       offsets = {
         {
           filetype = "NvimTree",
-          text = "File Explorer",
+          text = function()
+            return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+          end,
           text_align = "center",
-          padding = 0,
         },
         {
           filetype = "aerial",
@@ -37,9 +50,18 @@ return function()
         },
       },
     },
+    highlights = require("catppuccin.groups.integrations.bufferline").get({
+      custom = {
+        all = {
+          buffer_selected = {
+            fg = mocha.peach,
+            bg = transparent_background and "NONE" or mocha.base,
+            style = { "bold", "italic" },
+          },
+        },
+      },
+    }),
   }
-
-  opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 
   require("bufferline").setup(opts)
 

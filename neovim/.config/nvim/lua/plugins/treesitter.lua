@@ -10,9 +10,6 @@ return {
     build = ":TSUpdate",
     dependencies = {
       { "nvim-treesitter/nvim-treesitter-textobjects" },
-      {
-        "NvChad/nvim-colorizer.lua",
-      },
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
