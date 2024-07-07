@@ -41,7 +41,7 @@ return function()
 
           -- For indent-blankline
           IblIndent = { fg = cp.surface0 },
-          IblScope = { fg = cp.surface2, style = { "bold" } },
+          IblScope = { fg = cp.mauve, style = { "bold" } },
 
           -- For nvim-cmp
           PmenuSel = { bg = cp.green, fg = cp.base },
