@@ -23,4 +23,11 @@ return {
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
+  {
+    "nvimdev/hlsearch.nvim",
+    lazy = true,
+    event = "BufRead",
+    opts = {},
+  },
 }
+
