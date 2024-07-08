@@ -11,7 +11,7 @@ return function()
       close_command = "BufDel! %d",
       right_mouse_command = "BufDel! %d",
       color_icons = true,
-      always_show_bufferline = true,
+      always_show_bufferline = false,
       show_buffer_close_icons = false,
       diagnostics = false,
       -- diagnostics = "nvim_lsp",
