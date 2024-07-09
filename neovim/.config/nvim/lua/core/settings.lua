@@ -37,7 +37,7 @@ settings["lsp_servers"] = {
 
 settings["eslint_format_dir"] = {
   "/work/saas",
-  "/motor-design",
+  "/motor%-design",
   "/ad_match_mono",
   "/work/blitz",
   "/motor_mp",
