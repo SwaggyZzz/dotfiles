@@ -34,7 +34,7 @@ return function()
 
   local disabled_vtsls_format = function(dir)
     for _, d in ipairs(eslint_format_dir) do
-      if string.match(dir, d) then
+      if dir and string.match(dir, d) then
         return true
       end
     end
