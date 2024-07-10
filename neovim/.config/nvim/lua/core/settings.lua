@@ -41,7 +41,8 @@ settings["eslint_format_dir"] = {
   "/ad_match_mono",
   "/work/blitz",
   "/motor_mp",
-  "ad_basic_pages",
+  "/ad_basic_pages",
+  "/open_platform_admin",
 }
 
 -- Set the Treesitter parsers that will be installed during bootstrap here.
