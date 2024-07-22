@@ -23,12 +23,14 @@ function M.on_attach(client, bufnr)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
 
-  map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-  map("n", "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
-    opts "Go to definition")
-  map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
-  map("n", "K", vim.lsp.buf.hover, opts "Hover")
-  map("n", "gK", vim.lsp.buf.signature_help, opts "Show signature help")
+  map("n", "gD", vim.lsp.buf.declaration, opts("Go to declaration"))
+  map("n", "gd", vim.lsp.buf.definition, opts("Go to definition"))
+  -- map("n", "gd", function()
+  --   require("telescope.builtin").lsp_definitions({ reuse_win = true })
+  -- end, opts("Go to definition"))
+  map("n", "gi", vim.lsp.buf.implementation, opts("Go to implementation"))
+  map("n", "K", vim.lsp.buf.hover, opts("Hover"))
+  map("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
 
   -- map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
   -- map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
@@ -36,19 +38,15 @@ function M.on_attach(client, bufnr)
   --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   -- end, opts "List workspace folders")
 
-  map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+  map("n", "<leader>D", vim.lsp.buf.type_definition, opts("Go to type definition"))
 
   -- map("n", "<leader>ra", function()
   --   require "nvchad.lsp.renamer" ()
   -- end, opts "NvRenamer")
 
-  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
-  map("n", "gr", vim.lsp.buf.references, opts "Show references")
-
-  -- setup signature popup
-  -- if conf.signature and client.server_capabilities.signatureHelpProvider then
-  --   require("nvchad.lsp.signature").setup(client, bufnr)
-  -- end
+  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts("Code action"))
+  map({ "n", "v" }, "<leader>cr", vim.lsp.buf.rename, opts("Rename"))
+  map("n", "gr", vim.lsp.buf.references, opts("Show references"))
 end
 
 function M.common_capabilities()
@@ -91,7 +89,7 @@ end
 
 function M.diagnostics_setup()
   local icons = {
-    diagnostics = require("utils.icons").get("diagnostics")
+    diagnostics = require("utils.icons").get("diagnostics"),
   }
   local opts = {
     underline = true,
@@ -123,20 +121,18 @@ function M.diagnostics_setup()
 
   if opts.virtual_text.prefix == "icons" then
     opts.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-        or function(diagnostic)
-          for d, icon in pairs(icons.diagnostics) do
-            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-              return icon
-            end
+      or function(diagnostic)
+        for d, icon in pairs(icons.diagnostics) do
+          if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+            return icon
           end
         end
+      end
   end
 
   vim.diagnostic.config(vim.deepcopy(opts))
 end
 
-function M.inlay_hint_setup()
-
-end
+function M.inlay_hint_setup() end
 
 return M

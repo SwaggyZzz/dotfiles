@@ -62,9 +62,10 @@ return function()
       end
       local map = vim.keymap.set
 
-      map("n", "gd", function()
-        require("telescope.builtin").lsp_definitions({ reuse_win = true })
-      end, { desc = "LSP Go to definition" })
+      -- map("n", "gd", function()
+      --   require("telescope.builtin").lsp_definitions({ reuse_win = true })
+      -- end, { desc = "LSP Go to definition" })
+      map("n", "gd", vim.lsp.buf.definition, { desc = "LSP Go to definition" })
       map("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Go to declaration" })
       map("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Go to implementation" })
       map("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
@@ -72,12 +73,13 @@ return function()
 
       map(
         "n",
-        "<leader>lx",
+        "<leader>cx",
         "<cmd>lua vim.diagnostic.open_float({ border = 'rounded', max_width = 100 })<CR>",
         { desc = "LSP Line Diagnostic" }
       )
 
       map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code action" })
+      map({ "n", "v" }, "<leader>cr", vim.lsp.buf.rename, { desc = "LSP Rename" })
       map("n", "gr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP Show references" })
     end,
     capabilities = capabilities,
