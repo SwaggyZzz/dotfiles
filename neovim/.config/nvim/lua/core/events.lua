@@ -59,17 +59,17 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 })
 
 -- Autoformat autocmd
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("CodeFormat", {}),
-  callback = function(event)
-    require("conform").format({
-      bufnr = event.buf,
-      lsp_fallback = true,
-      async = false,
-      timeout_ms = 500,
-    })
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = vim.api.nvim_create_augroup("CodeFormat", {}),
+--   callback = function(event)
+--     require("conform").format({
+--       bufnr = event.buf,
+--       lsp_fallback = true,
+--       async = false,
+--       timeout_ms = 500,
+--     })
+--   end,
+-- })
 
 -- -- Manual format
 -- vim.api.nvim_create_user_command("CodeFormat", function()

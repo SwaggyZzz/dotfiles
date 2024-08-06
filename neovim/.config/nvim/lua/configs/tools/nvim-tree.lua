@@ -1,4 +1,7 @@
 return function()
+  vim.g.loaded_netrw = 1
+  vim.g.loaded_netrwPlugin = 1
+
   local map = vim.keymap.set
   local function on_attach(bufnr)
     local api = require("nvim-tree.api")
@@ -90,7 +93,6 @@ return function()
     },
     git = {
       enable = true,
-      ignore = true,
     },
     filesystem_watchers = {
       enable = true,

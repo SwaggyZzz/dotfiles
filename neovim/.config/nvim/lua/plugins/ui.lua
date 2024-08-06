@@ -3,10 +3,10 @@ return {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
   },
-  { "MunifTanjim/nui.nvim", lazy = true },
   {
     "catppuccin/nvim",
     lazy = false,
+    priority = 1000,
     name = "catppuccin",
     config = require("configs.ui.catppuccin"),
   },
@@ -21,111 +21,152 @@ return {
     config = require("configs.ui.bufferline"),
   },
   {
-    "lukas-reineke/indent-blankline.nvim",
-    lazy = true,
-    main = "ibl",
-    event = { "CursorHold", "CursorHoldI" },
-    opts = {
-      indent = {
-        char = "│",
-        tab_char = "│",
-      },
-      scope = {
-        enabled = true,
-        char = "┃",
-        show_start = false,
-        show_end = false,
-        include = {
-          node_type = {
-            ["*"] = {
-              "argument_list",
-              "arguments",
-              "assignment_statement",
-              "Block",
-              "class",
-              "ContainerDecl",
-              "dictionary",
-              "do_block",
-              "do_statement",
-              "element",
-              "except",
-              "FnCallArguments",
-              "for",
-              "for_statement",
-              "function",
-              "function_declaration",
-              "function_definition",
-              "if_statement",
-              "IfExpr",
-              "IfStatement",
-              "import",
-              "InitList",
-              "list_literal",
-              "method",
-              "object",
-              "ParamDeclList",
-              "repeat_statement",
-              "selector",
-              "SwitchExpr",
-              "table",
-              "table_constructor",
-              "try",
-              "tuple",
-              "type",
-              "var",
-              "while",
-              "while_statement",
-              "with",
-            },
+    "shellRaining/hlchunk.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("hlchunk").setup({
+        chunk = {
+          enable = true,
+          use_treesitter = true,
+          chars = {
+            horizontal_line = "─",
+            vertical_line = "│",
+            left_top = "┌",
+            left_bottom = "└",
+            right_arrow = "─",
+          },
+          style = "#737aa2",
+        },
+        indent = {
+          enable = true,
+          use_treesitter = true,
+          chars = {
+            "│",
+            "¦",
+            "┆",
+            "┊",
+          },
+          style = {
+            vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Whitespace")), "fg", "gui"),
           },
         },
-      },
-      exclude = {
-        filetypes = {
-          "", -- for all buffers without a file type
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-          "NvimTree",
-          "fugitive",
-          "git",
-          "gitcommit",
-          "help",
-          "json",
-          "log",
-          "markdown",
-        },
-      },
-    },
-    config = function(_, opts)
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
-      require("ibl").setup(opts)
+      })
     end,
   },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   lazy = true,
+  --   main = "ibl",
+  --   event = { "CursorHold", "CursorHoldI" },
+  --   opts = {
+  --     indent = {
+  --       char = "│",
+  --       tab_char = "│",
+  --     },
+  --     scope = {
+  --       enabled = true,
+  --       char = "┃",
+  --       show_start = false,
+  --       show_end = false,
+  --       include = {
+  --         node_type = {
+  --           ["*"] = {
+  --             "argument_list",
+  --             "arguments",
+  --             "assignment_statement",
+  --             "Block",
+  --             "class",
+  --             "ContainerDecl",
+  --             "dictionary",
+  --             "do_block",
+  --             "do_statement",
+  --             "element",
+  --             "except",
+  --             "FnCallArguments",
+  --             "for",
+  --             "for_statement",
+  --             "function",
+  --             "function_declaration",
+  --             "function_definition",
+  --             "if_statement",
+  --             "IfExpr",
+  --             "IfStatement",
+  --             "import",
+  --             "InitList",
+  --             "list_literal",
+  --             "method",
+  --             "object",
+  --             "ParamDeclList",
+  --             "repeat_statement",
+  --             "selector",
+  --             "SwitchExpr",
+  --             "table",
+  --             "table_constructor",
+  --             "try",
+  --             "tuple",
+  --             "type",
+  --             "var",
+  --             "while",
+  --             "while_statement",
+  --             "with",
+  --           },
+  --         },
+  --       },
+  --     },
+  --     exclude = {
+  --       filetypes = {
+  --         "", -- for all buffers without a file type
+  --         "help",
+  --         "alpha",
+  --         "dashboard",
+  --         "neo-tree",
+  --         "Trouble",
+  --         "trouble",
+  --         "lazy",
+  --         "mason",
+  --         "notify",
+  --         "toggleterm",
+  --         "lazyterm",
+  --         "NvimTree",
+  --         "fugitive",
+  --         "git",
+  --         "gitcommit",
+  --         "help",
+  --         "json",
+  --         "log",
+  --         "markdown",
+  --       },
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     local hooks = require("ibl.hooks")
+  --     hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+  --     require("ibl").setup(opts)
+  --   end,
+  -- },
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
     opts = {
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
+          ["cmp.entry.get_documentation"] = false,
         },
         signature = {
-          enabled = true,
+          enabled = false,
         },
         hover = {
-          enabled = true,
+          enabled = false,
         },
       },
       routes = {
@@ -180,99 +221,37 @@ return {
     end,
   },
   {
+    "gen740/SmoothCursor.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("smoothcursor").setup({
+        type = "default",
+        fancy = {
+          enable = true, -- enable fancy mode
+          -- head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
+          head = { cursor = "👉", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
+          body = {
+            { cursor = "󰝥", texthl = "SmoothCursorRed" },
+            { cursor = "󰝥", texthl = "SmoothCursorOrange" },
+            { cursor = "●", texthl = "SmoothCursorYellow" },
+            { cursor = "●", texthl = "SmoothCursorGreen" },
+            { cursor = "•", texthl = "SmoothCursorAqua" },
+            { cursor = ".", texthl = "SmoothCursorBlue" },
+            { cursor = ".", texthl = "SmoothCursorPurple" },
+          },
+          tail = { cursor = nil, texthl = "SmoothCursor" }, -- false to disable fancy tail
+        },
+      })
+    end,
+  },
+  {
     "lewis6991/gitsigns.nvim",
-    lazy = true,
-    event = { "CursorHold", "CursorHoldI" },
+    event = { "BufReadPre", "BufNewFile" },
     config = require("configs.tools.gitsigns"),
   },
   {
-    "sontungexpt/sttusline",
-    branch = "table_version",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
-    event = { "BufEnter" },
-    opts = {
-      statusline_color = "StatusLine",
-      disabled = {
-        filetypes = {
-          "NeoTree",
-          "NvimTree",
-          "lazy",
-          "dashboard",
-        },
-        buftypes = {
-          "terminal",
-        },
-      },
-      components = {
-        {
-          "mode",
-          -- {
-          --   separator = {
-          --     left = " ",
-          --   },
-          -- },
-        },
-        "os-uname",
-        "filename",
-        "filesize",
-        "git-branch",
-        "git-diff",
-        "%=",
-        "diagnostics",
-        "lsps-formatters",
-        "indent",
-        "encoding",
-        "pos-cursor",
-        -- "pos-cursor-progress",
-      },
-    },
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    config = require("configs.ui.lualine"),
   },
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   event = "VeryLazy",
-  --   dependencies = {
-  --     "meuter/lualine-so-fancy.nvim",
-  --   },
-  --   opts = function()
-  --     return {
-  --       options = {
-  --         theme = "catppuccin",
-  --         -- component_separators = { left = "│", right = "│" },
-  --         -- section_separators = { left = "", right = "" },
-  --         component_separators = "",
-  --         section_separators = { left = "", right = "" },
-  --         globalstatus = true,
-  --         refresh = {
-  --           statusline = 100,
-  --         },
-  --       },
-  --       sections = {
-  --         lualine_a = {
-  --           { "fancy_mode", width = 6 },
-  --         },
-  --         lualine_b = {
-  --           { "fancy_branch" },
-  --           { "fancy_diff" },
-  --         },
-  --         lualine_c = {
-  --           { "fancy_cwd", substitute_home = true },
-  --         },
-  --         lualine_x = {
-  --           { "fancy_diagnostics" },
-  --           { "fancy_searchcount" },
-  --           { "fancy_location" },
-  --         },
-  --         lualine_y = {
-  --           { "fancy_filetype", ts_icon = "" },
-  --         },
-  --         lualine_z = {
-  --           { "fancy_lsp_servers", split = "|" },
-  --         },
-  --       },
-  --       extensions = { "nvim-tree", "neo-tree", "lazy", "quickfix", "trouble" },
-  --     }
-  --   end,
-  -- },
 }

@@ -30,88 +30,80 @@ return {
     },
   },
   {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    opts = {
-      mappings = {
-        ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\`].", register = { cr = false } },
-      },
+    "windwp/nvim-autopairs",
+    event = { "InsertEnter" },
+    dependencies = {
+      "hrsh7th/nvim-cmp",
     },
+    config = function()
+      -- import nvim-autopairs
+      local autopairs = require("nvim-autopairs")
+  
+      -- configure autopairs
+      autopairs.setup({
+        check_ts = true, -- enable treesitter
+        ts_config = {
+          lua = { "string" }, -- don't add pairs in lua string treesitter nodes
+          javascript = { "template_string" }, -- don't add pairs in javscript template_string treesitter nodes
+          java = false, -- don't check treesitter on java
+        },
+      })
+  
+      -- import nvim-autopairs completion functionality
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+  
+      -- import nvim-cmp plugin (completions plugin)
+      local cmp = require("cmp")
+  
+      -- make autopairs and completion work together
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
   },
   {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {},
+    "kylechui/nvim-surround",
+    event = { "BufReadPre", "BufNewFile" },
+    version = "*",
+    config = true,
+  },
+  {
+    "numToStr/Comment.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
+    config = function()
+      -- import comment plugin safely
+      local comment = require("Comment")
+  
+      local ts_context_commentstring = require("ts_context_commentstring.integrations.comment_nvim")
+  
+      -- enable comment
+      comment.setup({
+        -- for commenting tsx, jsx, svelte, html files
+        pre_hook = ts_context_commentstring.create_pre_hook(),
+      })
+    end,
   },
   {
     "folke/todo-comments.nvim",
-    cmd = { "TodoTrouble", "TodoTelescope" },
-    event = { "CursorHold", "CursorHoldI" },
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
       highlight = {
         exclude = { "big_file_disabled_ft", "checkhealth" },
       },
     },
   },
-  {
-    "folke/trouble.nvim",
-    cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
-    opts = {},
-    -- keys = {
-    -- 	{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-    -- 	{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-    -- 	{ "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
-    -- 	{
-    -- 		"<leader>cS",
-    -- 		"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-    -- 		desc = "LSP references/definitions/... (Trouble)",
-    -- 	},
-    -- 	{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-    -- 	{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
-    -- 	{
-    -- 		"[q",
-    -- 		function()
-    -- 			if require("trouble").is_open() then
-    -- 				require("trouble").prev({ skip_groups = true, jump = true })
-    -- 			else
-    -- 				local ok, err = pcall(vim.cmd.cprev)
-    -- 				if not ok then
-    -- 					vim.notify(err, vim.log.levels.ERROR)
-    -- 				end
-    -- 			end
-    -- 		end,
-    -- 		desc = "Previous Trouble/Quickfix Item",
-    -- 	},
-    -- 	{
-    -- 		"]q",
-    -- 		function()
-    -- 			if require("trouble").is_open() then
-    -- 				require("trouble").next({ skip_groups = true, jump = true })
-    -- 			else
-    -- 				local ok, err = pcall(vim.cmd.cnext)
-    -- 				if not ok then
-    -- 					vim.notify(err, vim.log.levels.ERROR)
-    -- 				end
-    -- 			end
-    -- 		end,
-    -- 		desc = "Next Trouble/Quickfix Item",
-    -- 	},
-    -- },
-  },
-  {
-    "Bekaboo/dropbar.nvim",
-    event = "VeryLazy",
-  },
-  {
-    "kevinhwang91/nvim-ufo",
-    event = "VeryLazy",
-    dependencies = "kevinhwang91/promise-async",
-    config = function()
-      local map = vim.keymap.set
-      map("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
-      map("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })
-      map("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "Open Folds Except Kinds" })
-      map("n", "zm", require("ufo").closeFoldsWith, { desc = "Close Folds With Number" }) -- closeAllFolds == closeFoldsWith(0)
-    end,
-  },
+  -- {
+  --   "kevinhwang91/nvim-ufo",
+  --   event = "VeryLazy",
+  --   dependencies = "kevinhwang91/promise-async",
+  --   config = function()
+  --     local map = vim.keymap.set
+  --     map("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
+  --     map("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })
+  --     map("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "Open Folds Except Kinds" })
+  --     map("n", "zm", require("ufo").closeFoldsWith, { desc = "Close Folds With Number" }) -- closeAllFolds == closeFoldsWith(0)
+  --   end,
+  -- },
 }

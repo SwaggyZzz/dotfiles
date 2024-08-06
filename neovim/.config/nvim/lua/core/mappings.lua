@@ -19,10 +19,9 @@ map("n", "-", "<C-x>")
 -- Format
 map({ "n", "v" }, "<A-S-f>", function()
   require("conform").format({
-    bufnr = vim.api.nvim_get_current_buf(),
     lsp_fallback = true,
     async = false,
-    timeout_ms = 500,
+    timeout_ms = 1000,
   })
   -- local formatters = require("conform").list_formatters()
   -- local str = ""
@@ -40,6 +39,8 @@ map("n", "<leader>ww", "<C-W>p", { desc = "Other Window", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 map("n", "<leader>w-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>w|", "<C-W>v", { desc = "Split Window Right", remap = true })
+map("n", "<leader>we", "<C-W>=", { desc = "Make Split Window Size Equal", remap = true })
+map("n", "<leader>wx", "<CMD>close<CR>", { desc = "Close Current Split", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 -- Resize window using <ctrl> arrow keys
@@ -68,9 +69,9 @@ map("n", "gcO", "O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>", { desc = "Add Commen
 --------------- Lsp --------------------
 
 --------------- NvimTree ---------------
-map("n", "<leader>e", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
-map("n", "<leader>E", "<CMD>NvimTreeFocus<CR>", { desc = "FileTree Focus" })
--- map("n", "<leader>nr", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
+map("n", "<leader>ee", "<CMD>NvimTreeToggle<CR>", { desc = "FileTree Toggle" })
+map("n", "<leader>ef", "<CMD>NvimTreeFindFileToggle<CR>", { desc = "FileTree Find File Toggle" })
+map("n", "<leader>er", "<CMD>NvimTreeRefresh<CR>", { desc = "FileTree Refresh" })
 
 --------------- Telescope ---------------
 map("n", "<leader>ff", "<CMD>Telescope find_files<CR>", { desc = "Telescope find file" })
@@ -81,6 +82,7 @@ end, { desc = "Telescope find current word" })
 map("v", "<leader>fs", function()
   require("telescope.builtin").grep_string({ word_match = "-w" })
 end, { desc = "Telescope find selection word" })
+map("n", "<leader>ft", "<CMD>TodoTelescope<CR>", { desc = "Telescope find todos" })
 map("n", "<leader>/", "<CMD>Telescope live_grep<CR>", { desc = "Telescope find word" })
 -- map("n", "<leader>/", function()
 --   require("telescope").extensions.live_grep_args.live_grep_args()

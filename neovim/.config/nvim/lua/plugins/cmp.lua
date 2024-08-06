@@ -6,60 +6,27 @@ return {
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
         dependencies = "rafamadriz/friendly-snippets",
         opts = { history = true, updateevents = "TextChanged,TextChangedI" },
         config = function(_, opts)
           require("luasnip").config.set_config(opts)
           -- vscode format
-          require("luasnip.loaders.from_vscode").lazy_load({ exclude = vim.g.vscode_snippets_exclude or {} })
-          require("luasnip.loaders.from_vscode").lazy_load({ paths = "your path!" })
-          require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.vscode_snippets_path or "" })
+          require("luasnip.loaders.from_vscode").lazy_load()
 
           -- snipmate format
           require("luasnip.loaders.from_snipmate").load()
-          require("luasnip.loaders.from_snipmate").lazy_load({ paths = vim.g.snipmate_snippets_path or "" })
 
           -- lua format
           require("luasnip.loaders.from_lua").load()
-          require("luasnip.loaders.from_lua").lazy_load({ paths = vim.g.lua_snippets_path or "" })
-
-          vim.api.nvim_create_autocmd("InsertLeave", {
-            callback = function()
-              if
-                require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-                and not require("luasnip").session.jump_active
-              then
-                require("luasnip").unlink_current()
-              end
-            end,
-          })
         end,
       },
 
-      -- autopairing of (){}[] etc
-      {
-        "windwp/nvim-autopairs",
-        opts = {
-          fast_wrap = {},
-          disable_filetype = { "TelescopePrompt", "vim" },
-        },
-        config = function(_, opts)
-          require("nvim-autopairs").setup(opts)
-
-          -- setup cmp for autopairs
-          local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
-        end,
-      },
-
-      -- cmp sources plugins
-      {
-        "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-nvim-lua",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-      },
+      { "saadparwaiz1/cmp_luasnip" },
+      { "hrsh7th/cmp-nvim-lua" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-path" },
 
       -- tailwindcss
       { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
@@ -117,6 +84,17 @@ return {
 
         return item
       end
+
+      local buffer_option = {
+        -- Complete from all visible buffers (splits)
+        get_bufnrs = function()
+          local bufs = {}
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            bufs[vim.api.nvim_win_get_buf(win)] = true
+          end
+          return vim.tbl_keys(bufs)
+        end,
+      }
 
       return {
         completion = {
@@ -199,9 +177,12 @@ return {
         sources = {
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "buffer" },
+          { name = "buffer", keyword_length = 5, max_item_count = 10, option = buffer_option },
           { name = "nvim_lua" },
           { name = "path" },
+        },
+        performance = {
+          max_view_entries = 30,
         },
       }
     end,

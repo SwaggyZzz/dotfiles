@@ -21,6 +21,12 @@ return {
           yaml = { "prettier" },
           lua = { "stylua" },
           sh = { "shfmt" },
+          python = { "isort", "black" },
+        },
+        format_on_save = {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 1000,
         },
         -- The options you set here will be merged with the builtin formatters.
         -- You can also define any custom formatters here.
