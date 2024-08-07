@@ -1,4 +1,8 @@
 return function()
+  local telescope = require("telescope")
+  -- local actions = require("telescope.actions")
+  -- local lga_actions = require("telescope-live-grep-args.actions")
+
   local opts = {
     defaults = {
       vimgrep_arguments = {
@@ -10,10 +14,10 @@ return function()
         "--column",
         "--smart-case",
       },
-      initial_mode = "insert",
       prompt_prefix = "   ",
       selection_caret = " ",
       entry_prefix = "  ",
+      initial_mode = "insert",
       selection_strategy = "reset",
       sorting_strategy = "ascending",
       layout_strategy = "horizontal",
@@ -38,7 +42,7 @@ return function()
       set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
       generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
       file_sorter = require("telescope.sorters").get_fuzzy_file,
-      file_ignore_patterns = { ".git/", ".cache", "%.pdf", "%.mkv", "%.mp4", "%.zip" },
+      file_ignore_patterns = { "node_modules", ".git/", ".cache", "build/", "%.class", "%.pdf", "%.mkv", "%.mp4", "%.zip" },
       file_previewer = require("telescope.previewers").vim_buffer_cat.new,
       grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
       qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
@@ -57,13 +61,6 @@ return function()
       },
     },
 
-    pickers = {
-      find_files = {
-        find_command = { "rg", "--files", "--color", "never", "-g", "!.git" },
-        hidden = true,
-      },
-    },
-
     extensions = {
       fzf = {
         fuzzy = true,
@@ -71,8 +68,21 @@ return function()
         override_file_sorter = true,
         case_mode = "smart_case",
       },
+      -- live_grep_args = {
+      --   auto_quoting = true, -- enable/disable auto-quoting
+      --   -- define mappings, e.g.
+      --   mappings = { -- extend mappings
+      --     i = {
+      --       ["<C-k>"] = lga_actions.quote_prompt(),
+      --       ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+      --     },
+      --   },
+      -- },
     },
   }
-  require("telescope").setup(opts)
-  require("telescope").load_extension("fzf")
+
+  telescope.setup(opts)
+
+  telescope.load_extension("fzf")
+  -- telescope.load_extension("live_grep_args")
 end

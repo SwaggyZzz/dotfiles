@@ -33,35 +33,51 @@ return {
     },
     opts = function()
       local cmp = require("cmp")
-      local icons = require("utils.icons")
 
-      local format = function(entry, item)
-        local icon = icons.kind[item.kind] or " "
-
-        if entry.source.name == "copilot" then
-          icon = icons.git.Octoface
-          item.kind_hl_group = "CmpItemKindCopilot"
-        end
-
-        if entry.source.name == "cmp_tabnine" then
-          icon = icons.misc.Robot
-          item.kind_hl_group = "CmpItemKindTabnine"
-        end
-
-        if entry.source.name == "crates" then
-          icon = icons.misc.Package
-          item.kind_hl_group = "CmpItemKindCrate"
-        end
-
-        if entry.source.name == "lab.quick_data" then
-          icon = icons.misc.CircuitBoard
-          item.kind_hl_group = "CmpItemKindConstant"
-        end
-
-        if entry.source.name == "emoji" then
-          icon = icons.misc.Smiley
-          item.kind_hl_group = "CmpItemKindEmoji"
-        end
+      local format = function(_, item)
+        local icons = {
+          Namespace = "󰌗",
+          Text = "󰉿",
+          Method = "󰆧",
+          Function = "󰆧",
+          Constructor = "",
+          Field = "󰜢",
+          Variable = "󰀫",
+          Class = "󰠱",
+          Interface = "",
+          Module = "",
+          Property = "󰜢",
+          Unit = "󰑭",
+          Value = "󰎠",
+          Enum = "",
+          Keyword = "󰌋",
+          Snippet = "",
+          Color = "󰏘",
+          File = "󰈚",
+          Reference = "󰈇",
+          Folder = "󰉋",
+          EnumMember = "",
+          Constant = "󰏿",
+          Struct = "󰙅",
+          Event = "",
+          Operator = "󰆕",
+          TypeParameter = "󰊄",
+          Table = "",
+          Object = "󰅩",
+          Tag = "",
+          Array = "[]",
+          Boolean = "",
+          Number = "",
+          Null = "󰟢",
+          String = "󰉿",
+          Calendar = "",
+          Watch = "󰥔",
+          Package = "",
+          Copilot = "",
+          Codeium = "",
+          TabNine = "",
+        }
+        local icon = icons[item.kind] or " "
 
         icon = (" " .. icon .. " ")
         item.kind = string.format("%s %s", icon, item.kind)

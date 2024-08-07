@@ -58,8 +58,6 @@ return {
       { "folke/neodev.nvim", opts = {} },
     },
     config = function()
-      local icons = require("utils.icons")
-
       -- import lspconfig plugin
       local lspconfig = require("lspconfig")
 
@@ -81,12 +79,7 @@ return {
       }
 
       -- Change the Diagnostic symbols in the sign column (gutter)
-      local signs = {
-        Error = icons.diagnostics.BoldError,
-        Warn = icons.diagnostics.BoldWarning,
-        Hint = icons.diagnostics.BoldHint,
-        Info = icons.diagnostics.BoldInformation,
-      }
+      local signs = { Error = "󰅙", Warn = " ", Hint = "󰠠 ", Info = "󰋼" }
       for type, icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
@@ -204,7 +197,7 @@ return {
       --     if #lsp_clients > 0 then
       --       return { "lsp", "treesitter" }
       --     end
-
+    
       --     return { "treesitter", "indent" }
       --   end,
       --   close_fold_kinds_for_ft = {
@@ -217,7 +210,7 @@ return {
       --     local sufWidth = vim.fn.strdisplaywidth(suffix)
       --     local targetWidth = width - sufWidth
       --     local curWidth = 0
-
+    
       --     for _, chunk in ipairs(virtText) do
       --       local chunkText = chunk[1]
       --       local chunkWidth = vim.fn.strdisplaywidth(chunkText)
@@ -236,9 +229,9 @@ return {
       --       end
       --       curWidth = curWidth + chunkWidth
       --     end
-
+    
       --     table.insert(newVirtText, { suffix, "MoreMsg" })
-
+    
       --     return newVirtText
       --   end,
       -- })

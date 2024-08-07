@@ -39,8 +39,6 @@ opt.splitbelow = true -- split horizontal window to the bottom
 opt.swapfile = false
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 
-opt.showmode = false
-
 opt.undofile = true
 opt.undolevels = 10000
 

@@ -2,8 +2,6 @@ return function()
   vim.g.loaded_netrw = 1
   vim.g.loaded_netrwPlugin = 1
 
-  local icons = require("utils.icons")
-
   local map = vim.keymap.set
   local function on_attach(bufnr)
     local api = require("nvim-tree.api")
@@ -90,11 +88,8 @@ return function()
     view = {
       adaptive_size = false,
       side = "left",
-      width = {
-        min = 35,
-        max = 40,
-      },
-      preserve_window_proportions = true, -- 打开文件时均分当前窗口
+      width = 40,
+      preserve_window_proportions = true,
     },
     git = {
       enable = true,
@@ -105,14 +100,9 @@ return function()
     actions = {
       open_file = {
         resize_window = true,
-        window_picker = {
-          enable = true,
-          picker = require("window-picker").pick_window,
-        },
       },
     },
     renderer = {
-      -- root_folder_label = ":t",
       root_folder_label = false,
       highlight_git = true,
       highlight_opened_files = "none",
@@ -129,34 +119,29 @@ return function()
           folder = true,
           folder_arrow = true,
           git = true,
-          modified = true,
-          diagnostics = true,
-          bookmarks = true,
         },
 
         glyphs = {
-          default = icons.ui.Text,
-          symlink = icons.ui.FileSymlink,
-          bookmark = icons.ui.BookMark,
-          modified = icons.ui.Circle,
+          default = "󰈚",
+          symlink = "",
           folder = {
-            arrow_closed = icons.ui.TriangleShortArrowRight,
-            arrow_open = icons.ui.TriangleShortArrowDown,
-            default = icons.ui.Folder,
-            open = icons.ui.FolderOpen,
-            empty = icons.ui.EmptyFolder,
-            empty_open = icons.ui.EmptyFolderOpen,
-            symlink = icons.ui.FolderSymlink,
-            symlink_open = icons.ui.FolderOpen,
+            default = "",
+            empty = "",
+            empty_open = "",
+            open = "",
+            symlink = "",
+            symlink_open = "",
+            arrow_open = "",
+            arrow_closed = "",
           },
           git = {
-            unstaged = icons.git.FileUnstaged,
-            staged = icons.git.FileStaged,
-            unmerged = icons.git.FileUnmerged,
-            renamed = icons.git.FileRenamed,
-            untracked = icons.git.FileUntracked,
-            deleted = icons.git.FileDeleted,
-            ignored = icons.git.FileIgnored,
+            unstaged = "",
+            staged = "",
+            unmerged = "",
+            renamed = "➜",
+            untracked = "󰞋",
+            deleted = "",
+            ignored = "◌",
           },
         },
       },

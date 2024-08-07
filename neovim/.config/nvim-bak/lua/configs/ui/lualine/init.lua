@@ -1,12 +1,12 @@
 return function()
   local components = require("configs.ui.lualine.components")
 
-  -- vim.o.laststatus = vim.g.lualine_laststatus
+  vim.o.laststatus = vim.g.lualine_laststatus
 
   local opts = {
     options = {
       theme = "auto",
-      globalstatus = true,
+      globalstatus = vim.o.laststatus == 3,
       disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter" } },
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },

@@ -1,6 +1,6 @@
 local settings = {
   colorscheme = "catppuccin",
-  transparent_background = false,
+  transparent_background = true,
   background = "dark",
   lsp_servers = {
     "bashls",
@@ -19,7 +19,7 @@ local settings = {
     "eslint",
   },
   treesitter_parsers = {
-    "bash",
+   "bash",
     "c",
     "cpp",
     "fish",
@@ -61,6 +61,7 @@ local settings = {
     "/ad_basic_pages",
     "/open_platform_admin",
   },
+
 }
 
 return settings

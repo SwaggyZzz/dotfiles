@@ -1,10 +1,18 @@
-local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
-if not (vim.uv or vim.loop).fs_stat(lazy_path) then
-  local lazy_repo = "https://github.com/folke/lazy.nvim.git "
-  vim.api.nvim_command("!git clone --filter=blob:none --branch=stable " .. lazy_repo .. lazy_path)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
-vim.opt.rtp:prepend(vim.env.LAZY or lazy_path)
+vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
@@ -20,46 +28,27 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   install = { colorscheme = { "catppuccin", "tokyonight", "habamax" } },
-  checker = { enabled = false }, -- automatically check for plugin updates
-  ui = {
-    icons = {
-      ft = "",
-      lazy = "󰂠 ",
-      loaded = "",
-      not_loaded = "",
-    },
+  
+  checker = {
+    enabled = true, -- check for plugin updates periodically
+    notify = false, -- notify on update
+  }, -- automatically check for plugin updates
+  change_detection = {
+    notify = false,
   },
 
   performance = {
     rtp = {
+      -- disable some rtp plugins
       disabled_plugins = {
-        "2html_plugin",
-        "tohtml",
-        "getscript",
-        "getscriptPlugin",
         "gzip",
-        "logipat",
-        "netrw",
-        "netrwPlugin",
-        "netrwSettings",
-        "netrwFileHandlers",
-        "matchit",
-        "tar",
+        -- "matchit",
+        -- "matchparen",
+        -- "netrwPlugin",
         "tarPlugin",
-        "rrhelper",
-        "spellfile_plugin",
-        "vimball",
-        "vimballPlugin",
-        "zip",
-        "zipPlugin",
+        "tohtml",
         "tutor",
-        "rplugin",
-        "syntax",
-        "synmenu",
-        "optwin",
-        "compiler",
-        "bugreport",
-        "ftplugin",
+        "zipPlugin",
       },
     },
   },

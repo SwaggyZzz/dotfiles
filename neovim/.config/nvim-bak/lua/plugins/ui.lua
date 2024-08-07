@@ -4,54 +4,16 @@ return {
     lazy = true,
   },
   {
+    "catppuccin/nvim",
+    lazy = false,
+    priority = 1000,
+    name = "catppuccin",
+    config = require("configs.ui.catppuccin"),
+  },
+  {
     "nvimdev/dashboard-nvim",
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
     config = require("configs.ui.dashboard"),
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.g.lualine_laststatus = vim.o.laststatus
-      -- argc() 函数返回当前窗口中打开的文件数量，而参数 -1 表示使用全局参数列表
-      if vim.fn.argc(-1) > 0 then
-        -- set an empty statusline till lualine loads
-        vim.o.statusline = " "
-      else
-        -- hide the statusline on the starter page
-        vim.o.laststatus = 0
-      end
-    end,
-    config = require("configs.ui.lualine"),
-  },
-  {
-    "gen740/SmoothCursor.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("smoothcursor").setup({
-        type = "default",
-        fancy = {
-          enable = true, -- enable fancy mode
-          -- head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
-          head = { cursor = "👉", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
-          body = {
-            { cursor = "󰝥", texthl = "SmoothCursorRed" },
-            { cursor = "󰝥", texthl = "SmoothCursorOrange" },
-            { cursor = "●", texthl = "SmoothCursorYellow" },
-            { cursor = "●", texthl = "SmoothCursorGreen" },
-            { cursor = "•", texthl = "SmoothCursorAqua" },
-            { cursor = ".", texthl = "SmoothCursorBlue" },
-            { cursor = ".", texthl = "SmoothCursorPurple" },
-          },
-          tail = { cursor = nil, texthl = "SmoothCursor" }, -- false to disable fancy tail
-        },
-      })
-    end,
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = require("configs.ui.gitsigns"),
   },
   {
     "akinsho/bufferline.nvim",
@@ -166,5 +128,50 @@ return {
       notify.setup(opts)
       vim.notify = notify
     end,
+  },
+  {
+    "gen740/SmoothCursor.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("smoothcursor").setup({
+        type = "default",
+        fancy = {
+          enable = true, -- enable fancy mode
+          -- head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
+          head = { cursor = "👉", texthl = "SmoothCursor", linehl = nil }, -- false to disable fancy head
+          body = {
+            { cursor = "󰝥", texthl = "SmoothCursorRed" },
+            { cursor = "󰝥", texthl = "SmoothCursorOrange" },
+            { cursor = "●", texthl = "SmoothCursorYellow" },
+            { cursor = "●", texthl = "SmoothCursorGreen" },
+            { cursor = "•", texthl = "SmoothCursorAqua" },
+            { cursor = ".", texthl = "SmoothCursorBlue" },
+            { cursor = ".", texthl = "SmoothCursorPurple" },
+          },
+          tail = { cursor = nil, texthl = "SmoothCursor" }, -- false to disable fancy tail
+        },
+      })
+    end,
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = require("configs.tools.gitsigns"),
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.g.lualine_laststatus = vim.o.laststatus
+      -- argc() 函数返回当前窗口中打开的文件数量，而参数 -1 表示使用全局参数列表
+      if vim.fn.argc(-1) > 0 then
+        -- set an empty statusline till lualine loads
+        vim.o.statusline = " "
+      else
+        -- hide the statusline on the starter page
+        vim.o.laststatus = 0
+      end
+    end,
+    config = require("configs.ui.lualine"),
   },
 }
