@@ -31,7 +31,7 @@ return function()
         preview_cutoff = 120,
       },
       path_display = { "truncate" },
-      winblend = 0,
+      winblend = 0, -- 0-100 0-完全不透明
       border = {},
       borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
       color_devicons = true,

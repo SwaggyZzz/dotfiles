@@ -75,10 +75,10 @@ return {
         has_cmp and cmp_nvim_lsp.default_capabilities() or {}
       )
       -- nvim-ufo need config
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
+      -- capabilities.textDocument.foldingRange = {
+      --   dynamicRegistration = false,
+      --   lineFoldingOnly = true,
+      -- }
 
       -- Change the Diagnostic symbols in the sign column (gutter)
       local signs = {
@@ -117,6 +117,10 @@ return {
         on_attach = function(client, bufnr)
           if client.name == "vtsls" and disabled_vtsls_format(client.root_dir) then
             client.server_capabilities.documentFormattingProvider = false
+          end
+
+          if client.server_capabilities.inlayHintProvider and client.name ~= "vtsls" then
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 
           -- Buffer local mappings.
