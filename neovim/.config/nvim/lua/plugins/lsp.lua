@@ -15,6 +15,8 @@ return {
         "stylua",
         "prettier",
         "shfmt",
+        "goimports",
+        "gofumpt",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}

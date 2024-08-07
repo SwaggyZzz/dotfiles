@@ -22,6 +22,7 @@ return {
           lua = { "stylua" },
           sh = { "shfmt" },
           python = { "isort", "black" },
+          go = { "goimports", "gofumpt" },
         },
         format_on_save = {
           lsp_fallback = true,

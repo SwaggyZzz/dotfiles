@@ -8,6 +8,7 @@ local settings = {
     "yamlls",
     "lua_ls",
     "pyright",
+    "gopls",
     -- "tsserver",
     "vtsls",
     "svelte",

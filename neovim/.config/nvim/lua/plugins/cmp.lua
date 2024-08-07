@@ -103,6 +103,7 @@ return {
             },
           },
           documentation = {
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
             border = {
               { "", "DiagnosticHint" },
               { "─", "Comment" },
