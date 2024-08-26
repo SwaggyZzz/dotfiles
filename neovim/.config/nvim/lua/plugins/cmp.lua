@@ -82,7 +82,7 @@ return {
 
       return {
         experimental = {
-          ghost_text = true,
+          ghost_text = false,
           native_menu = false,
         },
         completion = {

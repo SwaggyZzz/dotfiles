@@ -96,8 +96,8 @@ map({ "n", "t" }, "<A-j>", "<CMD>NavigatorDown<CR>")
 map({ "n", "t" }, "<A-p>", "<CMD>NavigatorPrevious<CR>")
 
 --------------- BufferLine ---------------
-map("n", "<S-Tab>", "<CMD>BufferLineCyclePrev<CR>")
-map("n", "<Tab>", "<CMD>BufferLineCycleNext<CR>")
+map("n", "<C-h>", "<CMD>BufferLineCyclePrev<CR>")
+map("n", "<C-l>", "<CMD>BufferLineCycleNext<CR>")
 map("n", "<leader>bl", "<CMD>BufferLineMoveNext<CR>")
 map("n", "<leader>br", "<CMD>BufferLineMovePrev<CR>")
 map("n", "<leader>1", "<CMD>BufferLineGoToBuffer 1<CR>")

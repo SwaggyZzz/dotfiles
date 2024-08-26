@@ -121,9 +121,9 @@ return {
             client.server_capabilities.documentFormattingProvider = false
           end
 
-          if client.server_capabilities.inlayHintProvider and client.name ~= "vtsls" then
-            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-          end
+          -- if client.server_capabilities.inlayHintProvider and client.name ~= "vtsls" then
+          --   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+          -- end
 
           -- Buffer local mappings.
           -- See `:help vim.lsp.*` for documentation on any of the below functions

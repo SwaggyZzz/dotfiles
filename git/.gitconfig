@@ -4,5 +4,7 @@ email = swaggyz623@gmail.com
 # i gitdir的大小写不敏感版本
 [includeIf "gitdir/i:~/Desktop/work/"]
 path = ~/Desktop/work/.gitconfig
+[url "ssh://code.byted.org/"] 
+insteadOf = https://code.byted.org/
 [core]
 	editor = nvim
