@@ -126,6 +126,15 @@ return {
     end,
     color = {},
   },
+  -- progress = {
+  --   function()
+  --     local bar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+  --     local curr_line = vim.api.nvim_win_get_cursor(0)[1]
+  --     local lines = vim.api.nvim_buf_line_count(0)
+  --     local i = math.floor((curr_line - 1) / lines * #bar) + 1
+  --     return string.rep(bar[i], 2)
+  --   end,
+  -- },
   spaces = {
     function()
       local shiftwidth = vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
