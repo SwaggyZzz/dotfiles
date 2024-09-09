@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+#
+# ╭──────────────────────────────────────────────────────────╮
+# │                        BOOTSTRAP                         │
+# ╰──────────────────────────────────────────────────────────╯
+
+launchctl unload -F /System/Library/LaunchAgents/com.apple.WindowManager.plist
+
+# Require disable SIP
+# sudo yabai --load-sa
+# yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                         BORDERS                          │
+# ╰──────────────────────────────────────────────────────────╯
+# border_opts=(
+#   active_color=0xffcdd6f4
+#   inactive_color=0x00494d64
+#   hidpi=off
+#   width=5
+# )
+# borders "${options[@]}"
+
+# ╭──────────────────────────────────────────────────────────╮
+# │                         CONFIGS                          │
+# ╰──────────────────────────────────────────────────────────╯
+
+#  external_bar all:32:0 \
+
+yabai -m config \
+  menubar_opacity 1.0 \
+  mouse_follows_focus off \
+  focus_follows_mouse off \
+  display_arrangement_order default \
+  window_origin_display default \
+  window_placement second_child \
+  window_zoom_persist on \
+  window_shadow on \
+  window_animation_duration 0.5 \
+  window_animation_easing ease_out_quint \
+  window_opacity_duration 0.2 \
+  active_window_opacity 1.0 \
+  normal_window_opacity 0.8 \
+  window_opacity on \
+  insert_feedback_color 0xffd75f5f \
+  split_ratio 0.50 \
+  split_type auto \
+  auto_balance off \
+  top_padding 9 \
+  bottom_padding 9 \
+  left_padding 9 \
+  right_padding 9 \
+  window_gap 09 \
+  layout bsp \
+  mouse_modifier alt \
+  mouse_action1 move \
+  mouse_action2 resize \
+  mouse_drop_action swap
+
+# spaces
+yabai -m space 1 --label terminal
+yabai -m space 2 --label browser
+yabai -m space 3 --label communication
+yabai -m space 4 --label video
+yabai -m space 5 --label nsfw
+
+# space 1
+yabai -m rule --add app="^(kitty)$" title!="^(newsboat|yazi)$" space=^1
+
+# space 2
+yabai -m rule --add app="^(Arc)$" title!="Personal" space=^2
+yabai -m rule --add app="^(Safari|Safari浏览器)$" space=^2
+yabai -m rule --add app="^(Obsidian)$" space=^2
+yabai -m rule --add app="(Music|音乐|网易云音乐)" space=^2
