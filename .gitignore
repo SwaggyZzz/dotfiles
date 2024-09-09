@@ -1,2 +1,4 @@
 # mac 文件
 .DS_Store
+
+.config/tmux/plugins
