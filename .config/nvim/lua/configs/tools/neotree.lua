@@ -1,8 +1,8 @@
-return function ()
-   local icons = require("core.icons")
+return function()
+  local icons = require("core.icons")
 
   require("neo-tree").setup({
-    sources = { "filesystem"},
+    sources = { "filesystem" },
     open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
     filesystem = {
       bind_to_cwd = false,
@@ -24,10 +24,37 @@ return function ()
           ".git",
         },
       },
+      window = {
+        mappings = {
+          ["o"] = "system_open",
+          -- custom telescope keymap
+          ["tf"] = "telescope_find",
+          ["tg"] = "telescope_grep",
+        },
+      },
+    },
+    commands = {
+      telescope_find = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require("telescope.builtin").find_files(require("utils.telescope").get_neo_tree_telescope_opts(state, path))
+      end,
+      telescope_grep = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        require("telescope.builtin").live_grep(require("utils.telescope").get_neo_tree_telescope_opts(state, path))
+      end,
+      system_open = function(state)
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        if node.type == "directory" then
+          vim.fn.jobstart({ "open", path }, { detach = true })
+        end
+      end,
     },
     window = {
       mappings = {
-        ["l"] = "open",
+        ["l"] = "open_with_window_picker",
         ["h"] = "close_node",
         ["<space>"] = "none",
         ["Y"] = {
@@ -57,12 +84,12 @@ return function ()
       git_status = {
         symbols = {
           untracked = icons.git.FileUntracked,
-          ignored   = icons.git.FileIgnored,
-          unstaged  = icons.git.FileUnstaged,
-          staged    = icons.git.FileStaged,
-          conflict  = icons.git.FileConflict,
-        }
+          ignored = icons.git.FileIgnored,
+          unstaged = icons.git.FileUnstaged,
+          staged = icons.git.FileStaged,
+          conflict = icons.git.FileConflict,
+        },
       },
-    }
+    },
   })
 end
