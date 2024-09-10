@@ -91,6 +91,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+export EDITOR="nvim"
+
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:$GOPATH/bin
 
@@ -116,3 +118,13 @@ export MY_HOST_IPV6=::1
 alias v="nvim"
 alias cat="bat"
 alias ls="lsd"
+
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
