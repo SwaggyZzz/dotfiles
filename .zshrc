@@ -115,7 +115,12 @@ export MY_HOST_IPV6=::1
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-alias v="nvim"
+# 解决kitty在tmux内nvim光标不闪烁问题
+# https://github.com/kovidgoyal/kitty/issues/3906
+# https://www.reddit.com/r/neovim/comments/1ayq2tn/blinking_cursor_using_kitty_tmux_in_neovim/
+alias v='TERM=xterm-kitty nvim'
+alias nvim='TERM=xterm-kitty nvim'
+
 alias cat="bat"
 alias ls="lsd"
 
