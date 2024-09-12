@@ -27,6 +27,9 @@ return function()
       window = {
         mappings = {
           ["o"] = "system_open",
+          ["s"] = "none",
+          ["V"] = "split_with_window_picker",
+          ["v"] = "vsplit_with_window_picker",
           -- custom telescope keymap
           ["tf"] = "telescope_find",
           ["tg"] = "telescope_grep",
