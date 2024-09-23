@@ -63,6 +63,7 @@ local settings = {
     "/motor_mp",
     "/ad_basic_pages",
     "/open_platform_admin",
+    "/motor%-dzx",
   },
 }
 
