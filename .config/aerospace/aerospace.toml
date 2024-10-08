@@ -192,6 +192,9 @@ run = "move-node-to-workspace 🌐"
 if.app-id = 'com.electron.lark'
 run = "move-node-to-workspace Lark"
 [[on-window-detected]]
+if.app-id = 'com.electron.lark.iron'
+run = "layout floating"
+[[on-window-detected]]
 if.app-name-regex-substring = 'Lark Helper'
 run = "layout floating"
 [[on-window-detected]]
