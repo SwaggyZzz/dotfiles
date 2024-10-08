@@ -64,6 +64,7 @@ local settings = {
     "/ad_basic_pages",
     "/open_platform_admin",
     "/motor%-dzx",
+    "/data-biz-platform",
   },
 }
 
