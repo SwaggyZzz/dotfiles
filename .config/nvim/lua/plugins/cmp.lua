@@ -153,19 +153,30 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              if luasnip.expandable() then
-                luasnip.expand()
+          -- ["<CR>"] = cmp.mapping(function(fallback)
+          --   if cmp.visible() then
+          --     if luasnip.expandable() then
+          --       luasnip.expand()
+          --     else
+          --       cmp.confirm({
+          --         select = true,
+          --       })
+          --     end
+          --   else
+          --     fallback()
+          --   end
+          -- end),
+          ["<CR>"] = cmp.mapping({
+            i = function(fallback)
+              if cmp.visible() and cmp.get_active_entry() then
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
               else
-                cmp.confirm({
-                  select = true,
-                })
+                fallback()
               end
-            else
-              fallback()
-            end
-          end),
+            end,
+            s = cmp.mapping.confirm({ select = true }),
+            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+          }),
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
@@ -197,4 +208,3 @@ return {
     end,
   },
 }
-
