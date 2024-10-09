@@ -176,6 +176,10 @@ return {
       }
 
       local function setup(server)
+        if server == "rust_analyzer" then
+          return
+        end
+
         local ok, custom_handler = pcall(require, "configs.lsp.servers." .. server)
 
         if not ok then

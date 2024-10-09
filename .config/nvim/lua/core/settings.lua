@@ -10,6 +10,7 @@ local settings = {
     "pyright",
     "gopls",
     "thriftls",
+    "rust_analyzer",
     -- "tsserver",
     "vtsls",
     "svelte",
