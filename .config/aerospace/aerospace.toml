@@ -204,6 +204,10 @@ run = "layout floating"
 [[on-window-detected]]
 if.app-id = 'com.bytedance.macos.feishu'
 run = "move-node-to-workspace Lark"
+[[on-window-detected]]
+if.app-id = 'com.bytedance.macos.feishu.iron'
+run = "layout floating"
+
 
 [[on-window-detected]]
 if.app-id = 'com.netease.163music'
