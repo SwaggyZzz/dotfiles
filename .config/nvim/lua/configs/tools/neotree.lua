@@ -26,6 +26,7 @@ return function()
       },
       window = {
         mappings = {
+          ["t"] = "none",
           ["o"] = "system_open",
           ["s"] = "none",
           ["V"] = "split_with_window_picker",
