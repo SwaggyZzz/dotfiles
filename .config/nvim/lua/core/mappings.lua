@@ -44,10 +44,10 @@ map("n", "<leader>wx", "<CMD>close<CR>", { desc = "Close Current Split", remap =
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 -- Resize window using <ctrl> arrow keys
-map("n", "<A-S-k>", "<CMD>resize +2<CR>", { desc = "Increase Window Height" })
-map("n", "<A-S-j>", "<CMD>resize -2<CR>", { desc = "Decrease Window Height" })
-map("n", "<A-S-h>", "<CMD>vertical resize -2<CR>", { desc = "Decrease Window Width" })
-map("n", "<A-S-l>", "<CMD>vertical resize +2<CR>", { desc = "Increase Window Width" })
+map("n", "<leader>wk", "<CMD>resize +2<CR>", { desc = "Increase Window Height" })
+map("n", "<leader>wj", "<CMD>resize -2<CR>", { desc = "Decrease Window Height" })
+map("n", "<leader>wh", "<CMD>vertical resize -2<CR>", { desc = "Decrease Window Width" })
+map("n", "<leader>wl", "<CMD>vertical resize +2<CR>", { desc = "Increase Window Width" })
 
 -- Move Lines
 map("i", "<A-j>", "<esc><CMD>m .+1<CR>==gi", { desc = "Move Down" })

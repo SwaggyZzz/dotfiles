@@ -102,10 +102,17 @@ return {
         end,
       }
 
+      local auto_select = true
+      local defaults = require("cmp.config.default")()
+
       cmp.setup({
         experimental = {
           ghost_text = false,
         },
+        completion = {
+          completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+        },
+        preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body)
@@ -147,8 +154,8 @@ return {
           end,
         },
         mapping = cmp.mapping.preset.insert({
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
@@ -166,17 +173,48 @@ return {
           --     fallback()
           --   end
           -- end),
-          ["<CR>"] = cmp.mapping({
-            i = function(fallback)
-              if cmp.visible() and cmp.get_active_entry() then
-                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-              else
-                fallback()
+
+          -- ["<CR>"] = cmp.mapping({
+          --   i = function(fallback)
+          --     if cmp.visible() and cmp.get_active_entry() then
+          --       cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+          --     else
+          --       fallback()
+          --     end
+          --   end,
+          --   s = cmp.mapping.confirm({ select = true }),
+          --   c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+          -- }),
+
+          ["<CR>"] = function(fallback)
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
+              require("utils").create_undo()
+              if
+                cmp.confirm({
+                  select = true,
+                  behavior = cmp.ConfirmBehavior.Insert,
+                })
+              then
+                return
               end
-            end,
-            s = cmp.mapping.confirm({ select = true }),
-            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-          }),
+            end
+            return fallback()
+          end,
+          ["<S-CR>"] = function(fallback)
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
+              require("utils").create_undo()
+              if
+                cmp.confirm({
+                  select = true,
+                  behavior = cmp.ConfirmBehavior.Replace,
+                })
+              then
+                return
+              end
+            end
+            return fallback()
+          end, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
@@ -204,6 +242,7 @@ return {
           { name = "nvim_lua" },
           { name = "path" },
         }),
+        sorting = defaults.sorting,
       })
     end,
   },
