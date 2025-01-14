@@ -218,6 +218,15 @@ if.app-id = 'com.tencent.xinWeChat'
 run = ["layout floating", "move-node-to-workspace 🛰"]
 
 [[on-window-detected]]
+if.app-id = "com.baidu.BaiduNetdisk-mac"
+run = ["layout floating", "move-node-to-workspace 💻"]
+
+[[on-window-detected]]
+if.app-id = "com.colliderli.iina"
+run = ["layout floating", "move-node-to-workspace 💻"]
+
+# ==================== common layout float start ====================
+[[on-window-detected]]
 if.app-id = 'com.apple.Preview'
 run = "layout floating"
 
@@ -226,11 +235,10 @@ if.app-id = 'com.apple.finder'
 run = "layout floating"
 
 [[on-window-detected]]
-if.app-id = "com.baidu.BaiduNetdisk-mac"
-run = ["layout floating", "move-node-to-workspace 💻"]
+if.app-id = "com.apple.iCal"
+run = "layout floating"
+# ==================== common layout float end ====================
 
-[[on-window-detected]]
-if.app-id = "com.colliderli.iina"
-run = ["layout floating", "move-node-to-workspace 💻"]
+
 
 
