@@ -216,6 +216,10 @@ run = "move-node-to-workspace 🎧"
 [[on-window-detected]]
 if.app-id = 'com.tencent.xinWeChat'
 run = ["layout floating", "move-node-to-workspace 🛰"]
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = ["layout floating", "move-node-to-workspace 🛰"]
+
 
 [[on-window-detected]]
 if.app-id = "com.baidu.BaiduNetdisk-mac"

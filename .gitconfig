@@ -8,3 +8,5 @@ path = ~/Desktop/work/.gitconfig
 insteadOf = https://code.byted.org/
 [core]
 	editor = nvim
+[init]
+	defaultBranch = master
