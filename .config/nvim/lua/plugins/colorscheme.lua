@@ -1,47 +1,62 @@
 return {
-   {
-    "catppuccin/nvim",
-    lazy = false,
+  {
+    'catppuccin/nvim',
     priority = 1000,
-    name = "catppuccin",
+    name = 'catppuccin',
+    init = function()
+      vim.cmd.colorscheme 'catppuccin-mocha'
+    end,
     config = function()
-      local transparent_background = require("core.settings").transparent_background
+      local transparent_background = require('core.settings').transparent_background
 
-      require("catppuccin").setup({
-        background = { light = "latte", dark = "mocha" }, -- latte, frappe, macchiato, mocha
+      require('catppuccin').setup {
         transparent_background = transparent_background,
         show_end_of_buffer = false, -- show the '~' characters after the end of buffers
         term_colors = true,
         styles = {
-          comments = { "italic" },
-          conditionals = { "bold", "italic" },
-          functions = { "bold" },
-          constants = { "bold" },
-          keywords = { "bold", "italic" },
+          comments = { 'italic' },
+          conditionals = { 'bold', 'italic' },
+          functions = { 'bold' },
+          constants = { 'bold' },
+          keywords = { 'bold', 'italic' },
         },
         color_overrides = {},
         highlight_overrides = {
-          ---@param cp palette
-          all = function(cp)
+          mocha = function(mocha)
             return {
               -- 当前行行号颜色
-              CursorLineNr = { fg = cp.green },
-
-              -- For nvim-cmp
-              PmenuSel = { bg = cp.green, fg = cp.base },
-              Pmenu = { fg = cp.overlay2, bg = transparent_background and cp.none or cp.base },
-              PmenuBorder = { fg = cp.surface1, bg = transparent_background and cp.none or cp.base },
+              CursorLineNr = { fg = mocha.green },
+              -- 补全选中颜色
+              -- BlinkCmpMenuSelection = { bg = mocha.green, fg = mocha.base},
+              BlinkCmpMenu = { fg = mocha.overlay2, bg = mocha.mantle },
+              BlinkCmpDoc = { fg = mocha.overlay2, bg = mocha.mantle },
+              BlinkCmpDocBorder = { fg = mocha.surface1, bg = transparent_background and mocha.none or mocha.base },
+              -- BlinkCmpMenu = { fg = mocha.overlay2, bg = transparent_background and mocha.none or mocha.base },
+              -- BlinkCmpDoc = { fg = mocha.overlay2, bg = transparent_background and mocha.none or mocha.base },
+              BlinkCmpMenuBorder = { fg = mocha.surface1, bg = transparent_background and mocha.none or mocha.base },
             }
           end,
+          -- ---@param cp palette
+          -- all = function(cp)
+          --   return {
+          --     -- For nvim-cmp
+          --     PmenuSel = { bg = cp.green, fg = cp.base },
+          --     Pmenu = { fg = cp.overlay2, bg = transparent_background and cp.none or cp.base },
+          --     PmenuBorder = { fg = cp.surface1, bg = transparent_background and cp.none or cp.base },
+          --   }
+          -- end,
         },
         integrations = {
+          snacks = {
+            enabled = true,
+          },
           aerial = true,
           alpha = true,
           dashboard = true,
           gitsigns = true,
           headlines = true,
           markdown = true,
-          navic = { enabled = true, custom_bg = "lualine" },
+          navic = { enabled = true, custom_bg = 'lualine' },
           telescope = {
             enabled = true,
           },
@@ -63,6 +78,7 @@ return {
             enabled = true,
           },
           cmp = true,
+          blink_cmp = true,
           dap = true,
           dap_ui = true,
           treesitter_context = true,
@@ -82,23 +98,23 @@ return {
           native_lsp = {
             enabled = true,
             virtual_text = {
-              errors = { "italic" },
-              hints = { "italic" },
-              warnings = { "italic" },
-              information = { "italic" },
+              errors = { 'italic' },
+              hints = { 'italic' },
+              warnings = { 'italic' },
+              information = { 'italic' },
             },
             underlines = {
-              errors = { "underline" },
-              hints = { "underline" },
-              warnings = { "underline" },
-              information = { "underline" },
+              errors = { 'underline' },
+              hints = { 'underline' },
+              warnings = { 'underline' },
+              information = { 'underline' },
             },
             inlay_hints = {
               background = false,
             },
           },
         },
-      })
+      }
     end,
   },
 }

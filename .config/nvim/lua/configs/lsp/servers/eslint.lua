@@ -3,7 +3,7 @@ return {
     codeAction = {
       disableRuleComment = {
         enable = true,
-        location = "separateLine",
+        location = 'separateLine',
       },
       showDocumentation = {
         enable = true,
@@ -11,21 +11,20 @@ return {
     },
     codeActionOnSave = {
       enable = false,
-      mode = "all",
+      mode = 'all',
     },
     format = true,
-    nodePath = "",
-    onIgnoredFiles = "off",
-    packageManager = "npm", -- 'npm' | 'yarn' | 'pnpm'
+    nodePath = '',
+    onIgnoredFiles = 'off',
+    packageManager = 'npm', -- 'npm' | 'yarn' | 'pnpm'
     quiet = false,
     rulesCustomizations = {},
-    run = "onType",
+    run = 'onType',
     useESLintClass = false,
-    validate = "on",
+    validate = 'on',
     workingDirectory = {
       -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
-      mode = "auto", -- "location" | "auto"
+      mode = 'auto', -- "location" | "auto"
     },
   },
 }
-

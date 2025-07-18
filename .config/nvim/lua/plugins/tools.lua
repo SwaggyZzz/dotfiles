@@ -1,218 +1,448 @@
 return {
-  { "nvim-lua/plenary.nvim" },
   {
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-tree/nvim-web-devicons" },
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      { "nvim-telescope/telescope-live-grep-args.nvim" },
-      { "nvim-telescope/telescope-ui-select.nvim" },
-    },
-    config = require("configs.tools.telescope"),
-  },
-  -- {
-  --   "nvim-tree/nvim-tree.lua",
-  --   lazy = false,
-  --   version = "*",
-  --   config = require("configs.tools.nvimtree"),
-  --   -- cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFileToggle" },
-  --   dependencies = {
-  --     {
-  --       "s1n7ax/nvim-window-picker",
-  --       name = "window-picker",
-  --       event = "VeryLazy",
-  --       version = "2.*",
-  --       config = function()
-  --         require("window-picker").setup({
-  --           hint = "floating-big-letter",
-  --           -- whether to show 'Pick window:' prompt
-  --           show_prompt = false,
-  --           filter_rules = {
-  --             -- filter using buffer options
-  --             bo = {
-  --               -- if the file type is one of following, the window will be ignored
-  --               filetype = { "NvimTree", "neo-tree", "notify", "noice" },
-  --
-  --               -- if the file type is one of following, the window will be ignored
-  --               buftype = { "terminal" },
-  --             },
-  --           },
-  --         })
-  --       end,
-  --     },
-  --   },
-  -- },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = "Neotree",
-    init = function()
-      -- FIX: use `autocmd` for lazy-loading neo-tree instead of directly requiring it,
-      -- because `cwd` is not set up properly.
-      vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("Neotree_start_directory", { clear = true }),
-        desc = "Start Neo-tree with directory",
-        once = true,
-        callback = function()
-          if package.loaded["neo-tree"] then
-            return
-          else
-            local stats = vim.uv.fs_stat(vim.fn.argv(0))
-            if stats and stats.type == "directory" then
-              require("neo-tree")
-            end
-          end
-        end,
-      })
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    config = function(_, opts)
+      local notify = vim.notify
+      require('snacks').setup(opts)
+      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
+      -- this is needed to have early notifications show up in noice history
+      vim.notify = notify
     end,
-    dependencies = {
-      { "MunifTanjim/nui.nvim" },
-      {
-        "s1n7ax/nvim-window-picker",
-        version = "2.*",
-        config = function()
-          require("window-picker").setup({
-            hint = "floating-big-letter",
-            show_prompt = false,
-            filter_rules = {
-              include_current_win = false,
-              autoselect_one = true,
-              -- filter using buffer options
-              bo = {
-                -- if the file type is one of following, the window will be ignored
-                filetype = { "neo-tree", "neo-tree-popup", "notify", "noice" },
-                -- if the buffer type is one of following, the window will be ignored
-                buftype = { "terminal", "quickfix" },
+    opts = {
+      bigfile = { enabled = true },
+      quickfile = { enabled = true },
+      terminal = { enabled = false },
+      explorer = { enabled = true },
+      picker = {
+        layout = {
+          cycle = true,
+          --- Use the default layout or vertical if the window is too narrow
+          preset = function()
+            return vim.o.columns >= 120 and 'default' or 'vertical'
+          end,
+        },
+        win = {
+          input = {
+            keys = {
+              ['<a-c>'] = {
+                'toggle_cwd',
+                mode = { 'n', 'i' },
               },
             },
-          })
-        end,
+          },
+        },
+        actions = {
+          ---@param p snacks.Picker
+          toggle_cwd = function(p)
+            local root = require('lazyvim.util').root { buf = p.input.filter.current_buf, normalize = true }
+            local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or '.')
+            local current = p:cwd()
+            p:set_cwd(current == root and cwd or root)
+            p:find()
+          end,
+        },
+        sources = {
+          explorer = {
+            layout = { layout = { position = 'left', size = 35 } },
+            follow_file = true, -- 跟踪当前打开文件
+            tree = true, -- 以树形结构显示
+            focus = 'list', -- 默认焦点在文件列表
+            jump = { close = true },
+            auto_close = true,
+          },
+        },
       },
     },
-    config = require("configs.tools.neotree"),
-  },
-  {
-    "karb94/neoscroll.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-  {
-    "numToStr/Navigator.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 500
-    end,
-    opts = {
-      preset = "modern",
-      win = { border = "rounded" },
-    },
-  },
-  {
-    "ojroques/nvim-bufdel",
-    lazy = true,
-    cmd = { "BufDel", "BufDelAll", "BufDelOthers" },
-    opts = {
-      next = "alternate",
-    },
-  },
-  {
-    "folke/persistence.nvim",
-    event = "BufReadPre",
-    opts = { options = vim.opt.sessionoptions:get() },
     keys = {
       {
-        "<leader>qs",
+        '<leader>,',
         function()
-          require("persistence").load()
+          Snacks.picker.buffers()
         end,
-        desc = "Restore Session",
+        desc = 'Buffers',
       },
       {
-        "<leader>ql",
+        '<leader>/',
         function()
-          require("persistence").load({ last = true })
+          Snacks.picker.lines()
         end,
-        desc = "Restore Last Session",
+        desc = 'Buffer Lines',
       },
       {
-        "<leader>qd",
+        '<leader>:',
         function()
-          require("persistence").stop()
+          Snacks.picker.command_history()
         end,
-        desc = "Don't Save Current Session",
+        desc = 'Command History',
+      },
+      {
+        '<leader><space>',
+        function()
+          Snacks.picker.pick 'files'
+        end,
+        desc = 'Find Files (Root Dir)',
+      },
+      -- find
+      {
+        '<leader>fb',
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = 'Buffers',
+      },
+      {
+        '<leader>fB',
+        function()
+          Snacks.picker.buffers { hidden = true, nofile = true }
+        end,
+        desc = 'Buffers (all)',
+      },
+      {
+        '<leader>ff',
+        function()
+          Snacks.picker.pick 'files'
+        end,
+        desc = 'Find Files (Root Dir)',
+      },
+      {
+        '<leader>fF',
+        function()
+          Snacks.picker.pick('files', { cwd = require('lazyvim.util').root() })
+        end,
+        desc = 'Find Files (cwd)',
+      },
+      {
+        '<leader>fg',
+        function()
+          Snacks.picker.git_files()
+        end,
+        desc = 'Find Files (git-files)',
+      },
+      {
+        '<leader>fr',
+        function()
+          Snacks.picker.pick 'recent'
+        end,
+        desc = 'Recent',
+      },
+      {
+        '<leader>fR',
+        function()
+          Snacks.picker.recent { filter = { cwd = true } }
+        end,
+        desc = 'Recent (cwd)',
+      },
+      {
+        '<leader>fp',
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = 'Projects',
+      },
+      -- git
+      {
+        '<leader>gd',
+        function()
+          Snacks.picker.git_diff()
+        end,
+        desc = 'Git Diff (hunks)',
+      },
+      {
+        '<leader>gs',
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = 'Git Status',
+      },
+      {
+        '<leader>gS',
+        function()
+          Snacks.picker.git_stash()
+        end,
+        desc = 'Git Stash',
+      },
+      -- Grep
+      {
+        '<leader>sb',
+        function()
+          Snacks.picker.lines()
+        end,
+        desc = 'Buffer Lines',
+      },
+      {
+        '<leader>sB',
+        function()
+          Snacks.picker.grep_buffers()
+        end,
+        desc = 'Grep Open Buffers',
+      },
+      {
+        '<leader>sg',
+        function()
+          Snacks.picker.pick 'live_grep'
+        end,
+        desc = 'Grep (Root Dir)',
+      },
+      {
+        '<leader>sG',
+        function()
+          Snacks.picker.pick('live_grep', { cwd = require('lazyvim.util').root() })
+        end,
+        desc = 'Grep (cwd)',
+      },
+      {
+        '<leader>sp',
+        function()
+          Snacks.picker.lazy()
+        end,
+        desc = 'Search for Plugin Spec',
+      },
+      {
+        '<leader>sw',
+        function()
+          Snacks.picker.pick 'grep_word'
+        end,
+        mode = { 'n', 'x' },
+      },
+      {
+        '<leader>sW',
+        function()
+          Snacks.picker.pick('grep_word', { cwd = require('lazyvim.util').root() })
+        end,
+        desc = 'Visual selection or word (cwd)',
+        mode = { 'n', 'x' },
+      },
+      -- search
+      {
+        '<leader>s"',
+        function()
+          Snacks.picker.registers()
+        end,
+        desc = 'Registers',
+      },
+      {
+        '<leader>s/',
+        function()
+          Snacks.picker.search_history()
+        end,
+        desc = 'Search History',
+      },
+      {
+        '<leader>sa',
+        function()
+          Snacks.picker.autocmds()
+        end,
+        desc = 'Autocmds',
+      },
+      {
+        '<leader>sc',
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = 'Command History',
+      },
+      {
+        '<leader>sC',
+        function()
+          Snacks.picker.commands()
+        end,
+        desc = 'Commands',
+      },
+      {
+        '<leader>sd',
+        function()
+          Snacks.picker.diagnostics()
+        end,
+        desc = 'Diagnostics',
+      },
+      {
+        '<leader>sD',
+        function()
+          Snacks.picker.diagnostics_buffer()
+        end,
+        desc = 'Buffer Diagnostics',
+      },
+      {
+        '<leader>sh',
+        function()
+          Snacks.picker.help()
+        end,
+        desc = 'Help Pages',
+      },
+      {
+        '<leader>sH',
+        function()
+          Snacks.picker.highlights()
+        end,
+        desc = 'Highlights',
+      },
+      {
+        '<leader>si',
+        function()
+          Snacks.picker.icons()
+        end,
+        desc = 'Icons',
+      },
+      {
+        '<leader>sj',
+        function()
+          Snacks.picker.jumps()
+        end,
+        desc = 'Jumps',
+      },
+      {
+        '<leader>sk',
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = 'Keymaps',
+      },
+      {
+        '<leader>sl',
+        function()
+          Snacks.picker.loclist()
+        end,
+        desc = 'Location List',
+      },
+      {
+        '<leader>sM',
+        function()
+          Snacks.picker.man()
+        end,
+        desc = 'Man Pages',
+      },
+      {
+        '<leader>sm',
+        function()
+          Snacks.picker.marks()
+        end,
+        desc = 'Marks',
+      },
+      {
+        '<leader>sR',
+        function()
+          Snacks.picker.resume()
+        end,
+        desc = 'Resume',
+      },
+      {
+        '<leader>sq',
+        function()
+          Snacks.picker.qflist()
+        end,
+        desc = 'Quickfix List',
+      },
+      {
+        '<leader>su',
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = 'Undotree',
+      },
+      -- ui
+      {
+        '<leader>uC',
+        function()
+          Snacks.picker.colorschemes()
+        end,
+        desc = 'Colorschemes',
+      },
+      -- explorer
+      {
+        '<leader>fe',
+        function()
+          Snacks.explorer { cwd = require('lazyvim.util').root() }
+        end,
+        desc = 'Explorer Snacks (root dir)',
+      },
+      {
+        '<leader>fE',
+        function()
+          Snacks.explorer()
+        end,
+        desc = 'Explorer Snacks (cwd)',
+      },
+      { '<leader>e', '<leader>fe', desc = 'Explorer Snacks (root dir)', remap = true },
+      { '<leader>E', '<leader>fE', desc = 'Explorer Snacks (cwd)', remap = true },
+      -- Other
+      {
+        '<leader>cR',
+        function()
+          Snacks.rename.rename_file()
+        end,
+        desc = 'Rename File',
+      },
+      {
+        '<leader>gB',
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = 'Git Browse',
+        mode = { 'n', 'v' },
+      },
+      {
+        '<leader>gg',
+        function()
+          Snacks.lazygit()
+        end,
+        desc = 'Lazygit',
       },
     },
-    -- config = function (_, opts)
-    --   vim.api.nvim_create_autocmd("User", {
-    --     pattern = "PersistenceLoadPost",
-    --     callback = function()
-    --         vim.notify("=======111")
-    --     end,
-    --   })
-    --   require("persistence").setup(opts)
-    -- end
   },
   {
-    "NvChad/nvim-colorizer.lua",
-    event = "VeryLazy",
+    'LazyVim/LazyVim',
+    config = false, -- 禁用默认配置
+  },
+  { 'nvim-lua/plenary.nvim' },
+  {
+    'numToStr/Navigator.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
+  {
+    'NvChad/nvim-colorizer.lua',
+    event = 'VeryLazy',
     config = function(_, opts)
-      require("colorizer").setup(opts)
-
+      require('colorizer').setup(opts)
       -- execute colorizer as soon as possible
       vim.defer_fn(function()
-        require("colorizer").attach_to_buffer(0)
+        require('colorizer').attach_to_buffer(0)
       end, 0)
     end,
   },
   {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-    cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
     opts = {
-      focus = true,
+      ---@type false | "classic" | "modern" | "helix"
+      preset = 'helix',
+      win = {
+        title = false,
+        width = 0.5,
+      },
     },
+  },
+  {
+    'stevearc/oil.nvim',
+    lazy = false,
     keys = {
-      { "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
-      { "<leader>xd", "<CMD>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>xl", "<CMD>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
-      { "<leader>xq", "<CMD>Trouble quickfix toggle<CR>", desc = "Quickfix List (Trouble)" },
-      { "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Todos (Trouble)" },
-      {
-        "[q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").prev({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cprev)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Previous Trouble/Quickfix Item",
-      },
-      {
-        "]q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").next({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cnext)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Next Trouble/Quickfix Item",
-      },
+      { '-', '<cmd>Oil<cr>', desc = 'Open parent directory' },
+    },
+    dependencies = { 'echasnovski/mini.icons' },
+    config = require 'configs.tools.oil',
+  },
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+      { "<leader>qS", function() require("persistence").select() end,desc = "Select Session" },
+      { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+      { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
     },
   },
 }

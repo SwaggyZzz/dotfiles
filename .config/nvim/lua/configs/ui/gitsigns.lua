@@ -1,24 +1,35 @@
 return function()
   local opts = {
-    -- signs                        = {
-    --   add = { text = "▎" },
-    --   change = { text = "▎" },
-    --   delete = { text = "󰍵" },
-    --   topdelete = { text = "" },
-    --   changedelete = { text = "▎" },
-    --   untracked = { text = "▎" },
-    -- },
+    signs = {
+      add = { text = '▎' },
+      change = { text = '▎' },
+      delete = { text = '' },
+      topdelete = { text = '' },
+      changedelete = { text = '▎' },
+      untracked = { text = '▎' },
+    },
+    signs_staged = {
+      add = { text = '▎' },
+      change = { text = '▎' },
+      delete = { text = '' },
+      topdelete = { text = '' },
+      changedelete = { text = '▎' },
+    },
 
-    current_line_blame           = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-    current_line_blame_opts      = {
+    current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+    current_line_blame_opts = {
       virt_text = true,
-      virt_text_pos = 'eol',   -- 'eol' | 'overlay' | 'right_align'
+      virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
       delay = 700,
       ignore_whitespace = false,
     },
     current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
 
-    on_attach                    = function(bufnr)
+    preview_config = {
+      border = 'rounded',
+    },
+
+    on_attach = function(bufnr)
       local gs = package.loaded.gitsigns
 
       local function map(mode, l, r, desc)
@@ -43,5 +54,5 @@ return function()
     end,
   }
 
-  require("gitsigns").setup(opts)
+  require('gitsigns').setup(opts)
 end

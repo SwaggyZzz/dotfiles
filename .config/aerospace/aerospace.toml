@@ -116,7 +116,7 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 🎧'
 alt-0 = 'workspace 🛰'
 alt-m = 'workspace 💻'
-alt-v = 'workspace VSCode'
+alt-e = 'workspace VSCode'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 ctrl-alt-1 = 'move-node-to-workspace 🚀'

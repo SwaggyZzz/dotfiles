@@ -1,7 +1,7 @@
 return function(origin_opts)
-  local lspconfig = require("lspconfig")
+  local lspconfig = require 'lspconfig'
 
-  local server_opts = vim.tbl_deep_extend("force", origin_opts, {
+  local server_opts = vim.tbl_deep_extend('force', origin_opts, {
     on_attach = function(client, bufnr)
       origin_opts.on_attach(client, bufnr)
 
@@ -51,11 +51,11 @@ return function(origin_opts)
         usePlaceholders = true,
         completeUnimported = true,
         staticcheck = true,
-        directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+        directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
         semanticTokens = true,
       },
     },
   })
 
-  lspconfig["gopls"].setup(server_opts)
+  lspconfig['gopls'].setup(server_opts)
 end

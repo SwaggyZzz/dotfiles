@@ -1,5 +1,5 @@
 return function()
-  require("go").setup({
+  require('go').setup {
     icons = false,
     diagnostic = false,
     lsp_cfg = false,
@@ -16,5 +16,5 @@ return function()
     trouble = true,
     luasnip = false,
     run_in_floaterm = false,
-  })
+  }
 end

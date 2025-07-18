@@ -1,28 +1,29 @@
 return {
   {
-    "stevearc/conform.nvim",
-    event = { "BufWritePre" },
-    cmd = "ConformInfo",
-    dependencies = { "mason.nvim" },
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = 'ConformInfo',
+    dependencies = { 'mason.nvim' },
     config = function()
       local opts = {
         formatters_by_ft = {
-          typescript = { "prettier" },
-          typescriptreact = { "prettier" },
-          javascript = { "prettier" },
-          javascriptreact = { "prettier" },
-          html = { "prettier" },
-          css = { "prettier" },
-          less = { "prettier" },
-          svelte = { "prettier" },
-          graphql = { "prettier" },
-          json = { "prettier" },
-          markdown = { "prettier" },
-          yaml = { "prettier" },
-          lua = { "stylua" },
-          sh = { "shfmt" },
-          python = { "isort", "black" },
-          go = { "goimports", "gofumpt" },
+          typescript = { 'prettier' },
+          typescriptreact = { 'prettier' },
+          javascript = { 'prettier' },
+          javascriptreact = { 'prettier' },
+          html = { 'prettier' },
+          css = { 'prettier' },
+          less = { 'prettier' },
+          svelte = { 'prettier' },
+          graphql = { 'prettier' },
+          json = { 'prettier' },
+          markdown = { 'prettier' },
+          yaml = { 'prettier' },
+          lua = { 'stylua' },
+          sh = { 'shfmt' },
+          python = { 'isort', 'black' },
+          go = { 'goimports', 'gofumpt' },
+          ['_'] = { 'trim_whitespace' },
         },
         format_on_save = {
           lsp_fallback = true,
@@ -42,7 +43,7 @@ return {
               -- end
               -- return vim.fs.basename(ctx.filename) ~= "README.md"
 
-              local eslint_format_dir = require("core.settings").eslint_format_dir
+              local eslint_format_dir = require('core.settings').eslint_format_dir
 
               for _, dir in ipairs(eslint_format_dir) do
                 if string.match(ctx.dirname, dir) then
@@ -67,7 +68,7 @@ return {
         },
       }
 
-      require("conform").setup(opts)
+      require('conform').setup(opts)
     end,
   },
 }
