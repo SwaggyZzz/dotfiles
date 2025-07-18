@@ -10,6 +10,9 @@ map('i', '<C-l>', '<Right>')
 map('i', '<C-j>', '<Down>')
 map('i', '<C-k>', '<Up>')
 
+-- no search highlight
+map('n', '//', '<CMD>noh<CR>')
+
 -- Save file
 map({ 'i', 'x', 'n', 's' }, '<A-s>', '<CMD>w<cr><ESC>', { desc = 'Save File' })
 -- Close Buffer

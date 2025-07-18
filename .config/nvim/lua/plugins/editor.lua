@@ -1,10 +1,10 @@
 return {
-  {
-    'nvimdev/hlsearch.nvim',
-    lazy = true,
-    event = 'BufRead',
-    opts = {},
-  },
+  -- {
+  --   'nvimdev/hlsearch.nvim',
+  --   lazy = true,
+  --   event = 'BufRead',
+  --   opts = {},
+  -- },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -162,5 +162,10 @@ return {
       },
     },
   },
+  {
+    'kevinhwang91/nvim-ufo',
+    event = 'VeryLazy',
+    dependencies = { 'kevinhwang91/promise-async' },
+    config = require 'configs.editor.ufo',
+  },
 }
-

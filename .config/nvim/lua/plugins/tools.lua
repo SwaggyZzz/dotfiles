@@ -420,7 +420,7 @@ return {
       preset = 'helix',
       win = {
         title = false,
-        width = 0.5,
+        width = 0.4,
       },
     },
   },
