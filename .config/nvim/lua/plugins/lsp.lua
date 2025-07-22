@@ -180,6 +180,11 @@ return {
           if client.server_capabilities.inlayHintProvider then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
+
+          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { silent = true, desc = 'LSP Code Action' })
+          vim.keymap.set({ 'n' }, 'gK', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
+          vim.keymap.set({ 'i' }, '<C-k>', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
+          vim.keymap.set({ 'n' }, 'K', vim.lsp.buf.hover, { silent = true, desc = 'LSP Show documentation' })
         end,
         capabilities = capabilities,
       }
@@ -214,6 +219,7 @@ return {
       end
 
       local servers = require('core.settings').lsp_servers
+
       mason_lspconfig.setup {
         ensure_installed = servers,
         handlers = { setup },
