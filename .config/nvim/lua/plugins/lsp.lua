@@ -111,7 +111,7 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'williamboman/mason.nvim' },
-      { 'williamboman/mason-lspconfig.nvim' },
+      { 'williamboman/mason-lspconfig.nvim', branch = 'v1.x' },
       { 'saghen/blink.cmp' },
       { 'antosha417/nvim-lsp-file-operations', config = true },
       -- { "folke/neodev.nvim", opts = {} },
@@ -177,7 +177,7 @@ return {
             client.server_capabilities.documentFormattingProvider = false
           end
 
-          if client.server_capabilities.inlayHintProvider then
+          if client.server_capabilities.inlayHintProvider and client.name ~= 'vtsls' then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 
