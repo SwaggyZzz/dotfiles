@@ -91,17 +91,11 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export TERM="xterm-kitty"
+# export TERM="xterm-kitty"
 export EDITOR="nvim"
 
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:$GOPATH/bin
-
-# export CONSUL_HTTP_HOST=fe80::1cbb:105c:8743:78ef
-# export CONSUL_HTTP_PORT=2280
-# export RUNTIME_IDC_NAME=boe
-export BYTED_HOST_IPV6=::1
-export MY_HOST_IPV6=::1
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8

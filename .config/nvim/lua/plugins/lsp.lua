@@ -181,6 +181,9 @@ return {
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 
+          vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP Line Diagnostics' })
+          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'LSP Go to previous diagnostic' })
+          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'LSP Go to next diagnostic' })
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { silent = true, desc = 'LSP Code Action' })
           vim.keymap.set({ 'n' }, 'gK', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
           vim.keymap.set({ 'i' }, '<C-k>', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
