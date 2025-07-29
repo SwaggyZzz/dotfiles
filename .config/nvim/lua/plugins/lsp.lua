@@ -53,6 +53,22 @@ return {
         end,
         desc = 'LSP Workspace Symbols',
       },
+      {
+        ']]',
+        function()
+          require('snacks').words.jump(vim.v.count1)
+        end,
+        desc = '[Snacks] Next Reference',
+        mode = { 'n', 't' },
+      },
+      {
+        '[[',
+        function()
+          require('snacks').words.jump(-vim.v.count1)
+        end,
+        desc = '[Snacks] Prev Reference',
+        mode = { 'n', 't' },
+      },
     },
   },
   {
