@@ -66,6 +66,7 @@ local settings = {
     '/motor%-dzx',
     '/data-biz-platform',
     '/dzx',
+    '/pc',
   },
 }
 
