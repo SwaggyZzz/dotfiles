@@ -51,7 +51,7 @@ return {
             focus = 'list', -- 默认焦点在文件列表
             jump = { close = true },
             auto_close = false,
-            include = { 'node_modules', 'dist', '.eslintrc.js', '.prettierrc', '.gitignore' },
+            include = { 'node_modules', 'dist', '.eslintrc.js', '.prettierrc', '.gitignore', '.config' },
             win = {
               list = {
                 keys = {
