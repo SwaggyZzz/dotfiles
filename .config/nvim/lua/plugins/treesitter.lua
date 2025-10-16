@@ -4,20 +4,6 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     build = ':TSUpdate',
     dependencies = {
-      {
-        'windwp/nvim-ts-autotag',
-        opts = {
-          filetypes = {
-            'html',
-            'javascript',
-            'javascriptreact',
-            'typescript',
-            'typescriptreact',
-            'vue',
-            'xml',
-          },
-        },
-      },
       -- { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
     cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
@@ -25,7 +11,7 @@ return {
       -- disable = function(lang, bufnr)
       --   return lang == 'yaml' and vim.api.nvim_buf_line_count(bufnr) > 5000
       -- end,
-      highlight = { enable = true },
+      highlight = { enable = true, additional_vim_regex_highlighting = false },
       indent = { enable = true },
       -- textobjects = {
       --   move = {
@@ -59,5 +45,21 @@ return {
 
       require('nvim-treesitter.configs').setup(opts)
     end,
+  },
+
+  {
+    'windwp/nvim-ts-autotag',
+    event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      filetypes = {
+        'html',
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'vue',
+        'xml',
+      },
+    },
   },
 }

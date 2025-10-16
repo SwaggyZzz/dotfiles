@@ -1,77 +1,5 @@
 return {
   {
-    'folke/snacks.nvim',
-    keys = {
-      -- LSP
-      {
-        'gd',
-        function()
-          Snacks.picker.lsp_definitions()
-        end,
-        desc = 'Goto Definition',
-      },
-      {
-        'gD',
-        function()
-          Snacks.picker.lsp_declarations()
-        end,
-        desc = 'Goto Declaration',
-      },
-      {
-        'gr',
-        function()
-          Snacks.picker.lsp_references()
-        end,
-        nowait = true,
-        desc = 'References',
-      },
-      {
-        'gI',
-        function()
-          Snacks.picker.lsp_implementations()
-        end,
-        desc = 'Goto Implementation',
-      },
-      {
-        'gy',
-        function()
-          Snacks.picker.lsp_type_definitions()
-        end,
-        desc = 'Goto T[y]pe Definition',
-      },
-      {
-        '<leader>ss',
-        function()
-          Snacks.picker.lsp_symbols()
-        end,
-        desc = 'LSP Symbols',
-      },
-      {
-        '<leader>sS',
-        function()
-          Snacks.picker.lsp_workspace_symbols()
-        end,
-        desc = 'LSP Workspace Symbols',
-      },
-      {
-        ']]',
-        function()
-          require('snacks').words.jump(vim.v.count1)
-        end,
-        desc = '[Snacks] Next Reference',
-        mode = { 'n', 't' },
-      },
-      {
-        '[[',
-        function()
-          require('snacks').words.jump(-vim.v.count1)
-        end,
-        desc = '[Snacks] Prev Reference',
-        mode = { 'n', 't' },
-      },
-    },
-  },
-  {
     'williamboman/mason.nvim',
     cmd = 'Mason',
     build = ':MasonUpdate',
@@ -123,18 +51,16 @@ return {
   {
     'neovim/nvim-lspconfig',
     lazy = true,
-    -- event = { "CursorHold", "CursorHoldI" }, -- 用这个事件需要手动触发 lsp vim.api.nvim_command([[LspStart]])
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'williamboman/mason.nvim' },
       { 'williamboman/mason-lspconfig.nvim', branch = 'v1.x' },
-      { 'saghen/blink.cmp' },
-      { 'antosha417/nvim-lsp-file-operations', config = true },
+      -- { 'saghen/blink.cmp' },
+      -- { 'antosha417/nvim-lsp-file-operations', config = true },
       -- { "folke/neodev.nvim", opts = {} },
     },
     config = function()
       local icons = require 'core.icons'
-      local lspconfig = require 'lspconfig'
       local mason_lspconfig = require 'mason-lspconfig'
 
       vim.diagnostic.config {
@@ -206,7 +132,12 @@ return {
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { silent = true, desc = 'LSP Code Action' })
           vim.keymap.set({ 'n' }, 'gK', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
           vim.keymap.set({ 'i' }, '<C-k>', vim.lsp.buf.signature_help, { silent = true, desc = 'LSP Show Signature' })
-          vim.keymap.set({ 'n' }, 'K', vim.lsp.buf.hover, { silent = true, desc = 'LSP Show documentation' })
+          -- vim.keymap.set({ 'n' }, 'K', function()
+          --   local winid = require('ufo').peekFoldedLinesUnderCursor()
+          --   if not winid then
+          --     vim.lsp.buf.hover()
+          --   end
+          -- end, { silent = true, desc = 'LSP Show documentation' })
         end,
         capabilities = capabilities,
       }
@@ -215,18 +146,15 @@ return {
         if server == 'rust_analyzer' then
           return
         end
-
         local ok, custom_handler = pcall(require, 'configs.lsp.servers.' .. server)
 
         if not ok then
-          lspconfig[server].setup(server_opts)
-          return
+          vim.lsp.config(server, server_opts)
         elseif type(custom_handler) == 'function' then
-          --- Case where language server requires its own setup
-          --- Make sure to call require("lspconfig")[lsp_name].setup() in the function
-          custom_handler(server_opts)
+          local custom_server_opts = custom_handler(server_opts)
+          vim.lsp.config(server, custom_server_opts)
         elseif type(custom_handler) == 'table' then
-          lspconfig[server].setup(vim.tbl_deep_extend('force', server_opts, custom_handler))
+          vim.lsp.config(server, vim.tbl_deep_extend('force', server_opts, custom_handler))
         else
           vim.notify(
             string.format(
@@ -237,7 +165,10 @@ return {
             vim.log.levels.ERROR,
             { title = 'nvim-lspconfig' }
           )
+          return
         end
+
+        vim.lsp.enable(server)
       end
 
       local servers = require('core.settings').lsp_servers

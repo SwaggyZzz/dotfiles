@@ -60,7 +60,7 @@ return function()
         },
       },
     },
-    highlights = require('catppuccin.groups.integrations.bufferline').get {
+    highlights = require('catppuccin.special.bufferline').get_theme({
       custom = {
         all = {
           buffer_selected = {
@@ -70,7 +70,7 @@ return function()
           },
         },
       },
-    },
+    }),
   }
 
   require('bufferline').setup(opts)

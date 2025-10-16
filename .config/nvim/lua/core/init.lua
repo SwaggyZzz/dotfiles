@@ -14,6 +14,7 @@ local load_core = function()
   require 'core.mappings'
   require 'core.events'
   require 'core.lazy'
+  -- require 'core.lsp'
 
   _G.LazyVim = require 'lazyvim.util'
 end

@@ -1,0 +1,39 @@
+return {
+  'echasnovski/mini.surround',
+  event = 'BufReadPost',
+  keys = function(_, keys)
+    local opts_mappings = {
+      add = 'gsa', -- Add surrounding in Normal and Visual modes
+      delete = 'gsd', -- Delete surrounding
+      find = 'gsf', -- Find surrounding (to the right)
+      find_left = 'gsF', -- Find surrounding (to the left)
+      highlight = 'gsh', -- Highlight surrounding
+      replace = 'gsr', -- Replace surrounding
+      update_n_lines = 'gsn', -- Update `n_lines`
+    }
+    local mappings = {
+      { opts_mappings.add, desc = 'Add Surrounding', mode = { 'n', 'v' } },
+      { opts_mappings.delete, desc = 'Delete Surrounding' },
+      { opts_mappings.find, desc = 'Find Right Surrounding' },
+      { opts_mappings.find_left, desc = 'Find Left Surrounding' },
+      { opts_mappings.highlight, desc = 'Highlight Surrounding' },
+      { opts_mappings.replace, desc = 'Replace Surrounding' },
+      { opts_mappings.update_n_lines, desc = 'Update `MiniSurround.config.n_lines`' },
+    }
+    mappings = vim.tbl_filter(function(m)
+      return m[1] and #m[1] > 0
+    end, mappings)
+    return vim.list_extend(mappings, keys)
+  end,
+  opts = {
+    mappings = {
+      add = 'gsa', -- Add surrounding in Normal and Visual modes
+      delete = 'gsd', -- Delete surrounding
+      find = 'gsf', -- Find surrounding (to the right)
+      find_left = 'gsF', -- Find surrounding (to the left)
+      highlight = 'gsh', -- Highlight surrounding
+      replace = 'gsr', -- Replace surrounding
+      update_n_lines = 'gsn', -- Update `n_lines`
+    },
+  },
+}

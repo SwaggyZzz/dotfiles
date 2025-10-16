@@ -1,5 +1,4 @@
 return function(origin_opts)
-  local lspconfig = require 'lspconfig'
   local util = require 'lspconfig.util'
 
   local server_opts = vim.tbl_deep_extend('force', origin_opts, {
@@ -28,9 +27,9 @@ return function(origin_opts)
     --     require("vtsls").commands.file_references(0)
     --   end, opts("File References"))
     -- end,
-
-    root_dir = function(fname)
-      return util.root_pattern('tsconfig.json', 'jsconfig.json')(fname) or util.root_pattern('package.json', '.git')(fname)
+    root_dir = function(bufnr, on_dir)
+      local filename = vim.api.nvim_buf_get_name(bufnr)
+      on_dir(util.root_pattern('tsconfig.json', 'jsconfig.json')(filename) or util.root_pattern('package.json', '.git')(filename)) 
     end,
     single_file_support = true,
     settings = {
@@ -66,6 +65,6 @@ return function(origin_opts)
       },
     },
   })
-
-  lspconfig['vtsls'].setup(server_opts)
+ 
+  return server_opts
 end

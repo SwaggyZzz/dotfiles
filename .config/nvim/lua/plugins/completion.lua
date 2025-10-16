@@ -20,6 +20,12 @@ return {
         accept = {
           auto_brackets = {
             enabled = true,
+            kind_resolution = {
+              blocked_filetypes = { 'typescript', 'typescriptreact' },
+            },
+            semantic_token_resolution = {
+              blocked_filetypes = { 'typescript', 'typescriptreact' },
+            },
           },
         },
         list = {
@@ -92,13 +98,13 @@ return {
           end
         end,
         providers = {
-          path = {
-            opts = {
-              get_cwd = function(_)
-                return vim.fn.getcwd()
-              end,
-            },
-          },
+          -- path = {
+          --   opts = {
+          --     get_cwd = function(_)
+          --       return vim.fn.getcwd()
+          --     end,
+          --   },
+          -- },
           lsp = {
             -- Filter text items from the LSP provider, since we have the buffer provider for that
             transform_items = function(_, items)
@@ -112,4 +118,3 @@ return {
     },
   },
 }
-

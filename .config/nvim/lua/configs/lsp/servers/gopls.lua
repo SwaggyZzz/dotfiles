@@ -1,6 +1,4 @@
 return function(origin_opts)
-  local lspconfig = require 'lspconfig'
-
   local server_opts = vim.tbl_deep_extend('force', origin_opts, {
     on_attach = function(client, bufnr)
       origin_opts.on_attach(client, bufnr)
@@ -56,6 +54,5 @@ return function(origin_opts)
       },
     },
   })
-
-  lspconfig['gopls'].setup(server_opts)
+  return server_opts
 end
