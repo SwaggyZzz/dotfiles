@@ -1,5 +1,5 @@
 return function()
-  local components = require 'configs.ui.lualine.components'
+  local components = require 'configs.lualine.components'
 
   -- vim.o.laststatus = vim.g.lualine_laststatus
 

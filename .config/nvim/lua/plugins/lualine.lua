@@ -4,5 +4,5 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
-  config = require 'configs.ui.lualine',
+  config = require 'configs.lualine',
 }

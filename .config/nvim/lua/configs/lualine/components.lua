@@ -1,4 +1,4 @@
-local conditions = require 'configs.ui.lualine.conditions'
+local conditions = require 'configs.lualine.conditions'
 
 local function diff_source()
   local gitsigns = vim.b.gitsigns_status_dict

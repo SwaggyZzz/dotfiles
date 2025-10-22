@@ -1,7 +1,9 @@
 return function(origin_opts)
   local util = require 'lspconfig.util'
 
-  local server_opts = vim.tbl_deep_extend('force', origin_opts, {
+  local copy_opts = vim.deepcopy(origin_opts)
+
+  local server_opts = vim.tbl_deep_extend('force', copy_opts, {
     -- on_attach = function(client, bufnr)
     --   origin_opts.on_attach(client, bufnr)
 
@@ -29,7 +31,7 @@ return function(origin_opts)
     -- end,
     root_dir = function(bufnr, on_dir)
       local filename = vim.api.nvim_buf_get_name(bufnr)
-      on_dir(util.root_pattern('tsconfig.json', 'jsconfig.json')(filename) or util.root_pattern('package.json', '.git')(filename)) 
+      on_dir(util.root_pattern('tsconfig.json', 'jsconfig.json')(filename) or util.root_pattern('package.json', '.git')(filename))
     end,
     single_file_support = true,
     settings = {
@@ -65,6 +67,6 @@ return function(origin_opts)
       },
     },
   })
- 
+
   return server_opts
 end
