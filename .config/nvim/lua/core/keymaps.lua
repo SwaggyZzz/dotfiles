@@ -32,7 +32,7 @@ map('n', '<leader>qq', '<CMD>qa<CR>', { desc = 'Quit All' })
 -- map("n", "-", "<C-x>")
 
 -- Format
-map({ 'n', 'v', 'i' }, '<leader><S-f>', function()
+map({ 'n', 'v', 'i' }, '<A-S-f>', function()
   require('conform').format {
     lsp_fallback = true,
     async = false,
