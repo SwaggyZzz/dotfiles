@@ -128,3 +128,6 @@ function y() {
 	fi
 	rm -f -- "$tmp"
 }
+
+# Added by coco installer
+export PATH="/Users/bytedance/.local/bin:$PATH"
