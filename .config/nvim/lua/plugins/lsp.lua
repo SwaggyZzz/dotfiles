@@ -125,7 +125,7 @@ return {
             client.server_capabilities.documentFormattingProvider = false
           end
 
-          if client.server_capabilities.inlayHintProvider and client.name ~= 'vtsls' then
+          if client.server_capabilities.inlayHintProvider and client.name ~= 'vtsls' and client.name ~= 'lua_ls' then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 
@@ -176,8 +176,6 @@ return {
         ensure_installed = {}, -- explicitly set to an empty table (installs via mason-tool-installer)
         automatic_enable = false,
       }
-
-      
     end,
   },
   {
