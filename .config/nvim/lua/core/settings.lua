@@ -11,7 +11,7 @@ local settings = {
     'gopls',
     'thriftls',
     'rust_analyzer',
-    'vtsls',
+    'tsgo',
     'svelte',
     'html',
     -- "emmet_ls",

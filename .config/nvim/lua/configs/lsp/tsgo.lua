@@ -14,19 +14,19 @@ return function(origin_opts)
     --   end
 
     --   map("n", "gD", function()
-    --     require("vtsls").commands.goto_source_definition(0)
+    --     require("tsgo").commands.goto_source_definition(0)
     --   end, opts("Go to declaration"))
 
     --   map("n", "<Leader>co", function()
-    --     require("vtsls").commands.organize_imports(0)
+    --     require("tsgo").commands.organize_imports(0)
     --   end, opts("Organize Imports"))
 
     --   map("n", "<Leader>cM", function()
-    --     require("vtsls").commands.add_missing_imports(0)
+    --     require("tsgo").commands.add_missing_imports(0)
     --   end, opts("Add missing imports"))
 
     --   map("n", "gR", function()
-    --     require("vtsls").commands.file_references(0)
+    --     require("tsgo").commands.file_references(0)
     --   end, opts("File References"))
     -- end,
     root_dir = function(bufnr, on_dir)
@@ -36,7 +36,7 @@ return function(origin_opts)
     single_file_support = true,
     settings = {
       complete_function_calls = true,
-      vtsls = {
+      tsgo = {
         enableMoveToFileCodeAction = true,
         autoUseWorkspaceTsdk = true,
         experimental = {

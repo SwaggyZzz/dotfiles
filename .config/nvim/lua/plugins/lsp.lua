@@ -86,7 +86,7 @@ return {
       }
 
       local eslint_format_dir = require('core.settings').eslint_format_dir
-      local disabled_vtsls_format = function(dir)
+      local disabled_tsgo_format = function(dir)
         for _, d in ipairs(eslint_format_dir) do
           if dir and string.match(dir, d) then
             return true
@@ -121,11 +121,11 @@ return {
 
       local server_opts = {
         on_attach = function(client, bufnr)
-          if client.name == 'vtsls' and disabled_vtsls_format(client.root_dir) then
+          if client.name == 'tsgo' and disabled_tsgo_format(client.root_dir) then
             client.server_capabilities.documentFormattingProvider = false
           end
 
-          if client.server_capabilities.inlayHintProvider and client.name ~= 'vtsls' and client.name ~= 'lua_ls' then
+          if client.server_capabilities.inlayHintProvider and client.name ~= 'tsgo' and client.name ~= 'lua_ls' then
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
           end
 

@@ -97,8 +97,8 @@ return {
 
       -- add client
       for _, client in pairs(buf_clients) do
-        if client.name == 'vtsls' then
-          buf_client_names = { 'vtsls' }
+        if client.name == 'tsgo' then
+          buf_client_names = { 'tsgo' }
           break
         end
         if client.name ~= 'null-ls' and client.name ~= 'copilot' then
