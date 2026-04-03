@@ -5,6 +5,13 @@ return {
     'JoosepAlviste/nvim-ts-context-commentstring',
   },
   config = function()
+    -- skip backward compatibility routines and speed up loading
+    vim.g.skip_ts_context_commentstring_module = true
+
+    require('ts_context_commentstring').setup {
+      enable_autocmd = false,
+    }
+
     -- import comment plugin safely
     local comment = require 'Comment'
 
