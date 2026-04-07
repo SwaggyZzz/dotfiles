@@ -57,7 +57,7 @@ return {
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-         preset = 'enter',
+        preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
@@ -122,7 +122,7 @@ return {
           scrollbar = false,
           max_height = 15,
           draw = {
-            treesitter = { 'lsp' },
+            -- treesitter = { 'lsp' },
             columns = {
               { 'kind_icon' },
               { 'label', 'label_description', 'source_name', gap = 1 },
@@ -145,7 +145,7 @@ return {
               'lsp',
               'path',
               'snippets',
-              "lazydev", 
+              'lazydev',
               'buffer',
             }
           end
@@ -176,3 +176,4 @@ return {
     },
   },
 }
+
