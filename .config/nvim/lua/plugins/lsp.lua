@@ -115,6 +115,12 @@ return {
       local ensure_installed = {}
 
       vim.list_extend(ensure_installed, lsp_servers)
+      -- for _, server in ipairs(lsp_servers) do
+      --   -- 过滤掉不支持在 mason 中自动安装的自定义 LSP（例如 tsgo）
+      --   if server ~= 'tsgo' then
+      --     table.insert(ensure_installed, server)
+      --   end
+      -- end
       vim.list_extend(ensure_installed, fmt_servers)
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }

@@ -97,6 +97,8 @@ export EDITOR="nvim"
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:$GOPATH/bin
 
+export CONSUL_HTTP_HOST="10.37.106.5"
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
