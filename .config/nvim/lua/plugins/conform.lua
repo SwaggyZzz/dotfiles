@@ -25,11 +25,18 @@ return {
           go = { 'goimports', 'gofumpt' },
           ['_'] = { 'trim_whitespace' },
         },
-        format_on_save = {
-          lsp_fallback = true,
-          async = false,
-          timeout_ms = 1000,
-        },
+        format_after_save = function(bufnr)
+          local max_filesize = vim.g.bigfile_size or (1024 * 1024 * 1.5)
+          local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+          if ok and stats and stats.size > max_filesize then
+            return
+          end
+          return {
+            lsp_fallback = true,
+            async = false,
+            timeout_ms = 1000,
+          }
+        end,
         -- The options you set here will be merged with the builtin formatters.
         -- You can also define any custom formatters here.
         ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>

@@ -11,6 +11,7 @@ opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.shiftround = true -- Round indent 缩进自动四舍五入为倍数
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
+opt.smartindent = true -- insert indents automatically
 
 opt.wrap = false
 
@@ -31,7 +32,13 @@ opt.termguicolors = true
 opt.background = 'dark' -- colorschemes that can be light or dark will be made dark
 opt.signcolumn = 'yes' -- 固定宽度4列，避免符号重叠
 
-opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+_G.get_snacks_statuscolumn = function()
+  if _G.Snacks and _G.Snacks.statuscolumn then
+    return _G.Snacks.statuscolumn.get()
+  end
+  return ''
+end
+opt.statuscolumn = [[%!v:lua.get_snacks_statuscolumn()]]
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.

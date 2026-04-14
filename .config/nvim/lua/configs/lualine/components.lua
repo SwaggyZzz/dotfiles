@@ -91,7 +91,6 @@ return {
         return 'LSP Inactive'
       end
 
-      local buf_ft = vim.bo.filetype
       local buf_client_names = {}
       local copilot_active = false
 

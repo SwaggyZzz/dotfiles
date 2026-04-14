@@ -1,48 +1,46 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    event = { 'BufReadPre', 'BufNewFile' },
+    lazy = false,
     build = ':TSUpdate',
     dependencies = {
       -- { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
-    opts = {
-      -- disable = function(lang, bufnr)
-      --   return lang == 'yaml' and vim.api.nvim_buf_line_count(bufnr) > 5000
-      -- end,
-      highlight = { enable = true },
-      indent = { enable = true },
-      -- textobjects = {
-      --   move = {
-      --     enable = true,
-      --     goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-      --     goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-      --     goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-      --     goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
-      --   },
-      --   select = {
-      --     enable = true,
-      --     keymaps = {
-      --         ["af"] = "@function.outer",
-      --         ["if"] = "@function.inner",
-      --     },
-      --   },
-      -- },
-      -- incremental_selection = {
-      --   enable = true,
-      --   keymaps = {
-      --     init_selection = "<C-space>",
-      --     node_incremental = "<C-space>",
-      --     scope_incremental = false,
-      --     node_decremental = "<bs>",
-      --   },
-      -- },
-    },
-    config = function(_, opts)
+    config = function()
       local treesitter_parsers = require('core.settings').treesitter_parsers
-      opts.ensure_installed = treesitter_parsers
 
-      require('nvim-treesitter.configs').setup(opts)
+      -- As of nvim-treesitter rewrite for Nvim 0.12+, setup() is optional,
+      -- and we install parsers via require('nvim-treesitter').install()
+      vim.schedule(function()
+        pcall(function()
+          require('nvim-treesitter').install(treesitter_parsers)
+        end)
+      end)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local bufnr = args.buf
+          local lang = vim.bo[bufnr].filetype
+
+          -- 禁用大文件的 treesitter 以避免卡顿
+          local max_filesize = vim.g.bigfile_size or (1024 * 1024 * 1.5)
+          local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+          if ok and stats and stats.size > max_filesize then
+            return
+          end
+
+          -- 启动 treesitter highlight
+          pcall(vim.treesitter.start, bufnr)
+
+          -- 启用 treesitter indent
+          -- 但在 TS/JS (包括 React) 中禁用，因为它在 AST 不完整时常常导致缩进错乱
+          if lang == 'typescript' or lang == 'tsx' or lang == 'javascript' or lang == 'javascriptreact' then
+            -- fallback 到 neovim 内置基于正则的缩进
+          else
+            vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
     end,
   },
 
