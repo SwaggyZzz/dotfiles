@@ -33,8 +33,6 @@ return {
           end
           return {
             lsp_fallback = true,
-            async = false,
-            timeout_ms = 1000,
           }
         end,
         -- The options you set here will be merged with the builtin formatters.
