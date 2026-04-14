@@ -9,6 +9,9 @@ return {
     config = function()
       local treesitter_parsers = require('core.settings').treesitter_parsers
 
+      -- 让 less 等文件使用 css 的 treesitter parser 进行解析
+      pcall(vim.treesitter.language.register, 'css', 'less')
+
       -- As of nvim-treesitter rewrite for Nvim 0.12+, setup() is optional,
       -- and we install parsers via require('nvim-treesitter').install()
       vim.schedule(function()
