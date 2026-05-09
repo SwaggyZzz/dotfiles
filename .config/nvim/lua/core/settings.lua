@@ -67,6 +67,7 @@ local settings = {
     '/data-biz-platform',
     '/dzx',
     '/pc',
+    '/auto%-agentic',
   },
 }
 
