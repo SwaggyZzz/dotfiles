@@ -7,10 +7,10 @@ return {
     config = function()
       local opts = {
         formatters_by_ft = {
-          typescript = { 'prettier' },
-          typescriptreact = { 'prettier' },
-          javascript = { 'prettier' },
-          javascriptreact = { 'prettier' },
+          typescript = { 'prettier', 'eslint_d' },
+          typescriptreact = { 'prettier', 'eslint_d' },
+          javascript = { 'prettier', 'eslint_d' },
+          javascriptreact = { 'prettier', 'eslint_d' },
           html = { 'prettier' },
           css = { 'prettier' },
           less = { 'prettier' },

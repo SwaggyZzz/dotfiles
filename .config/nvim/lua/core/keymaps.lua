@@ -36,7 +36,7 @@ map({ 'n', 'v', 'i' }, '<A-S-f>', function()
   require('conform').format {
     lsp_fallback = true,
     async = false,
-    timeout_ms = 1000,
+    timeout_ms = 3000,
   }
   -- local formatters = require("conform").list_formatters()
   -- local str = ""

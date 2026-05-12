@@ -108,6 +108,7 @@ return {
       local fmt_servers = {
         'stylua',
         'prettier',
+        'eslint_d',
         'shfmt',
         'goimports',
         'gofumpt',

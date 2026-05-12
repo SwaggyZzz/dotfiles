@@ -133,3 +133,4 @@ function y() {
 
 # Added by coco installer
 export PATH="/Users/bytedance/.local/bin:$PATH"
+export LANG=zh_CN.UTF-8
