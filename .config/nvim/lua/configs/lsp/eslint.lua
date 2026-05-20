@@ -1,13 +1,4 @@
 return {
-  root_dir = require('lspconfig.util').root_pattern(
-    '.eslintrc.js',
-    '.eslintrc.cjs',
-    '.eslintrc.yaml',
-    '.eslintrc.yml',
-    '.eslintrc.json',
-    '.eslintrc',
-    'package.json'
-  ),
   settings = {
     codeAction = {
       disableRuleComment = {
@@ -33,7 +24,7 @@ return {
     validate = 'on',
     workingDirectory = {
       -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
-      mode = 'location', -- "location" | "auto" 强制使用当前文件最近的配置文件位置
+      mode = 'auto', -- "location" | "auto" 强制使用当前文件最近的配置文件位置
     },
   },
 }

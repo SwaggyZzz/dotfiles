@@ -1,5 +1,6 @@
 return function()
   local components = require 'configs.lualine.components'
+  local agentic_filetypes = { 'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles', 'AgenticDiagnostics' }
 
   -- vim.o.laststatus = vim.g.lualine_laststatus
 
@@ -7,7 +8,10 @@ return function()
     options = {
       theme = 'auto',
       globalstatus = true,
-      disabled_filetypes = { statusline = { 'snacks_dashboard', 'dashboard' } },
+      disabled_filetypes = {
+        statusline = vim.list_extend({ 'snacks_dashboard', 'dashboard' }, vim.deepcopy(agentic_filetypes)),
+        winbar = agentic_filetypes,
+      },
       component_separators = { left = '', right = '' },
       section_separators = { left = '', right = '' },
     },
