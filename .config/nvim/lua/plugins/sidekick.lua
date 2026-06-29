@@ -52,7 +52,7 @@ return {
         desc = 'Send {this}',
       },
       {
-        '<leader>af',
+        '<leader>aF',
         function()
           require('sidekick.cli').send { msg = '{file}' }
         end,

@@ -4,3 +4,4 @@
 .config/tmux/plugins
 .config/configstore
 .config/eden
+.config/opencode

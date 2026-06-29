@@ -132,9 +132,9 @@ return {
             client.server_capabilities.documentFormattingProvider = false
           end
 
-          if client.server_capabilities.inlayHintProvider and client.name ~= 'tsgo' and client.name ~= 'lua_ls' then
-            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-          end
+          -- if client.server_capabilities.inlayHintProvider and client.name ~= 'tsgo' and client.name ~= 'lua_ls' then
+          --   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+          -- end
 
           vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'LSP Line Diagnostics' })
           vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'LSP Go to previous diagnostic' })
