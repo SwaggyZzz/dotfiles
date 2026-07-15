@@ -24,7 +24,7 @@ return {
         desc = 'Agentic Toggle Chat',
       },
       {
-        '<leader>af',
+        '<leader>aF',
         function()
           require('agentic').add_selection_or_file_to_context()
         end,

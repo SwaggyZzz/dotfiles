@@ -140,7 +140,7 @@ selection:
 #   - (Windows) powershell
 shell:
   # program: /usr/local/bin/fish
-  program: /bin/zsh
+  program: /opt/homebrew/bin/fish
   args:
     - --login
   # program: /usr/local/bin/tmux

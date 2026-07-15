@@ -46,6 +46,11 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# 显示分隔线
+print_separator() {
+  echo "================================================================"
+}
+
 # 打印命令帮助，不执行任何初始化动作。
 usage() {
   cat <<'EOF'
@@ -81,8 +86,8 @@ confirm() {
   printf "%s [y/N] " "$message"
   read -r reply
   case "$reply" in
-    y|Y|yes|YES) return 0 ;;
-    *) return 1 ;;
+  y | Y | yes | YES) return 0 ;;
+  *) return 1 ;;
   esac
 }
 
@@ -90,42 +95,42 @@ confirm() {
 parse_args() {
   while [ "$#" -gt 0 ]; do
     case "$1" in
-      -y|--yes)
-        ASSUME_YES=1
-        ;;
-      --skip-brew)
-        SKIP_BREW=1
-        ;;
-      --skip-fonts)
-        SKIP_FONTS=1
-        ;;
-      --skip-link)
-        SKIP_LINK=1
-        ;;
-      --with-byted-setup)
-        WITH_BYTED_SETUP=1
-        ;;
-      --ai)
-        BYTED_MODE="-ai"
-        ;;
-      --rd)
-        BYTED_MODE="-rd"
-        ;;
-      -h|--help)
-        usage
-        exit 0
-        ;;
-      *)
-        log_error "Unknown option: $1"
-        usage
-        exit 2
-        ;;
+    -y | --yes)
+      ASSUME_YES=1
+      ;;
+    --skip-brew)
+      SKIP_BREW=1
+      ;;
+    --skip-fonts)
+      SKIP_FONTS=1
+      ;;
+    --skip-link)
+      SKIP_LINK=1
+      ;;
+    --with-byted-setup)
+      WITH_BYTED_SETUP=1
+      ;;
+    --ai)
+      BYTED_MODE="-ai"
+      ;;
+    --rd)
+      BYTED_MODE="-rd"
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *)
+      log_error "Unknown option: $1"
+      usage
+      exit 2
+      ;;
     esac
     shift
   done
 }
 
-# 当前 dotfiles 初始化依赖 macOS 路径、Homebrew 和 zsh 默认环境。
+# 当前 dotfiles 初始化依赖 macOS 路径、Homebrew 和 fish 主 shell 环境。
 ensure_macos() {
   if [ "$(uname)" != "Darwin" ]; then
     log_error "This bootstrap currently supports macOS only."
@@ -146,19 +151,7 @@ load_homebrew_shellenv() {
   fi
 }
 
-# 仅追加一次 shell 配置行。marker 可以比完整行更宽泛，用来避免重复写入配置。
-append_once() {
-  local file="$1"
-  local marker="$2"
-  local line="$3"
-
-  touch "$file"
-  if ! grep -Fq "$marker" "$file" 2>/dev/null; then
-    printf "%s\n" "$line" >> "$file"
-  fi
-}
-
-# 缺少 Homebrew 时安装它，并把 shellenv 写入 zsh 配置，保证后续终端可用。
+# 缺少 Homebrew 时安装它。fish 主路径会在 config.fish 中直接加载 brew shellenv。
 # brew update 只做尽力更新，临时网络失败不会中断整个初始化。
 install_homebrew() {
   load_homebrew_shellenv
@@ -180,13 +173,6 @@ install_homebrew() {
     log_error "Homebrew is still unavailable after installation."
     return 1
   fi
-
-  local brew_bin
-  brew_bin="$(command -v brew)"
-  local shellenv_line
-  shellenv_line="eval \"\$(${brew_bin} shellenv)\""
-  append_once "$HOME/.zprofile" "${brew_bin} shellenv" "$shellenv_line"
-  append_once "$HOME/.zshrc" "${brew_bin} shellenv" "$shellenv_line"
 
   log_info "Updating Homebrew..."
   brew update || log_warn "brew update failed; continuing."
@@ -293,13 +279,14 @@ install_aerospace() {
     aerospace
 }
 
-# 根据当前仓库配置安装常用工具：shell prompt、终端辅助工具、Neovim、tmux、zellij、
+# 根据当前仓库配置安装常用工具：fish、shell prompt、终端辅助工具、Neovim、tmux、zellij、
 # AeroSpace、Node/Python 版本管理器，以及搜索和导航工具。
 install_cli_tools() {
   install_homebrew || return 1
 
   brew_install_if_missing git git
   brew_install_if_missing stow stow
+  brew_install_if_missing fish fish
   brew_install_if_missing tmux tmux
   brew_install_if_missing reattach-to-user-namespace reattach-to-user-namespace
   brew_install_if_missing zellij zellij
@@ -348,49 +335,8 @@ install_tmux_plugins() {
   fi
 }
 
-# 安装 oh-my-zsh 以及 .zshrc 中引用的自定义插件。KEEP_ZSHRC 用来防止上游安装器
-# 覆盖仓库中维护的 .zshrc。
-install_oh_my_zsh() {
-  if [ -d "$HOME/.oh-my-zsh" ]; then
-    log_success "oh-my-zsh is installed."
-  else
-    if ! confirm "oh-my-zsh is missing. Install it now?"; then
-      log_warn "Skipped oh-my-zsh install."
-      return 0
-    fi
-
-    log_info "Installing oh-my-zsh..."
-    RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  fi
-
-  local custom_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-  mkdir -p "$custom_dir/plugins"
-
-  install_zsh_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions" "$custom_dir/plugins/zsh-autosuggestions"
-  install_zsh_plugin "F-Sy-H" "https://github.com/z-shell/F-Sy-H" "$custom_dir/plugins/F-Sy-H"
-}
-
-# 当 oh-my-zsh 自定义插件不存在时 clone 一份。
-install_zsh_plugin() {
-  local name="$1"
-  local repo="$2"
-  local target="$3"
-
-  if [ -d "$target/.git" ]; then
-    log_success "$name plugin is installed."
-    return 0
-  fi
-
-  if ! command_exists git; then
-    log_warn "git is unavailable; cannot install $name."
-    return 0
-  fi
-
-  log_info "Installing zsh plugin: $name..."
-  git clone --depth=1 "$repo" "$target"
-}
-
-# 通过 fnm 安装 Node.js LTS，和当前仓库 .zshrc 中的 fnm 初始化方式保持一致。
+# 通过 fnm 安装 Node.js LTS。运行时初始化由各 shell 配置负责，fish 主路径使用
+# `fnm env --use-on-cd --shell fish`。
 setup_node_with_fnm() {
   if ! command_exists fnm; then
     log_warn "fnm is unavailable; skipped Node.js setup."
@@ -409,6 +355,57 @@ setup_node_with_fnm() {
   fnm default lts-latest || true
 }
 
+# 把 fish 注册为 macOS 可用登录 shell，并把当前用户默认 shell 切到 fish。
+# 这一步涉及 /etc/shells 和用户登录 shell，失败时只提示，不阻断 dotfiles 初始化。
+ensure_fish_login_shell() {
+  local fish_path="/opt/homebrew/bin/fish"
+
+  if [ ! -x "$fish_path" ]; then
+    if command_exists fish; then
+      fish_path="$(command -v fish)"
+    else
+      log_warn "fish is unavailable; skipped login shell switch."
+      return 0
+    fi
+  fi
+
+  if ! grep -Fxq "$fish_path" /etc/shells 2>/dev/null; then
+    if confirm "fish is not listed in /etc/shells. Add $fish_path now?"; then
+      log_info "Adding fish to /etc/shells..."
+      if ! printf "%s\n" "$fish_path" | sudo tee -a /etc/shells >/dev/null; then
+        log_warn "Failed to update /etc/shells; skipped login shell switch."
+        return 0
+      fi
+    else
+      log_warn "Skipped /etc/shells update; login shell remains unchanged."
+      return 0
+    fi
+  fi
+
+  local current_shell
+  current_shell="$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}' || true)"
+  if [ -z "$current_shell" ]; then
+    current_shell="${SHELL:-}"
+  fi
+
+  if [ "$current_shell" = "$fish_path" ]; then
+    log_success "fish is already the login shell."
+    return 0
+  fi
+
+  if ! confirm "Switch login shell from ${current_shell:-unknown} to $fish_path?"; then
+    log_warn "Skipped login shell switch."
+    return 0
+  fi
+
+  log_info "Switching login shell to fish..."
+  if chsh -s "$fish_path"; then
+    log_success "Login shell switched to fish. Restart terminal sessions to use it."
+  else
+    log_warn "Failed to switch login shell; you can retry with: chsh -s $fish_path"
+  fi
+}
+
 # 使用 GNU stow 把当前 dotfiles 链接到 $HOME。先执行 dry run，提前暴露冲突，
 # 再真正写入链接。
 link_dotfiles() {
@@ -422,19 +419,14 @@ link_dotfiles() {
     return 0
   fi
 
-  local parent_dir
-  local package_name
-  parent_dir="$(dirname "$DOTFILES_DIR")"
-  package_name="$(basename "$DOTFILES_DIR")"
-
   log_info "Checking stow links for $DOTFILES_DIR..."
-  if ! (cd "$parent_dir" && stow --simulate --verbose --target="$HOME" "$package_name"); then
+  if ! stow --simulate --verbose --dir="$DOTFILES_DIR" --target="$HOME" .; then
     log_error "stow reported conflicts. Move or back up existing files, then rerun this script."
     return 1
   fi
 
   log_info "Linking dotfiles into $HOME..."
-  (cd "$parent_dir" && stow --restow --verbose --target="$HOME" "$package_name")
+  stow --restow --verbose --dir="$DOTFILES_DIR" --target="$HOME" .
 }
 
 # AeroSpace 兼容路径。当前仓库配置放在 ~/.config/aerospace/aerospace.toml，
@@ -501,9 +493,9 @@ main() {
 
   install_fonts
   install_tmux_plugins
-  install_oh_my_zsh
   setup_node_with_fnm
   link_dotfiles
+  ensure_fish_login_shell
   ensure_aerospace_config_link
   run_byted_setup
 

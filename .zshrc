@@ -1,14 +1,11 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/bin:/opt/homebrew/sbin:/opt/homebrew/bin:$PATH"
 
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
+# Starship is initialized after Oh My Zsh, so keep the Oh My Zsh theme empty.
+ZSH_THEME=""
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -38,10 +35,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -50,27 +44,16 @@ COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
 # Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(starship F-Sy-H zsh-autosuggestions git zoxide)
+plugins=(F-Sy-H zsh-autosuggestions git zoxide)
 
-# This speeds up pasting w/ autosuggest
+# This speeds up pasting with zsh-autosuggestions.
 # https://github.com/zsh-users/zsh-autosuggestions/issues/238
 pasteinit() {
   OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+  zle -N self-insert url-quote-magic
 }
 
 pastefinish() {
@@ -79,40 +62,48 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-eval "$(fnm env --use-on-cd)"
+source "$ZSH/oh-my-zsh.sh"
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-
-source $ZSH/oh-my-zsh.sh
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
 
 # User configuration
-
-# export TERM="xterm-kitty"
 export EDITOR="nvim"
-
-export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:$GOPATH/bin
-
+export LANG=zh_CN.UTF-8
 export CONSUL_HTTP_HOST="10.37.106.5"
+export CURRENT_DCAR_USER_NAME="zhangben.fe"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# Homebrew pnpm@8 and local user bin.
+export PATH="$HOME/.local/bin:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:$PATH"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# Pyenv 配置
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# Go environment variables
+export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin"
+export PATH="$GOBIN:$PATH"
 
-# 解决kitty在tmux内nvim光标不闪烁问题
+# Go private module configuration
+export GOPRIVATE=code.byted.org
+export GONOSUMDB=code.byted.org
+export GONOPROXY=code.byted.org
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# 解决 kitty 在 tmux 内 nvim 光标不闪烁问题
 # https://github.com/kovidgoyal/kitty/issues/3906
 # https://www.reddit.com/r/neovim/comments/1ayq2tn/blinking_cursor_using_kitty_tmux_in_neovim/
 alias v="nvim"
@@ -121,24 +112,12 @@ alias v="nvim"
 alias cat="bat"
 alias ls="lsd"
 
-
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+  local tmp
+  tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
 }
-
-# Added by coco installer
-export PATH="/Users/bytedance/.local/bin:$PATH"
-export LANG=zh_CN.UTF-8
-
-# pnpm
-export PNPM_HOME="/Users/bytedance/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end

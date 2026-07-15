@@ -203,7 +203,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [shell]
 args = ["--login"]
-program = "/bin/zsh"
+program = "/opt/homebrew/bin/fish"
 
 [window]
 decorations = "buttonless"

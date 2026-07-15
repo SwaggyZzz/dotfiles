@@ -1,29 +1,68 @@
+local function get_mason_ensure_installed()
+  local settings = require 'core.settings'
+  local ensure_installed = {}
+  local fmt_servers = {
+    'stylua',
+    'prettier',
+    'eslint_d',
+    'shfmt',
+    'goimports',
+    'gofumpt',
+  }
+
+  vim.list_extend(ensure_installed, settings.lsp_servers)
+  vim.list_extend(ensure_installed, fmt_servers)
+
+  return ensure_installed
+end
+
+local mason_opts = {
+  ui = {
+    border = 'rounded',
+    icons = {
+      package_installed = '✓',
+      package_pending = '➜',
+      package_uninstalled = '✗',
+    },
+  },
+}
+
 return {
+  {
+    'mason-org/mason.nvim',
+    opts = mason_opts,
+  },
+  {
+    'mason-org/mason-lspconfig.nvim',
+  },
+  {
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'mason-org/mason.nvim',
+      'mason-org/mason-lspconfig.nvim',
+    },
+    opts = function()
+      return {
+        ensure_installed = get_mason_ensure_installed(),
+        run_on_start = true,
+        start_delay = 3000,
+        debounce_hours = 12,
+      }
+    end,
+    config = function(_, opts)
+      local mason_tool_installer = require 'mason-tool-installer'
+      mason_tool_installer.setup(opts)
+      mason_tool_installer.run_on_start()
+    end,
+  },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     lazy = true,
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
-      -- Mason must be loaded before its dependents so we need to set it up here.
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      {
-        'mason-org/mason.nvim',
-        opts = {
-          ui = {
-            border = 'rounded',
-            icons = {
-              package_installed = '✓',
-              package_pending = '➜',
-              package_uninstalled = '✗',
-            },
-          },
-        },
-      },
       'mason-org/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
       'saghen/blink.cmp',
     },
     config = function()
@@ -105,26 +144,6 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local lsp_servers = require('core.settings').lsp_servers
-      local fmt_servers = {
-        'stylua',
-        'prettier',
-        'eslint_d',
-        'shfmt',
-        'goimports',
-        'gofumpt',
-      }
-      local ensure_installed = {}
-
-      vim.list_extend(ensure_installed, lsp_servers)
-      -- for _, server in ipairs(lsp_servers) do
-      --   -- 过滤掉不支持在 mason 中自动安装的自定义 LSP（例如 tsgo）
-      --   if server ~= 'tsgo' then
-      --     table.insert(ensure_installed, server)
-      --   end
-      -- end
-      vim.list_extend(ensure_installed, fmt_servers)
-
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       local server_opts = {
         on_attach = function(client, bufnr)
@@ -180,7 +199,7 @@ return {
       end
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (installs via mason-tool-installer)
+        ensure_installed = {}, -- 安装由 mason-tool-installer 统一处理
         automatic_enable = false,
       }
     end,
