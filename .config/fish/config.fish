@@ -53,7 +53,7 @@ if type -q fnm
 end
 
 if type -q pyenv
-    pyenv init - fish | source
+    pyenv init - fish --no-rehash | source
 end
 
 # 常用命令别名。

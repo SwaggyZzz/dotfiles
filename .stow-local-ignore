@@ -3,3 +3,4 @@
 .gitignore
 init-env.sh
 bootstrap
+.zshrc

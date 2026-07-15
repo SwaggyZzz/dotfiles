@@ -81,8 +81,8 @@ export PATH="$HOME/.local/bin:/usr/local/mysql/bin:/opt/homebrew/opt/pnpm@8/bin:
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
+  eval "$(SHELL=/bin/zsh PYENV_SHELL=zsh pyenv init --path --no-rehash)"
+  eval "$(SHELL=/bin/zsh PYENV_SHELL=zsh pyenv init - --no-rehash)"
 fi
 
 # Go environment variables
