@@ -79,24 +79,16 @@ map('v', '>', '>gv')
 map('n', 'gco', 'o<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>', { desc = 'Add Comment Below' })
 map('n', 'gcO', 'O<esc>Vcx<esc><CMD>normal gcc<CR>fxa<BS>', { desc = 'Add Comment Above' })
 
---------------- Naviagte -----------------
+--------------- Navigate -----------------
 
-local function navigate_keymap_set()
-  local is_ssh = require('core.utils').is_ssh()
-  if is_ssh then
-    map({ 'n', 't' }, '<A-h>', '<C-w>h')
-    map({ 'n', 't' }, '<A-l>', '<C-w>l')
-    map({ 'n', 't' }, '<A-j>', '<C-w>k')
-    map({ 'n', 't' }, '<A-k>', '<C-w>j')
-  else
-    map({ 'n', 't' }, '<A-h>', '<CMD>NavigatorLeft<CR>')
-    map({ 'n', 't' }, '<A-l>', '<CMD>NavigatorRight<CR>')
-    map({ 'n', 't' }, '<A-k>', '<CMD>NavigatorUp<CR>')
-    map({ 'n', 't' }, '<A-j>', '<CMD>NavigatorDown<CR>')
-    map({ 'n', 't' }, '<A-p>', '<CMD>NavigatorPrevious<CR>')
-  end
+map({ 'n', 't' }, '<A-h>', '<CMD>NavigatorLeft<CR>')
+map({ 'n', 't' }, '<A-l>', '<CMD>NavigatorRight<CR>')
+map({ 'n', 't' }, '<A-k>', '<CMD>NavigatorUp<CR>')
+map({ 'n', 't' }, '<A-j>', '<CMD>NavigatorDown<CR>')
+
+if not require('core.utils').is_ssh() then
+  map({ 'n', 't' }, '<A-p>', '<CMD>NavigatorPrevious<CR>')
 end
-navigate_keymap_set()
 
 --------------- BufferLine ---------------
 map('n', '<C-h>', '<CMD>BufferLineCyclePrev<CR>')

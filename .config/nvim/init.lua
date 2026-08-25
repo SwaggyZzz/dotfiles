@@ -5,6 +5,7 @@ if not vim.g.vscode then
   require("core.options")
   require("core.events")
   require("core.keymaps")
+  require('core.remote_navigator').setup()
   require("core.lazy")
 
   _G.LazyVim = require 'lazyvim.util'
