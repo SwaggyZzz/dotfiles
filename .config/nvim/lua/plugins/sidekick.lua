@@ -6,9 +6,9 @@ return {
       nes = { enabled = false },
       cli = {
         tools = {
-          coco = {
-            cmd = { 'coco' },
-            title = 'Coco AI',
+          traex = {
+            cmd = { 'traex' },
+            title = 'Trae AI',
           },
         },
       },

@@ -12,11 +12,32 @@ return {
       -- 让 less 等文件使用 css 的 treesitter parser 进行解析
       pcall(vim.treesitter.language.register, 'css', 'less')
 
-      -- As of nvim-treesitter rewrite for Nvim 0.12+, setup() is optional,
-      -- and we install parsers via require('nvim-treesitter').install()
+      -- nvim-treesitter main 使用 tree-sitter-cli 编译 parser。
+      -- 安装是异步的，需要显式检查最终结果，否则失败只会留下短暂消息。
       vim.schedule(function()
-        pcall(function()
-          require('nvim-treesitter').install(treesitter_parsers)
+        if vim.fn.executable('tree-sitter') ~= 1 then
+          vim.notify_once(
+            'nvim-treesitter 缺少 tree-sitter-cli；请执行 brew install tree-sitter-cli',
+            vim.log.levels.ERROR
+          )
+          return
+        end
+
+        local ok, treesitter = pcall(require, 'nvim-treesitter')
+        if not ok then
+          vim.notify('加载 nvim-treesitter 失败：' .. tostring(treesitter), vim.log.levels.ERROR)
+          return
+        end
+
+        treesitter.install(treesitter_parsers):await(function(err, installed)
+          if err or not installed then
+            vim.schedule(function()
+              vim.notify(
+                '部分 Treesitter parser 安装失败；请运行 :checkhealth nvim-treesitter 查看详情',
+                vim.log.levels.ERROR
+              )
+            end)
+          end
         end)
       end)
 

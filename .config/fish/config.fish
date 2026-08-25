@@ -5,9 +5,9 @@ set -g fish_greeting
 
 # Homebrew 先进入当前会话，后续工具初始化才能稳定找到可执行文件。
 if test -x /opt/homebrew/bin/brew
-    /opt/homebrew/bin/brew shellenv | source
+    /opt/homebrew/bin/brew shellenv fish | source
 else if type -q brew
-    brew shellenv | source
+    brew shellenv fish | source
 end
 
 set -gx EDITOR nvim
@@ -17,8 +17,8 @@ set -gx CURRENT_DCAR_USER_NAME zhangben.fe
 
 # Python、Go、pnpm 的主目录和私有仓库配置。
 set -gx PYENV_ROOT "$HOME/.pyenv"
-set -gx GOPATH "$HOME/go"
-set -gx GOBIN "$GOPATH/bin"
+set -gx GOENV_ROOT "$HOME/.goenv"
+set -gx GOENV_PATH_ORDER front
 set -gx GOPRIVATE code.byted.org
 set -gx GONOSUMDB code.byted.org
 set -gx GONOPROXY code.byted.org
@@ -33,7 +33,7 @@ fish_add_path --global --move \
     /usr/local/mysql/bin \
     /opt/homebrew/opt/pnpm@8/bin \
     "$PYENV_ROOT/bin" \
-    "$GOBIN" \
+    "$GOENV_ROOT/bin" \
     "$PNPM_HOME"
 
 # 交互体验初始化。
@@ -54,6 +54,10 @@ end
 
 if type -q pyenv
     pyenv init - fish --no-rehash | source
+end
+
+if type -q goenv
+    goenv init - fish | source
 end
 
 # 常用命令别名。
@@ -84,6 +88,28 @@ function __dotfiles_abbr_add
     end
 end
 
+function __dotfiles_git_main_branch
+    set -l remote_head (command git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+    if test -n "$remote_head"
+        string replace -- 'origin/' '' "$remote_head"
+        return
+    end
+
+    for branch in main master trunk
+        if command git show-ref --verify --quiet "refs/heads/$branch"
+            echo "$branch"
+            return
+        end
+    end
+
+    set -l default_branch (command git config --get init.defaultBranch)
+    if test -n "$default_branch"
+        echo "$default_branch"
+    else
+        echo main
+    end
+end
+
 __dotfiles_abbr_add gst git status
 __dotfiles_abbr_add ga git add
 __dotfiles_abbr_add gaa git add --all
@@ -91,6 +117,7 @@ __dotfiles_abbr_add gc git commit
 __dotfiles_abbr_add gcmsg git commit -m
 __dotfiles_abbr_add gco git checkout
 __dotfiles_abbr_add gcb git checkout -b
+__dotfiles_abbr_add gcm git checkout '(__dotfiles_git_main_branch)'
 __dotfiles_abbr_add gb git branch
 __dotfiles_abbr_add gl git pull
 __dotfiles_abbr_add gp git push

@@ -22,6 +22,8 @@ install_cli_tools() {
   brew_install_if_missing fish fish
   brew_install_if_missing tmux tmux
   brew_install_if_missing neovim nvim
+  brew_install_if_missing tree-sitter-cli tree-sitter
+  brew_install_if_missing go go
   brew_install_if_missing fnm fnm
   brew_install_if_missing pyenv pyenv
   brew_install_if_missing starship starship

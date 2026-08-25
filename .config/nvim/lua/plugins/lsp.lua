@@ -30,6 +30,7 @@ local mason_opts = {
 return {
   {
     'mason-org/mason.nvim',
+    lazy = false,
     opts = mason_opts,
   },
   {
@@ -37,7 +38,7 @@ return {
   },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    event = 'VeryLazy',
+    lazy = false,
     dependencies = {
       'mason-org/mason.nvim',
       'mason-org/mason-lspconfig.nvim',
@@ -46,14 +47,18 @@ return {
       return {
         ensure_installed = get_mason_ensure_installed(),
         run_on_start = true,
-        start_delay = 3000,
-        debounce_hours = 12,
+        start_delay = 0,
       }
     end,
     config = function(_, opts)
       local mason_tool_installer = require 'mason-tool-installer'
       mason_tool_installer.setup(opts)
-      mason_tool_installer.run_on_start()
+
+      -- 正常启动由插件的 VimEnter autocmd 触发；若插件在 VimEnter 后才加载，
+      -- 则在这里补跑一次。失败后不设置防抖，下次启动会继续补装缺失工具。
+      if vim.v.vim_did_enter == 1 then
+        mason_tool_installer.run_on_start()
+      end
     end,
   },
   {
