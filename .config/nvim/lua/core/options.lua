@@ -44,6 +44,12 @@ opt.statuscolumn = [[%!v:lua.get_snacks_statuscolumn()]]
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
+if require('core.utils').is_ssh() then
+  -- Force the built-in OSC 52 provider because terminal capability detection
+  -- may be blocked by the local tmux between the remote Nvim and kitty.
+  vim.g.clipboard = 'osc52'
+end
+
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
